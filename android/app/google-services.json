@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "220834461301",
+    "project_id": "project-lyca",
+    "storage_bucket": "project-lyca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:220834461301:android:2bcfed6e690070adf82a3c",
+        "android_client_info": {
+          "package_name": "com.destiny07.projectlyca"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "220834461301-iohfp4ngtn71ii6qb9elskssmab13u59.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6TVD3aIkauUoncdj3qZwRnFyZhf4Poyg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "220834461301-iohfp4ngtn71ii6qb9elskssmab13u59.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
