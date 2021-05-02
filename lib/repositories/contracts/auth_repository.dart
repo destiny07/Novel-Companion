@@ -1,6 +1,10 @@
+import 'package:project_lyca/models/models.dart' as models;
+
 abstract class AuthRepository {
   bool get isAuthenticated;
   String? get userId;
+  Stream<bool> get status;
+  models.User? get user;
 
   Future<void> signInWithGoogle();
 
@@ -13,4 +17,6 @@ abstract class AuthRepository {
   Future<void> resetPassword(String email);
 
   Future sendEmailVerification();
+
+  Future<void> signOut();
 }

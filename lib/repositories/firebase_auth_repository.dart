@@ -2,16 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:project_lyca/repositories/contracts/auth_repository.dart';
 import 'package:project_lyca/repositories/exceptions/exceptions.dart';
+import 'package:project_lyca/models/models.dart' as models;
 
-class FirebaseUserRepository implements AuthRepository {
+class FirebaseAuthRepository implements AuthRepository {
   final FirebaseAuth _firebaseAuth;
-  final GoogleSignIn _googleSignIn;
 
-  FirebaseUserRepository({
-    required FirebaseAuth firebaseAuth,
-    required GoogleSignIn googleSignin,
-  })   : _firebaseAuth = firebaseAuth,
-        _googleSignIn = googleSignin;
+  FirebaseAuthRepository() : _firebaseAuth = FirebaseAuth.instance;
 
   bool get isAuthenticated {
     final currentUser = _firebaseAuth.currentUser;
@@ -20,6 +16,28 @@ class FirebaseUserRepository implements AuthRepository {
 
   String? get userId {
     return _firebaseAuth.currentUser?.uid;
+  }
+
+  @override
+  Stream<bool> get status {
+    return _firebaseAuth.authStateChanges().map((firebaseUser) {
+      return firebaseUser != null;
+    });
+  }
+
+  @override
+  models.User? get user {
+    var firebaseUser = _firebaseAuth.currentUser;
+    if (firebaseUser == null) {
+      return null;
+    }
+
+    return models.User(
+      id: firebaseUser.uid,
+      email: firebaseUser.email,
+      name: firebaseUser.displayName,
+      photo: firebaseUser.photoURL,
+    );
   }
 
   @override
@@ -43,7 +61,7 @@ class FirebaseUserRepository implements AuthRepository {
   @override
   Future<void> signInWithGoogle() async {
     try {
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
       final GoogleSignInAuthentication googleAuth =
           await googleUser!.authentication;
       final AuthCredential credential = GoogleAuthProvider.credential(
@@ -85,6 +103,15 @@ class FirebaseUserRepository implements AuthRepository {
       await user!.sendEmailVerification();
     } on Exception {
       throw SendEmailVerificationFailure();
+    }
+  }
+
+  @override
+  Future<void> signOut() async {
+    try {
+      await _firebaseAuth.signOut();
+    } on Exception {
+      throw LogOutFailure();
     }
   }
 }
