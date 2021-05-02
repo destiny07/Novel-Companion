@@ -1,5 +1,6 @@
 abstract class AuthRepository {
-  Future<bool> isAuthenticated();
+  bool get isAuthenticated;
+  String? get userId;
 
   Future<void> signInWithGoogle();
 
@@ -8,8 +9,6 @@ abstract class AuthRepository {
   Future<void> signInWithEmail(String email, String password);
 
   Future<void> signUpWithEmail(String email, String password);
-
-  Future<String> getUserId();
 
   Future<void> resetPassword(String email);
 
