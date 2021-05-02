@@ -1,6 +1,10 @@
 class SignUpFailure implements Exception {}
 
-class SignInWithEmailAndPasswordFailure implements Exception {}
+class SignInWithEmailAndPasswordFailure implements Exception {
+  final String? message;
+
+  const SignInWithEmailAndPasswordFailure({this.message});
+}
 
 class SignInWithGoogleFailure implements Exception {}
 
