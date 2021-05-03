@@ -41,7 +41,7 @@ class AuthenticationBloc
   Future<AuthenticationState> _mapAuthenticationStatusChangedToState(
     AuthenticationStatusChanged event,
   ) async {
-    if (event.isAuthenticated) {
+    if (!event.isAuthenticated) {
       return const AuthenticationState.unauthenticated();
     }
     final user = _authenticationRepository.user;
