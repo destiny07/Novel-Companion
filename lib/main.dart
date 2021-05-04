@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project_lyca/blocs/app_observer.dart';
 import 'package:project_lyca/blocs/authentication/authentication_bloc.dart';
 import 'package:project_lyca/repositories/contracts/contracts.dart';
 import 'package:project_lyca/repositories/repositories.dart';
 import 'package:project_lyca/ui/screens/screens.dart';
 
 void main() async {
+  Bloc.observer = AppObserver();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(App(authenticationRepository: FirebaseAuthRepository()));
