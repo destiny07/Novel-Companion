@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:project_lyca/blocs/blocs.dart';
+import 'package:project_lyca/ui/screens/register_screen.dart';
 import 'package:project_lyca/ui/shared/shared.dart';
 
 class LoginForm extends StatelessWidget {
@@ -13,7 +14,18 @@ class LoginForm extends StatelessWidget {
       children: [
         _EmailInput(),
         _PasswordInput(),
-        _LoginButton(),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            TextButton(
+              child: Text('Sign up'),
+              onPressed: () {
+                Navigator.of(context).push(RegisterScreen.route());
+              },
+            ),
+            _LoginButton(),
+          ],
+        ),
         DividerWithText(text: 'OR'),
         ElevatedButton(
           onPressed: () {

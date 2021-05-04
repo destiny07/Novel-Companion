@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:project_lyca/blocs/login/models/email.dart';
-import 'package:project_lyca/blocs/login/models/password.dart';
+import 'package:project_lyca/blocs/models/email.dart';
+import 'package:project_lyca/blocs/models/password.dart';
 import 'package:project_lyca/repositories/contracts/contracts.dart';
 
 part 'login_event.dart';
