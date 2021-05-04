@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:project_lyca/blocs/blocs.dart';
 import 'package:project_lyca/ui/screens/register_screen.dart';
+import 'package:project_lyca/ui/screens/screens.dart';
 import 'package:project_lyca/ui/shared/shared.dart';
 
 class LoginForm extends StatelessWidget {
@@ -18,9 +19,9 @@ class LoginForm extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             TextButton(
-              child: Text('Sign up'),
+              child: Text('Forgot password?'),
               onPressed: () {
-                Navigator.of(context).push(RegisterScreen.route());
+                Navigator.of(context).push(ForgotPasswordScreen.route());
               },
             ),
             _LoginButton(),

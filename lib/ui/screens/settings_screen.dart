@@ -10,9 +10,17 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Settings'),
+      ),
       body: SafeArea(
         child: ListView(
           children: <Widget>[
+            ListTile(
+              title: Text('Change password'),
+              onTap: () {},
+            ),
+            Divider(thickness: 1.0),
             ListTile(
               title: Text('Logout'),
               onTap: () {
