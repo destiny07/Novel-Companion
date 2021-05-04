@@ -11,13 +11,18 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: ElevatedButton(
-          child: const Text('Logout'),
-          onPressed: () {
-            context
-                .read<AuthenticationBloc>()
-                .add(AuthenticationLogoutRequested());
-          },
+        child: ListView(
+          children: <Widget>[
+            ListTile(
+              title: Text('Logout'),
+              onTap: () {
+                context
+                    .read<AuthenticationBloc>()
+                    .add(AuthenticationLogoutRequested());
+              },
+            ),
+            Divider(thickness: 1.0),
+          ],
         ),
       ),
     );
