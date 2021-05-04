@@ -33,11 +33,11 @@ class FirebaseAuthRepository implements AuthRepository {
     }
 
     return models.User(
-      id: firebaseUser.uid,
-      email: firebaseUser.email,
-      name: firebaseUser.displayName,
-      photo: firebaseUser.photoURL,
-    );
+        id: firebaseUser.uid,
+        email: firebaseUser.email,
+        name: firebaseUser.displayName,
+        photo: firebaseUser.photoURL,
+        isEmailVerified: firebaseUser.emailVerified);
   }
 
   @override
@@ -113,5 +113,10 @@ class FirebaseAuthRepository implements AuthRepository {
     } on Exception {
       throw LogOutFailure();
     }
+  }
+
+  @override
+  Future<void> refreshUser() async {
+    await _firebaseAuth.currentUser?.reload();
   }
 }

@@ -19,4 +19,6 @@ abstract class AuthRepository {
   Future sendEmailVerification();
 
   Future<void> signOut();
+
+  Future<void> refreshUser();
 }

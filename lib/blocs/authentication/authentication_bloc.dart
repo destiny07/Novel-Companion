@@ -10,8 +10,7 @@ part 'authentication_state.dart';
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
   final AuthRepository _authenticationRepository;
-  late StreamSubscription<bool>
-      _isAuthenticatedSubscription;
+  late StreamSubscription<bool> _isAuthenticatedSubscription;
 
   AuthenticationBloc({required AuthRepository authenticationRepository})
       : _authenticationRepository = authenticationRepository,
@@ -28,7 +27,11 @@ class AuthenticationBloc
     if (event is AuthenticationStatusChanged) {
       yield await _mapAuthenticationStatusChangedToState(event);
     } else if (event is AuthenticationLogoutRequested) {
-      _authenticationRepository.signOut();
+      await _authenticationRepository.signOut();
+    } else if (event is AuthenticationResendEmailVerification) {
+      await _authenticationRepository.sendEmailVerification();
+    } else if (event is AuthenticationRefreshUser) {
+      yield* _mapAuthenticationRefreshUserToState();
     }
   }
 
@@ -48,5 +51,10 @@ class AuthenticationBloc
     return user != null
         ? AuthenticationState.authenticated(user)
         : const AuthenticationState.unauthenticated();
+  }
+
+  Stream<AuthenticationState> _mapAuthenticationRefreshUserToState() async* {
+    await _authenticationRepository.refreshUser();
+    yield AuthenticationState.authenticated(_authenticationRepository.user!);
   }
 }

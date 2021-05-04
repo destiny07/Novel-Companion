@@ -54,10 +54,20 @@ class _AppViewState extends State<AppView> {
         return BlocListener<AuthenticationBloc, AuthenticationState>(
           listener: (context, state) {
             if (state.isAuthenticated) {
-              _navigator.pushAndRemoveUntil<void>(
-                HomeScreen.route(),
-                (route) => false,
-              );
+              var authRepository =
+                  RepositoryProvider.of<AuthRepository>(context);
+              var user = authRepository.user!;
+              if (user.isEmailVerified) {
+                _navigator.pushAndRemoveUntil<void>(
+                  HomeScreen.route(),
+                  (route) => false,
+                );
+              } else {
+                _navigator.pushAndRemoveUntil<void>(
+                  VerifyEmailScreen.route(),
+                  (route) => false,
+                );
+              }
             } else {
               _navigator.pushAndRemoveUntil<void>(
                 LoginScreen.route(),
