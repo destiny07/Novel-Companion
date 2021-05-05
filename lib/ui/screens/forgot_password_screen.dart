@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_lyca/blocs/blocs.dart';
+import 'package:project_lyca/repositories/contracts/contracts.dart';
+import 'package:project_lyca/ui/shared/shared.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
   static Route route() {
@@ -16,16 +18,23 @@ class ForgotPasswordScreen extends StatelessWidget {
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.all(5.0),
-          child: Column(
-            children: [
-              ElevatedButton(
-                child: Text('Change password'),
-                onPressed: () {
-                  final authBloc = BlocProvider.of<ForgotPasswordBloc>(context);
-                  authBloc.add(ForgotPasswordSubmittedEvent());
-                },
-              ),
-            ],
+          child: BlocProvider(
+            create: (context) {
+              return ForgotPasswordBloc(
+                authenticationRepository:
+                    RepositoryProvider.of<AuthRepository>(context),
+              );
+            },
+            child: BlocBuilder<ForgotPasswordBloc, ForgotPasswordState>(
+              buildWhen: (previous, current) => previous.isVerificationSent != current.isVerificationSent,
+              builder: (context, state) {
+                if (state.isVerificationSent) {
+                  return ForgotPasswordSent();
+                }
+
+                return ForgotPasswordForm();
+              },
+            ),
           ),
         ),
       ),
