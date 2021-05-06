@@ -66,6 +66,7 @@ class _EmailInput extends StatelessWidget {
             labelText: 'email',
             errorText: state.email.invalid ? 'invalid username' : null,
           ),
+          keyboardType: TextInputType.emailAddress,
         );
       },
     );
