@@ -10,6 +10,8 @@ class SignInWithGoogleFailure implements Exception {}
 
 class SignInWithAppleFailure implements Exception {}
 
+class ChangePasswordFailure implements Exception {}
+
 class ResetPasswordFailure implements Exception {}
 
 class SendEmailVerificationFailure implements Exception {}

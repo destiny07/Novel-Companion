@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_lyca/blocs/authentication/authentication_bloc.dart';
+import 'package:project_lyca/ui/screens/change_password_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   static Route route() {
@@ -18,7 +19,9 @@ class SettingsScreen extends StatelessWidget {
           children: <Widget>[
             ListTile(
               title: Text('Change password'),
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).push(ChangePasswordScreen.route());
+              },
             ),
             Divider(thickness: 1.0),
             ListTile(
