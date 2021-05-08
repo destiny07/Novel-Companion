@@ -9,47 +9,79 @@ import 'package:project_lyca/ui/shared/shared.dart';
 class LoginForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+    return Stack(
       children: [
-        _EmailInput(),
-        _PasswordInput(),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            TextButton(
-              child: Text('Forgot password?'),
-              onPressed: () {
-                Navigator.of(context).push(ForgotPasswordScreen.route());
-              },
-            ),
-            _LoginButton(),
-          ],
-        ),
-        DividerWithText(text: 'OR'),
-        ElevatedButton(
-          onPressed: () {
-            var authBloc = BlocProvider.of<LoginBloc>(context, listen: false);
-            authBloc.add(LoginWithGoogle());
-          },
-          child: Text('Login with Google'),
-          style: ButtonStyle(
-            foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
-            backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+        Container(
+          alignment: Alignment.center,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _EmailInput(),
+              _PasswordInput(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  _forgotPasswordButton(context),
+                  _LoginButton(),
+                ],
+              ),
+              DividerWithText(text: 'OR'),
+              _googleLoginButton(context),
+              _appleLoginButton(context),
+            ],
           ),
         ),
-        ElevatedButton(
-          onPressed: () {},
-          child: Text('Login with Apple'),
-          style: ButtonStyle(
-            foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-            backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
-          ),
+        Container(
+          alignment: Alignment.bottomCenter,
+          child: _signUpButton(context),
         ),
       ],
     );
   }
+}
+
+Widget _signUpButton(BuildContext context) {
+  return TextButton(
+    child: Text('Sign up'),
+    onPressed: () {
+      Navigator.of(context).push(RegisterScreen.route());
+    },
+  );
+}
+
+Widget _forgotPasswordButton(BuildContext context) {
+  return TextButton(
+    child: Text('Forgot password?'),
+    onPressed: () {
+      Navigator.of(context).push(ForgotPasswordScreen.route());
+    },
+  );
+}
+
+Widget _googleLoginButton(BuildContext context) {
+  return ElevatedButton(
+    onPressed: () {
+      var authBloc = BlocProvider.of<LoginBloc>(context, listen: false);
+      authBloc.add(LoginWithGoogle());
+    },
+    child: Text('Login with Google'),
+    style: ButtonStyle(
+      foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+      backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+    ),
+  );
+}
+
+Widget _appleLoginButton(BuildContext context) {
+  return ElevatedButton(
+    onPressed: () {},
+    child: Text('Login with Apple'),
+    style: ButtonStyle(
+      foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+      backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
+    ),
+  );
 }
 
 class _EmailInput extends StatelessWidget {
