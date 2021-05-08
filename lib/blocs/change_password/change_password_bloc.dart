@@ -63,9 +63,14 @@ class ChangePasswordBloc
       yield state.copyWith(status: FormzStatus.submissionInProgress);
       try {
         await _authenticationRepository.changePassword(state.password.value);
-        yield state.copyWith(status: FormzStatus.submissionSuccess);
+        yield state.copyWith(
+          status: FormzStatus.submissionSuccess,
+          statusMessage: 'Successfully updated password',
+        );
       } on Exception catch (_) {
-        yield state.copyWith(status: FormzStatus.submissionFailure);
+        yield state.copyWith(
+            status: FormzStatus.submissionFailure,
+            statusMessage: 'Error updating password');
       }
     }
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:formz/formz.dart';
 import 'package:project_lyca/blocs/change_password/change_password_bloc.dart';
 import 'package:project_lyca/repositories/contracts/contracts.dart';
@@ -25,12 +26,39 @@ class ChangePasswordScreen extends StatelessWidget {
                     RepositoryProvider.of<AuthRepository>(context),
               );
             },
-            child: Column(
-              children: [
-                _PasswordInput(),
-                _ConfirmPasswordInput(),
-                _ChangePasswordSubmittedButton(),
-              ],
+            child: BlocListener<ChangePasswordBloc, ChangePasswordState>(
+              listenWhen: (previousState, state) =>
+                  previousState.status != state.status &&
+                  (state.status == FormzStatus.submissionSuccess ||
+                      state.status == FormzStatus.submissionFailure),
+              listener: (context, state) {
+                var toastColor = Colors.red;
+
+                if (state.status == FormzStatus.submissionSuccess) {
+                  toastColor = Colors.green;
+                }
+
+                Fluttertoast.showToast(
+                  msg: state.statusMessage,
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.CENTER,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: toastColor,
+                  textColor: Colors.white,
+                  fontSize: 16.0,
+                );
+
+                if (state.status == FormzStatus.submissionSuccess) {
+                  Navigator.of(context).pop();
+                }
+              },
+              child: Column(
+                children: [
+                  _PasswordInput(),
+                  _ConfirmPasswordInput(),
+                  _ChangePasswordSubmittedButton(),
+                ],
+              ),
             ),
           ),
         ),
@@ -95,6 +123,7 @@ class _ChangePasswordSubmittedButton extends StatelessWidget {
           onPressed: state.status == FormzStatus.valid ||
                   state.status == FormzStatus.submissionInProgress
               ? () {
+                  FocusScope.of(context).requestFocus(FocusNode());
                   context
                       .read<ChangePasswordBloc>()
                       .add(const ChangePasswordSubmitted());
