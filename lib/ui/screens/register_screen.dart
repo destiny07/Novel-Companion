@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:formz/formz.dart';
 import 'package:project_lyca/blocs/blocs.dart';
 import 'package:project_lyca/repositories/contracts/contracts.dart';
@@ -25,14 +26,30 @@ class RegisterScreen extends StatelessWidget {
                     RepositoryProvider.of<AuthRepository>(context),
               );
             },
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                _EmailInput(),
-                _PasswordInput(),
-                _RegisterButton(),
-              ],
+            child: BlocListener<RegisterBloc, RegisterState>(
+              listenWhen: (previousState, state) =>
+                  previousState.status != state.status &&
+                  state.status == FormzStatus.submissionFailure,
+              listener: (context, state) {
+                Fluttertoast.showToast(
+                  msg: state.statusMessage,
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.CENTER,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: Colors.red,
+                  textColor: Colors.white,
+                  fontSize: 16.0,
+                );
+              },
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _EmailInput(),
+                  _PasswordInput(),
+                  _RegisterButton(),
+                ],
+              ),
             ),
           ),
         ),
@@ -96,6 +113,7 @@ class _RegisterButton extends StatelessWidget {
           onPressed: state.status == FormzStatus.valid ||
                   state.status == FormzStatus.submissionInProgress
               ? () {
+                  FocusScope.of(context).requestFocus(FocusNode());
                   context.read<RegisterBloc>().add(const RegisterSubmitted());
                 }
               : null,

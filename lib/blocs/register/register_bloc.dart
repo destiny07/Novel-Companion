@@ -53,9 +53,17 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     RegisterSubmitted event,
     RegisterState state,
   ) async* {
-    await _authenticationRepository.signUpWithEmail(
-      state.email.value,
-      state.password.value,
-    );
+    try {
+      await _authenticationRepository.signUpWithEmail(
+        state.email.value,
+        state.password.value,
+      );
+      yield state.copyWith(status: FormzStatus.submissionSuccess);
+    } on Exception catch (_) {
+      yield state.copyWith(
+        status: FormzStatus.submissionFailure,
+        statusMessage: 'Error signing up',
+      );
+    }
   }
 }
