@@ -66,7 +66,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         );
         yield state.copyWith(status: FormzStatus.submissionSuccess);
       } on Exception catch (_) {
-        yield state.copyWith(status: FormzStatus.submissionFailure);
+        yield state.copyWith(
+          status: FormzStatus.submissionFailure,
+          statusMessage: 'Error logging in',
+        );
       }
     }
   }

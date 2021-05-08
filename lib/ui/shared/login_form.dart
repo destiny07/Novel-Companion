@@ -106,6 +106,7 @@ class _LoginButton extends StatelessWidget {
           onPressed: state.status == FormzStatus.valid ||
                   state.status == FormzStatus.submissionInProgress
               ? () {
+                  FocusScope.of(context).requestFocus(FocusNode());
                   context.read<LoginBloc>().add(const LoginSubmitted());
                 }
               : null,
