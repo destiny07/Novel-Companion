@@ -9,6 +9,10 @@ class Pronunciation extends Equatable {
     this.audioUrl,
   });
 
+  factory Pronunciation.fromJson(Map<String, dynamic> data) {
+    return Pronunciation(diacritics: data['diacritics']);
+  }
+
   @override
   List<Object?> get props => [diacritics, audioUrl];
 }

@@ -20,6 +20,20 @@ class Word extends Equatable {
     this.pronunciations,
   });
 
+  factory Word.fromJson(Map<String, dynamic> data) {
+    return Word(
+      name: data['name'],
+      partOfSpeech: data['partOfSpeech'],
+      descriptions: data['descriptions'],
+      examples: List.from(data['examples']),
+      synonyms: List.from(data['synonyms']),
+      antonyms: List.from(data['antonyms']),
+      pronunciations: List.from(data['pronunciations'])
+          .map((e) => Pronunciation.fromJson(e))
+          .toList(),
+    );
+  }
+
   @override
   List<Object?> get props => [
         name,
