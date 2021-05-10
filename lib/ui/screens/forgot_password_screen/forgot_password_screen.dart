@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_lyca/blocs/blocs.dart';
 import 'package:project_lyca/repositories/contracts/contracts.dart';
-import 'package:project_lyca/ui/shared/shared.dart';
+
+import 'forgot_password_form.dart';
+import 'forgot_password_sent.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
   static Route route() {

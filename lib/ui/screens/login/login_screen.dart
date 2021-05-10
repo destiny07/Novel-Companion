@@ -4,7 +4,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:formz/formz.dart';
 import 'package:project_lyca/blocs/login/login_bloc.dart';
 import 'package:project_lyca/repositories/contracts/contracts.dart';
-import 'package:project_lyca/ui/shared/shared.dart';
+
+import 'login_form.dart';
 
 class LoginScreen extends StatelessWidget {
   static Route route() {
