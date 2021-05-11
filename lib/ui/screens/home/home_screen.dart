@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:project_lyca/blocs/blocs.dart';
 import 'package:project_lyca/ui/screens/home/action_bar.dart';
+import 'package:project_lyca/ui/screens/home/word_info.dart';
+import 'package:project_lyca/ui/screens/home/word_search_result_carousel.dart';
 import 'package:project_lyca/ui/screens/settings_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -38,7 +40,7 @@ class HomeScreen extends StatelessWidget {
               children: [
                 Container(
                   alignment: Alignment.center,
-                  child: _SearchBar(),
+                  child: WordSearchResultCarousel(),
                 ),
                 Container(
                   alignment: Alignment.bottomCenter,
