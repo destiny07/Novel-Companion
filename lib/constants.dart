@@ -1,1 +1,1 @@
-const dictionaryApiUrl = 'https://wordsapiv1.p.rapidapi.com';
+const dictionaryApiUrl = 'http://10.0.2.2:5001/project-lyca/us-central1/app/words';

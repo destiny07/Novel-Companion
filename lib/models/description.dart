@@ -9,9 +9,17 @@ class Description extends Equatable {
 
   factory Description.fromJson(Map<String, dynamic> data) {
     return Description(
-      definitions: data['definitions'],
-      examples: data['examples'],
-      synonyms: data['synonyms'],
+      definitions: data['definitions'] != null
+          ? (data['definitions'] as List<dynamic>)
+              .map((e) => e as String)
+              .toList()
+          : [],
+      examples: data['examples'] != null
+          ? (data['examples'] as List<dynamic>).map((e) => e as String).toList()
+          : [],
+      synonyms: data['synonyms'] != null
+          ? (data['synonyms'] as List<dynamic>).map((e) => e as String).toList()
+          : [],
     );
   }
 

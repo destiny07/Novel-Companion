@@ -14,10 +14,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   String host = defaultTargetPlatform == TargetPlatform.android
-      ? '10.0.2.2:8080'
-      : 'localhost:8080';
-  FirebaseFunctions.instance.useFunctionsEmulator(origin: host);
+      ? 'http://10.0.2.2:5001'
+      : 'localhost:5001';
   await Firebase.initializeApp();
+  FirebaseFunctions.instance.useFunctionsEmulator(origin: host);
   runApp(App(authenticationRepository: FirebaseAuthRepository()));
 }
 
@@ -31,8 +31,12 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider.value(
-      value: authenticationRepository,
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider<AuthRepository>(
+          create: (context) => authenticationRepository,
+        ),
+      ],
       child: BlocProvider(
         create: (_) => AuthenticationBloc(
             authenticationRepository: authenticationRepository),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:project_lyca/blocs/blocs.dart';
+import 'package:project_lyca/services/services.dart';
 import 'package:project_lyca/ui/screens/home/action_bar.dart';
 import 'package:project_lyca/ui/screens/home/word_search_result_carousel.dart';
 import 'package:project_lyca/ui/screens/settings_screen.dart';
@@ -32,7 +33,7 @@ class HomeScreen extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: 8.0),
           child: BlocProvider(
             create: (context) {
-              return HomeBloc();
+              return HomeBloc(dictionaryService: FirebaseDictionaryService());
             },
             child: Stack(
               fit: StackFit.expand,
