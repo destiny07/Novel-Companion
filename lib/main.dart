@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_lyca/blocs/app_observer.dart';
 import 'package:project_lyca/blocs/authentication/authentication_bloc.dart';
@@ -10,6 +12,11 @@ import 'package:project_lyca/ui/screens/screens.dart';
 void main() async {
   Bloc.observer = AppObserver();
   WidgetsFlutterBinding.ensureInitialized();
+
+  String host = defaultTargetPlatform == TargetPlatform.android
+      ? '10.0.2.2:8080'
+      : 'localhost:8080';
+  FirebaseFunctions.instance.useFunctionsEmulator(origin: host);
   await Firebase.initializeApp();
   runApp(App(authenticationRepository: FirebaseAuthRepository()));
 }
