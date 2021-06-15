@@ -33,7 +33,10 @@ class HomeScreen extends StatelessWidget {
           padding: EdgeInsets.symmetric(vertical: 8.0),
           child: BlocProvider(
             create: (context) {
-              return HomeBloc(dictionaryService: FirebaseDictionaryService());
+              return HomeBloc(
+                dictionaryService: FirebaseDictionaryService(),
+                torchService: TorchService(),
+              );
             },
             child: Stack(
               fit: StackFit.expand,

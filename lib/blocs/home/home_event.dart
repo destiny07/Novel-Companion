@@ -10,3 +10,12 @@ abstract class HomeEvent extends Equatable {
 class HomeToggleSearchBar extends HomeEvent {
   const HomeToggleSearchBar();
 }
+
+class HomeToggleTorch extends HomeEvent {
+  final bool turnOn;
+
+  const HomeToggleTorch(this.turnOn);
+
+  @override
+  List<Object> get props => [turnOn];
+}
