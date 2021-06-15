@@ -1,8 +1,11 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:project_lyca/blocs/app_observer.dart';
 import 'package:project_lyca/blocs/authentication/authentication_bloc.dart';
 import 'package:project_lyca/repositories/contracts/contracts.dart';
@@ -13,20 +16,26 @@ void main() async {
   Bloc.observer = AppObserver();
   WidgetsFlutterBinding.ensureInitialized();
 
+  final cameras = await availableCameras();
+
   String host = defaultTargetPlatform == TargetPlatform.android
       ? 'http://10.0.2.2:5001'
       : 'localhost:5001';
   await Firebase.initializeApp();
   FirebaseFunctions.instance.useFunctionsEmulator(origin: host);
-  runApp(App(authenticationRepository: FirebaseAuthRepository()));
+  runApp(App(
+      authenticationRepository: FirebaseAuthRepository(),
+      camera: cameras));
 }
 
 class App extends StatelessWidget {
   final AuthRepository authenticationRepository;
+  final List<CameraDescription> camera;
 
   const App({
     Key? key,
     required this.authenticationRepository,
+    required this.camera,
   }) : super(key: key);
 
   @override
@@ -40,13 +49,17 @@ class App extends StatelessWidget {
       child: BlocProvider(
         create: (_) => AuthenticationBloc(
             authenticationRepository: authenticationRepository),
-        child: AppView(),
+        child: AppView(camera: camera),
       ),
     );
   }
 }
 
 class AppView extends StatefulWidget {
+  final List<CameraDescription> camera;
+
+  const AppView({required this.camera});
+
   @override
   _AppViewState createState() => _AppViewState();
 }
@@ -70,7 +83,7 @@ class _AppViewState extends State<AppView> {
               var user = authRepository.user!;
               if (user.isEmailVerified) {
                 _navigator.pushAndRemoveUntil<void>(
-                  HomeScreen.route(),
+                  HomeScreen.route(widget.camera),
                   (route) => false,
                 );
               } else {

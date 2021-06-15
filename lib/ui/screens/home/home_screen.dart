@@ -1,32 +1,61 @@
 import 'package:flutter/material.dart';
+
+import 'package:camera/camera.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
+
 import 'package:project_lyca/blocs/blocs.dart';
 import 'package:project_lyca/services/services.dart';
 import 'package:project_lyca/ui/screens/home/action_bar.dart';
 import 'package:project_lyca/ui/screens/home/word_search_result_carousel.dart';
 import 'package:project_lyca/ui/screens/settings_screen.dart';
 
-class HomeScreen extends StatelessWidget {
-  static Route route() {
-    return MaterialPageRoute<void>(builder: (_) => HomeScreen());
+class HomeScreen extends StatefulWidget {
+  final List<CameraDescription> cameras;
+  
+  static Route route(List<CameraDescription> cameras) {
+    return MaterialPageRoute<void>(builder: (_) => HomeScreen(cameras: cameras,));
+  }
+
+  const HomeScreen({
+    Key? key,
+    required this.cameras
+  }) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  late CameraController _cameraController;
+
+  @override
+  void initState() {
+    super.initState();
+    _cameraController = CameraController(widget.cameras.first, ResolutionPreset.max);
+    _cameraController.initialize().then((_) {
+      if (!mounted) {
+        return;
+      }
+      setState(() {});
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            icon: Icon(Icons.settings),
-            color: Colors.white,
-            onPressed: () {
-              Navigator.of(context).push(SettingsScreen.route());
-            },
-          ),
-        ],
-      ),
+      // appBar: AppBar(
+      //   actions: [
+      //     IconButton(
+      //       icon: Icon(Icons.settings),
+      //       color: Colors.white,
+      //       onPressed: () {
+      //         Navigator.of(context).push(SettingsScreen.route());
+      //       },
+      //     ),
+      //   ],
+      // ),
       backgroundColor: Colors.black,
       body: SafeArea(
         child: Padding(
@@ -41,13 +70,14 @@ class HomeScreen extends StatelessWidget {
             child: Stack(
               fit: StackFit.expand,
               children: [
-                Container(
-                  alignment: Alignment.topCenter,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8.0),
-                    child: WordSearchResultCarousel(),
-                  ),
-                ),
+                _cameraPreview(),
+                // Container(
+                //   alignment: Alignment.topCenter,
+                //   child: Padding(
+                //     padding: EdgeInsets.symmetric(horizontal: 8.0),
+                //     child: WordSearchResultCarousel(),
+                //   ),
+                // ),
                 Container(
                   alignment: Alignment.bottomCenter,
                   child: ActionBar(),
@@ -58,6 +88,21 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _cameraPreview() {
+    if (!_cameraController.value.isInitialized) {
+      return Container();
+    }
+    return MaterialApp(
+      home: CameraPreview(_cameraController),
+    );
+  }
+
+  @override
+  void dispose() {
+    _cameraController?.dispose();
+    super.dispose();
   }
 }
 
