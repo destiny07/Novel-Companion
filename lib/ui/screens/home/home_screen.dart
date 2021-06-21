@@ -8,38 +8,26 @@ import 'package:project_lyca/blocs/blocs.dart';
 import 'package:project_lyca/services/services.dart';
 import 'package:project_lyca/ui/screens/home/action_bar.dart';
 import 'package:project_lyca/ui/screens/home/word_search_result_carousel.dart';
+import 'package:project_lyca/ui/screens/home/camera_view.dart';
 import 'package:project_lyca/ui/screens/settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final List<CameraDescription> cameras;
-  
+
   static Route route(List<CameraDescription> cameras) {
-    return MaterialPageRoute<void>(builder: (_) => HomeScreen(cameras: cameras,));
+    return MaterialPageRoute<void>(
+        builder: (_) => HomeScreen(
+              cameras: cameras,
+            ));
   }
 
-  const HomeScreen({
-    Key? key,
-    required this.cameras
-  }) : super(key: key);
+  const HomeScreen({Key? key, required this.cameras}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late CameraController _cameraController;
-
-  @override
-  void initState() {
-    super.initState();
-    _cameraController = CameraController(widget.cameras.first, ResolutionPreset.max);
-    _cameraController.initialize().then((_) {
-      if (!mounted) {
-        return;
-      }
-      setState(() {});
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,13 +52,14 @@ class _HomeScreenState extends State<HomeScreen> {
             create: (context) {
               return HomeBloc(
                 dictionaryService: FirebaseDictionaryService(),
+                mlService: FirebaseMlService(),
                 torchService: TorchService(),
               );
             },
             child: Stack(
               fit: StackFit.expand,
               children: [
-                _cameraPreview(),
+                CameraView(cameras: widget.cameras),
                 // Container(
                 //   alignment: Alignment.topCenter,
                 //   child: Padding(
@@ -90,20 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _cameraPreview() {
-    if (!_cameraController.value.isInitialized) {
-      return Container();
-    }
-    return MaterialApp(
-      home: CameraPreview(_cameraController),
-    );
-  }
-
-  @override
-  void dispose() {
-    _cameraController?.dispose();
-    super.dispose();
-  }
+  
 }
 
 class _SearchBar extends StatelessWidget {
