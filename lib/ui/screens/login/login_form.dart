@@ -65,6 +65,7 @@ Widget _appleLoginButton(BuildContext context) {
 Widget _signUpEmailButton(BuildContext context) {
   return SignInButton(
     Buttons.Email,
+    text: 'Sign up with Email',
     onPressed: () {
       Navigator.of(context).push(RegisterScreen.route());
     },
