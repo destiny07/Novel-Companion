@@ -7,9 +7,7 @@ import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:project_lyca/blocs/blocs.dart';
 import 'package:project_lyca/services/services.dart';
 import 'package:project_lyca/ui/screens/home/action_bar.dart';
-import 'package:project_lyca/ui/screens/home/word_search_result_carousel.dart';
 import 'package:project_lyca/ui/screens/home/camera_view.dart';
-import 'package:project_lyca/ui/screens/settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final List<CameraDescription> cameras;
@@ -52,7 +50,6 @@ class _HomeScreenState extends State<HomeScreen> {
             create: (context) {
               return HomeBloc(
                 dictionaryService: FirebaseDictionaryService(),
-                mlService: FirebaseMlService(),
                 torchService: TorchService(),
               );
             },

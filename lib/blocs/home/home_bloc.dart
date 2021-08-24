@@ -1,7 +1,4 @@
-import 'dart:math';
-
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:project_lyca/services/contracts/contracts.dart';
@@ -11,12 +8,10 @@ part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final DictionaryService dictionaryService;
-  final IMlService mlService;
   final ITorchService torchService;
 
   HomeBloc({
     required this.dictionaryService,
-    required this.mlService,
     required this.torchService,
   }) : super(const HomeState());
 
@@ -32,10 +27,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   Stream<HomeState> _mapHomeTapTextToState(HomeTapText event) async* {
-    print('x: ${event.x}, y: ${event.y}');
-    var touchRect =
-        Rect.fromCenter(center: Offset(event.x, event.y), width: 1, height: 1);
-    mlService.getTextFromImage(event.path, touchRect);
     yield state;
   }
 
