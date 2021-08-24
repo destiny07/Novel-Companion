@@ -8,6 +8,12 @@
             "name": "project_lyca",
             "request": "launch",
             "type": "dart"
+        },
+        {
+            "name": "project_lyca (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
         }
     ]
 }
