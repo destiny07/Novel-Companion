@@ -50,7 +50,6 @@ class _HomeScreenState extends State<HomeScreen> {
             create: (context) {
               return HomeBloc(
                 dictionaryService: FirebaseDictionaryService(),
-                torchService: TorchService(),
               );
             },
             child: Stack(
