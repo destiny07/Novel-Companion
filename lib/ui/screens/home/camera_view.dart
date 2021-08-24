@@ -8,7 +8,7 @@ import 'package:project_lyca/blocs/blocs.dart';
 class CameraView extends StatefulWidget {
   final List<CameraDescription> cameras;
 
-  const CameraView({required this.cameras});
+  const  CameraView({required this.cameras});
 
   @override
   State<StatefulWidget> createState() => _CameraViewState();
