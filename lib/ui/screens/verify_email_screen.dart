@@ -25,12 +25,22 @@ class VerifyEmailScreen extends StatelessWidget {
                   return Text(state.user!.email!);
                 },
               ),
-              ElevatedButton(
-                child: Text('Refresh'),
-                onPressed: () {
-                  final authBloc = BlocProvider.of<AuthenticationBloc>(context);
-                  authBloc.add(AuthenticationRefreshUser());
-                },
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                    child: Text('Resend (${100}s)'),
+                    onPressed: null,
+                  ),
+                  ElevatedButton(
+                    child: Text('Refresh'),
+                    onPressed: () {
+                      final authBloc =
+                          BlocProvider.of<AuthenticationBloc>(context);
+                      authBloc.add(AuthenticationRefreshUser());
+                    },
+                  ),
+                ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
