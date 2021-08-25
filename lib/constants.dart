@@ -1,6 +1,6 @@
 const environmentDev = 'dev';
 const environmentRelease = 'release';
-const currentEnvironment = environmentDev;
+const currentEnvironment = environmentRelease;
 const functionsEmulatorUrl = '192.168.68.119:5001';
 
 const dictionaryApiUrl =

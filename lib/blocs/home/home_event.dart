@@ -8,13 +8,12 @@ abstract class HomeEvent extends Equatable {
 }
 
 class HomeTapText extends HomeEvent {
-  final InputImage path;
-  final double x;
-  final double y;
-  const HomeTapText(this.path, this.x, this.y);
+  final String word;
+
+  const HomeTapText(this.word);
 
   @override
-  List<Object> get props => [path, x, y];
+  List<Object> get props => [word];
 }
 
 class HomeToggleSearchBar extends HomeEvent {

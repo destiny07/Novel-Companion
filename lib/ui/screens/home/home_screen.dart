@@ -38,25 +38,41 @@ class _HomeScreenState extends State<HomeScreen> {
               dictionaryService: FunctionsDictionaryService(),
             );
           },
-          child: Stack(
-            fit: StackFit.loose,
-            children: [
-              Column(
-                children: [
-                  CameraView(
-                    cameras: widget.cameras,
-                    onTapWord: (word) {
-                      print('The tapped word is $word');
-                    },
-                  ),
-                  Expanded(child: ActionBar()),
-                ],
-              ),
-              _searchBar(),
-            ],
-          ),
+          child: _HomeContent(widget.cameras),
         ),
       ),
+    );
+  }
+}
+
+class _HomeContent extends StatelessWidget {
+  final List<CameraDescription> cameras;
+
+  _HomeContent(this.cameras);
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      fit: StackFit.loose,
+      children: [
+        Column(
+          children: [
+            CameraView(
+              cameras: cameras,
+              onTapWord: (word) {
+                print('The tapped word is $word');
+                if (word.isEmpty) {
+                  print('Word is empty');
+                } else {
+                  BlocProvider.of<HomeBloc>(context).add(HomeTapText(word));
+                }
+              },
+            ),
+            Expanded(child: ActionBar()),
+          ],
+        ),
+        _searchBar(),
+      ],
     );
   }
 
