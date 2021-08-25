@@ -5,8 +5,8 @@ import 'package:google_ml_kit/google_ml_kit.dart';
 
 class CameraView extends StatefulWidget {
   final List<CameraDescription> cameras;
-
-  const  CameraView({required this.cameras});
+  final Function(String) onTapWord;
+  const CameraView({required this.cameras, required this.onTapWord});
 
   @override
   State<StatefulWidget> createState() => _CameraViewState();
@@ -83,8 +83,6 @@ class _CameraViewState extends State<CameraView> {
         final RecognisedText recognisedText =
             await textDetector.processImage(_inputImage);
 
-        print(
-            'Rect Image Size: ${_inputImage.inputImageData!.size.toString()}');
         String text = recognisedText.text;
         for (TextBlock block in recognisedText.blocks) {
           final Rect rect = block.rect;
@@ -93,18 +91,21 @@ class _CameraViewState extends State<CameraView> {
           final List<String> languages = block.recognizedLanguages;
 
           for (TextLine line in block.lines) {
-            // Same getters as TextBlock
             for (TextElement element in line.elements) {
-              // Same getters as TextBlock
               final densityPixel = MediaQuery.of(context).devicePixelRatio;
               final newOffset = Offset(details.localPosition.dx * densityPixel,
                   details.localPosition.dy * densityPixel);
               final isOverlaps = element.rect.contains(newOffset);
-              print(
-                  'Rect: ${element.rect.toString()}, Text: ${element.text}, Position: ${details.localPosition.toString()}, Overlap: ${isOverlaps.toString()}');
+
+              if (isOverlaps) {
+                widget.onTapWord(element.text);
+                return;
+              }
             }
           }
         }
+
+        widget.onTapWord('');
       },
     );
   }

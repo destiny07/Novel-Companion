@@ -43,7 +43,12 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               Column(
                 children: [
-                  CameraView(cameras: widget.cameras),
+                  CameraView(
+                    cameras: widget.cameras,
+                    onTapWord: (word) {
+                      print('The tapped word is $word');
+                    },
+                  ),
                   Expanded(child: ActionBar()),
                 ],
               ),
