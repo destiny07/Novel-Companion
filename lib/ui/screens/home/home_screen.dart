@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: BlocProvider(
           create: (context) {
             return HomeBloc(
-              dictionaryService: FirebaseDictionaryService(),
+              dictionaryService: FunctionsDictionaryService(),
             );
           },
           child: Stack(

@@ -6,7 +6,7 @@ import 'package:project_lyca/models/word.dart';
 import 'package:project_lyca/services/contracts/dictionary_service.dart';
 import 'package:project_lyca/constants.dart' as constants;
 
-class FirebaseDictionaryService implements DictionaryService {
+class FunctionsDictionaryService implements DictionaryService {
   @override
   Future<List<Word>> searchWord(String word) async {
     final url = Uri.parse('${constants.dictionaryApiUrl}/$word');
