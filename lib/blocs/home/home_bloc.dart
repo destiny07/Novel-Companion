@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
-import 'package:project_lyca/services/contracts/contracts.dart';
+import 'package:project_lyca/services/services.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
