@@ -11,21 +11,27 @@ import 'package:project_lyca/blocs/authentication/authentication_bloc.dart';
 import 'package:project_lyca/repositories/contracts/contracts.dart';
 import 'package:project_lyca/repositories/repositories.dart';
 import 'package:project_lyca/ui/screens/screens.dart';
+import 'package:project_lyca/constants.dart' as constants;
 
 void main() async {
   Bloc.observer = AppObserver();
   WidgetsFlutterBinding.ensureInitialized();
 
-  final cameras = await availableCameras();
-
-  String host = defaultTargetPlatform == TargetPlatform.android
-      ? 'http://10.0.2.2:5001'
-      : 'localhost:5001';
   await Firebase.initializeApp();
-  FirebaseFunctions.instance.useFunctionsEmulator(origin: host);
-  runApp(App(
+
+  if (constants.currentEnvironment == constants.environmentDev) {
+    FirebaseFunctions.instance.useFunctionsEmulator(
+      origin: constants.functionsEmulatorUrl,
+    );
+  }
+
+  final cameras = await availableCameras();
+  runApp(
+    App(
       authenticationRepository: FirebaseAuthRepository(),
-      camera: cameras));
+      camera: cameras,
+    ),
+  );
 }
 
 class App extends StatelessWidget {
