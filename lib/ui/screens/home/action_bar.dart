@@ -17,7 +17,7 @@ class ActionBar extends StatelessWidget {
         IconButton(
           icon: Icon(Icons.search_rounded),
           color: Colors.white,
-          iconSize: 40.0,
+          iconSize: 30.0,
           onPressed: () {
             BlocProvider.of<HomeBloc>(context).add(HomeToggleSearchBar());
           },

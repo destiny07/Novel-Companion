@@ -53,25 +53,29 @@ class _HomeContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
-      fit: StackFit.loose,
       children: [
-        Column(
-          children: [
-            CameraView(
-              cameras: cameras,
-              onTapWord: (word) {
-                print('The tapped word is $word');
-                if (word.isEmpty) {
-                  print('Word is empty');
-                } else {
-                  BlocProvider.of<HomeBloc>(context).add(HomeTapText(word));
-                }
-              },
-            ),
-            Expanded(child: ActionBar()),
-          ],
+        Align(
+          alignment: Alignment.topCenter,
+          child: CameraView(
+            cameras: cameras,
+            onTapWord: (word) {
+              print('The tapped word is $word');
+              if (word.isEmpty) {
+                print('Word is empty');
+              } else {
+                BlocProvider.of<HomeBloc>(context).add(HomeTapText(word));
+              }
+            },
+          ),
         ),
-        _searchBar(),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: ActionBar(),
+        ),
+        Align(
+          alignment: Alignment.topCenter,
+          child: _searchBar(),
+        ),
       ],
     );
   }
@@ -82,7 +86,10 @@ class _HomeContent extends StatelessWidget {
           previous.isShowSearchBar != current.isShowSearchBar,
       builder: (context, state) {
         if (state.isShowSearchBar) {
-          return SearchBar();
+          return Container(
+            margin: EdgeInsets.fromLTRB(8.0, 24, 8.0, 8.0),
+            child: SearchBar(),
+          );
         }
         return Container();
       },
