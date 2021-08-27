@@ -21,7 +21,7 @@ class _CameraViewState extends State<CameraView> {
   void initState() {
     super.initState();
     _cameraController =
-        CameraController(widget.cameras.first, ResolutionPreset.max);
+        CameraController(widget.cameras.first, ResolutionPreset.high);
     _cameraController.initialize().then((_) async {
       if (!mounted) {
         return;
@@ -77,36 +77,48 @@ class _CameraViewState extends State<CameraView> {
     if (!_cameraController.value.isInitialized) {
       return Container();
     }
-    return GestureDetector(
-      child: CameraPreview(_cameraController),
-      onTapDown: (details) async {
-        final RecognisedText recognisedText =
-            await textDetector.processImage(_inputImage);
+    final mediaSize = MediaQuery.of(context).size;
+    final scale =
+        1 / (_cameraController.value.aspectRatio * mediaSize.aspectRatio);
+    print('Preview Size: ${_cameraController.value.previewSize}');
+    return ClipRect(
+      clipper: _MediaSizeClipper(mediaSize),
+      child: Transform.scale(
+        scale: scale,
+        alignment: Alignment.topCenter,
+        child: GestureDetector(
+          child: CameraPreview(_cameraController),
+          onTapDown: (details) async {
+            final RecognisedText recognisedText =
+                await textDetector.processImage(_inputImage);
 
-        String text = recognisedText.text;
-        for (TextBlock block in recognisedText.blocks) {
-          final Rect rect = block.rect;
-          final List<Offset> cornerPoints = block.cornerPoints;
-          final String text = block.text;
-          final List<String> languages = block.recognizedLanguages;
+            String text = recognisedText.text;
+            for (TextBlock block in recognisedText.blocks) {
+              final Rect rect = block.rect;
+              final List<Offset> cornerPoints = block.cornerPoints;
+              final String text = block.text;
+              final List<String> languages = block.recognizedLanguages;
 
-          for (TextLine line in block.lines) {
-            for (TextElement element in line.elements) {
-              final densityPixel = MediaQuery.of(context).devicePixelRatio;
-              final newOffset = Offset(details.localPosition.dx * densityPixel,
-                  details.localPosition.dy * densityPixel);
-              final isOverlaps = element.rect.contains(newOffset);
+              for (TextLine line in block.lines) {
+                for (TextElement element in line.elements) {
+                  final densityPixel = MediaQuery.of(context).devicePixelRatio;
+                  final newOffset = Offset(
+                      details.localPosition.dx * densityPixel,
+                      details.localPosition.dy * densityPixel);
+                  final isOverlaps = element.rect.contains(newOffset);
 
-              if (isOverlaps) {
-                widget.onTapWord(element.text);
-                return;
+                  if (isOverlaps) {
+                    widget.onTapWord(element.text);
+                    return;
+                  }
+                }
               }
             }
-          }
-        }
 
-        widget.onTapWord('');
-      },
+            widget.onTapWord('');
+          },
+        ),
+      ),
     );
   }
 
@@ -114,5 +126,19 @@ class _CameraViewState extends State<CameraView> {
   void dispose() {
     _cameraController.dispose();
     super.dispose();
+  }
+}
+
+class _MediaSizeClipper extends CustomClipper<Rect> {
+  final Size mediaSize;
+  const _MediaSizeClipper(this.mediaSize);
+  @override
+  Rect getClip(Size size) {
+    return Rect.fromLTWH(0, 0, mediaSize.width, mediaSize.height);
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Rect> oldClipper) {
+    return true;
   }
 }
