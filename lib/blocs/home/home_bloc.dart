@@ -31,6 +31,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Stream<HomeState> _mapHomeToggleSearchBarToState(
       HomeToggleSearchBar event) async* {
     final currentState = state.isShowSearchBar;
-    yield state.copyWith(isShowSearchBar: !currentState);
+    yield state.copyWith(isShowSearchBar: !currentState, isShowWordInfo: false);
   }
 }
