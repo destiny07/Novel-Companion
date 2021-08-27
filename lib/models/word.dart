@@ -25,10 +25,17 @@ class Word extends Equatable {
           ? Syllables.fromJson(Map<String, dynamic>.from(data['syllables']))
           : null,
       pronunciation: data['pronunciation'] != null
-          ? Pronunciation.fromJson(
-              Map<String, dynamic>.from(data['pronunciation']))
+          ? _getPronunciation(data['pronunciation'])
           : null,
     );
+  }
+
+  static Pronunciation _getPronunciation(dynamic data) {
+    if (data is String) {
+      return Pronunciation(all: data);
+    }
+
+    return Pronunciation.fromJson(Map<String, dynamic>.from(data));
   }
 
   @override

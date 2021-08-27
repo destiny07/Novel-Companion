@@ -1,83 +1,61 @@
 import 'package:flutter/material.dart';
+import 'package:project_lyca/models/models.dart';
 
 class WordInfo extends StatelessWidget {
+  final Word word;
+
+  WordInfo({required this.word});
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(8.0),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
+    return Card(
+      color: Colors.blue,
+      child: Padding(
+        padding: EdgeInsets.all(8.0),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'hello',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 30.0,
-                ),
+              Text(this.word.name),
+              Text(this.word.pronunciation!.all),
+              ListView.separated(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return _getSingleResult(word.results[index]);
+                },
+                separatorBuilder: (context, index) {
+                  return Divider();
+                },
+                itemCount: this.word.results.length,
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 4.0),
-              ),
-              Text(
-                'noun',
-                style: TextStyle(color: Colors.white),
-              )
             ],
           ),
-          Row(
-            children: [
-              TextButton.icon(
-                icon: Icon(Icons.volume_down, color: Colors.black),
-                label: Text(
-                  "hɛ'loʊ",
-                  style: TextStyle(color: Colors.white),
-                ),
-                onPressed: () {},
-              )
-            ],
-          ),
-          Text(
-            'an expression of greeting; a greeting; some sort of greeting',
-            style: TextStyle(color: Colors.white),
-          ),
-          Padding(
-            padding: EdgeInsets.only(bottom: 8.0),
-          ),
-          Text(
-            'examples:',
-            style: TextStyle(color: Colors.white),
-          ),
-          Text(
-            'every morning they exchanged polite hellos',
-            style: TextStyle(color: Colors.white),
-          ),
-          Padding(
-            padding: EdgeInsets.only(bottom: 8.0),
-          ),
-          Text(
-            'synonyms:',
-            style: TextStyle(color: Colors.white),
-          ),
-          Text(
-            'hi, howdy, hullo',
-            style: TextStyle(color: Colors.white),
-          ),
-          Padding(
-            padding: EdgeInsets.only(bottom: 8.0),
-          ),
-          Text(
-            'antonyms:',
-            style: TextStyle(color: Colors.white),
-          ),
-          Text(
-            'hi, howdy, hullo',
-            style: TextStyle(color: Colors.white),
-          ),
-        ],
+        ),
       ),
+    );
+  }
+
+  Widget _getSingleResult(Result result) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(result.partOfSpeech),
+        Text(result.definition),
+        result.synonyms.isEmpty ? Container() : Text('Synonyms'),
+        result.synonyms.isEmpty
+            ? Container()
+            : Text(result.synonyms.join(', ')),
+        result.antonyms.isEmpty ? Container() : Text('Antonyms'),
+        result.antonyms.isEmpty
+            ? Container()
+            : Text(result.antonyms.join(', ')),
+        result.examples.isEmpty ? Container() : Text('Examples'),
+        result.examples.isEmpty
+            ? Container()
+            : Text(result.examples.join('; ')),
+      ],
     );
   }
 }

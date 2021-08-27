@@ -20,7 +20,7 @@ class WordSearchResultCarousel extends StatelessWidget {
 
           return Padding(
             padding: EdgeInsets.only(bottom: bottomPadding),
-            child: WordInfo(),
+            // child: WordInfo(),
           );
         },
         itemCount: 1,

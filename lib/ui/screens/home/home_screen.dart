@@ -8,6 +8,7 @@ import 'package:project_lyca/services/services.dart';
 import 'package:project_lyca/ui/screens/home/action_bar.dart';
 import 'package:project_lyca/ui/screens/home/camera_view.dart';
 import 'package:project_lyca/ui/screens/home/search_bar.dart';
+import 'package:project_lyca/ui/screens/home/word_info.dart';
 
 class HomeScreen extends StatefulWidget {
   final List<CameraDescription> cameras;
@@ -76,6 +77,10 @@ class _HomeContent extends StatelessWidget {
           alignment: Alignment.topCenter,
           child: _searchBar(),
         ),
+        Align(
+          alignment: Alignment.topCenter,
+          child: _wordInfo(),
+        ),
       ],
     );
   }
@@ -89,6 +94,23 @@ class _HomeContent extends StatelessWidget {
           return Container(
             margin: EdgeInsets.fromLTRB(8.0, 24, 8.0, 8.0),
             child: SearchBar(),
+          );
+        }
+        return Container();
+      },
+    );
+  }
+
+  Widget _wordInfo() {
+    return BlocBuilder<HomeBloc, HomeState>(
+      buildWhen: (previous, current) =>
+          previous.isShowWordInfo != current.isShowWordInfo ||
+          previous.word != current.word,
+      builder: (context, state) {
+        if (state.isShowWordInfo) {
+          return Container(
+            margin: EdgeInsets.fromLTRB(8.0, 24, 8.0, 128.0),
+            child: WordInfo(word: state.word!),
           );
         }
         return Container();
