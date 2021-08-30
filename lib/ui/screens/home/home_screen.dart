@@ -75,7 +75,7 @@ class _HomeContent extends StatelessWidget {
           ),
           Align(
             alignment: Alignment.bottomCenter,
-            child: ActionBar(),
+            child: _actionBar(),
           ),
           Align(
             alignment: Alignment.topCenter,
@@ -85,8 +85,22 @@ class _HomeContent extends StatelessWidget {
             alignment: Alignment.topCenter,
             child: _wordInfo(),
           ),
+          Align(
+            alignment: Alignment.center,
+            child: _progressIndicator(),
+          ),
         ],
       ),
+    );
+  }
+
+  Widget _actionBar() {
+    return BlocBuilder<HomeBloc, HomeState>(
+      buildWhen: (previous, current) =>
+          previous.isSearchLoading != current.isSearchLoading,
+      builder: (context, state) {
+        return ActionBar(enable: !state.isSearchLoading);
+      },
     );
   }
 
@@ -117,6 +131,19 @@ class _HomeContent extends StatelessWidget {
             margin: EdgeInsets.fromLTRB(8.0, 24, 8.0, 128.0),
             child: WordInfo(word: state.word!),
           );
+        }
+        return Container();
+      },
+    );
+  }
+
+  Widget _progressIndicator() {
+    return BlocBuilder<HomeBloc, HomeState>(
+      buildWhen: (previous, current) =>
+          previous.isSearchLoading != current.isSearchLoading,
+      builder: (context, state) {
+        if (state.isSearchLoading) {
+          return CircularProgressIndicator();
         }
         return Container();
       },

@@ -23,9 +23,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   Stream<HomeState> _mapHomeTapTextToState(HomeTapText event) async* {
+    yield state.copyWith(isSearchLoading: true);
+
     var result = await dictionaryService.searchWord(event.word);
+
     yield state.copyWith(
-        isShowSearchBar: false, isShowWordInfo: true, word: result);
+      isSearchLoading: false,
+      isShowSearchBar: false,
+      isShowWordInfo: true,
+      word: result,
+    );
   }
 
   Stream<HomeState> _mapHomeToggleSearchBarToState(
