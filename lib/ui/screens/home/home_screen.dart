@@ -116,18 +116,9 @@ class _HomeContent extends StatelessWidget {
   }
 
   Widget _searchBar() {
-    return BlocBuilder<HomeBloc, HomeState>(
-      buildWhen: (previous, current) =>
-          previous.isShowSearchBar != current.isShowSearchBar,
-      builder: (context, state) {
-        if (state.isShowSearchBar) {
-          return Container(
-            margin: EdgeInsets.fromLTRB(8.0, 24, 8.0, 8.0),
-            child: SearchBar(),
-          );
-        }
-        return Container();
-      },
+    return Container(
+      margin: EdgeInsets.fromLTRB(8.0, 24, 8.0, 128.0),
+      child: SearchBar(),
     );
   }
 
