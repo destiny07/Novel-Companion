@@ -9,7 +9,6 @@ import 'package:project_lyca/ui/screens/home/action_bar.dart';
 import 'package:project_lyca/ui/screens/home/animated_word_info.dart';
 import 'package:project_lyca/ui/screens/home/camera_view.dart';
 import 'package:project_lyca/ui/screens/home/search_bar.dart';
-import 'package:project_lyca/ui/screens/home/word_info.dart';
 
 class HomeScreen extends StatefulWidget {
   final List<CameraDescription> cameras;
