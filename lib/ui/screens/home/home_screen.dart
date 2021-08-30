@@ -118,7 +118,15 @@ class _HomeContent extends StatelessWidget {
   Widget _searchBar() {
     return Container(
       margin: EdgeInsets.fromLTRB(8.0, 24, 8.0, 128.0),
-      child: SearchBar(),
+      child: SearchBar(
+        onVisibilityChanged: (isVisible) {
+          if (isVisible) {
+            _cameraViewController.setEnableTap!(false);
+          } else {
+            _cameraViewController.setEnableTap!(true);
+          }
+        },
+      ),
     );
   }
 

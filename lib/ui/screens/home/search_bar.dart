@@ -3,6 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_lyca/blocs/blocs.dart';
 
 class SearchBar extends StatefulWidget {
+  final Function(bool) onVisibilityChanged;
+
+  SearchBar({required this.onVisibilityChanged});
+
   @override
   State<StatefulWidget> createState() => _SearchBar();
 }
@@ -13,8 +17,8 @@ class _SearchBar extends State<SearchBar> with SingleTickerProviderStateMixin {
     vsync: this,
   );
   late final Animation<Offset> _offsetAnimation = Tween<Offset>(
-    begin: Offset.zero,
-    end: const Offset(0.0, -2.0),
+    begin: Offset(0.0, -2.0),
+    end: Offset.zero,
   ).animate(CurvedAnimation(
     parent: _controller,
     curve: Curves.elasticOut,
@@ -31,9 +35,11 @@ class _SearchBar extends State<SearchBar> with SingleTickerProviderStateMixin {
     return BlocListener<HomeBloc, HomeState>(
       listener: (previous, current) {
         if (current.isShowSearchBar) {
-          _controller.reverse();
-        } else {
           _controller.forward();
+          widget.onVisibilityChanged(true);
+        } else {
+          _controller.reverse();
+          widget.onVisibilityChanged(false);
         }
       },
       listenWhen: (previous, current) =>
@@ -58,7 +64,6 @@ class _SearchBar extends State<SearchBar> with SingleTickerProviderStateMixin {
 
   Widget _textField() {
     return TextField(
-      autofocus: true,
       style: TextStyle(
         fontSize: 25.0,
         color: Colors.blueAccent,
