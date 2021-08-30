@@ -19,11 +19,26 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       yield* _mapHomeToggleSearchBarToState(event);
     } else if (event is HomeTapText) {
       yield* _mapHomeTapTextToState(event);
+    } else if (event is HomeSearchWord) {
+      yield* _mapHomeSearchWord(event);
     }
   }
 
   Stream<HomeState> _mapHomeTapTextToState(HomeTapText event) async* {
     yield state.copyWith(isSearchLoading: true);
+
+    var result = await dictionaryService.searchWord(event.word);
+
+    yield state.copyWith(
+      isSearchLoading: false,
+      isShowSearchBar: false,
+      isShowWordInfo: true,
+      word: result,
+    );
+  }
+
+  Stream<HomeState> _mapHomeSearchWord(HomeSearchWord event) async* {
+    yield state.copyWith(isSearchLoading: true, inputWord: event.word);
 
     var result = await dictionaryService.searchWord(event.word);
 

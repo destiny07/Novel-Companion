@@ -5,6 +5,7 @@ class HomeState extends Equatable {
   final bool isShowWordInfo;
   final bool isTorchOn;
   final bool isSearchLoading;
+  final String? inputWord;
   final Word? word;
 
   const HomeState({
@@ -12,6 +13,7 @@ class HomeState extends Equatable {
     this.isShowWordInfo = false,
     this.isTorchOn = false,
     this.isSearchLoading = false,
+    this.inputWord,
     this.word,
   });
 
@@ -20,6 +22,7 @@ class HomeState extends Equatable {
     bool? isShowWordInfo,
     bool? isTorchOn,
     bool? isSearchLoading,
+    String? inputWord,
     Word? word,
   }) {
     return HomeState(
@@ -27,6 +30,7 @@ class HomeState extends Equatable {
       isShowWordInfo: isShowWordInfo ?? this.isShowWordInfo,
       isTorchOn: isTorchOn ?? this.isTorchOn,
       isSearchLoading: isSearchLoading ?? this.isSearchLoading,
+      inputWord: inputWord ?? this.inputWord,
       word: word ?? this.word,
     );
   }
@@ -37,6 +41,7 @@ class HomeState extends Equatable {
         isShowWordInfo,
         isTorchOn,
         isSearchLoading,
+        inputWord,
         word,
       ];
 }

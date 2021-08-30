@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project_lyca/blocs/blocs.dart';
 
 class SearchBar extends StatelessWidget {
   @override
@@ -25,6 +27,10 @@ class SearchBar extends StatelessWidget {
               borderRadius: BorderRadius.circular(25.0),
             ),
           ),
+          onSubmitted: (value) {
+            BlocProvider.of<HomeBloc>(context)
+                .add(HomeSearchWord(value.trim()));
+          },
         ),
       ),
       alignment: Alignment.topCenter,

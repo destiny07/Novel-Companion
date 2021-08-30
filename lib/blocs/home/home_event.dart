@@ -16,6 +16,15 @@ class HomeTapText extends HomeEvent {
   List<Object> get props => [word];
 }
 
+class HomeSearchWord extends HomeEvent {
+  final String word;
+
+  const HomeSearchWord(this.word);
+
+  @override
+  List<Object> get props => [word];
+}
+
 class HomeToggleSearchBar extends HomeEvent {
   const HomeToggleSearchBar();
 }
