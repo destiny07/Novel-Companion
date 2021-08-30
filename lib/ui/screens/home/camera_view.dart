@@ -6,7 +6,14 @@ import 'package:google_ml_kit/google_ml_kit.dart';
 class CameraView extends StatefulWidget {
   final List<CameraDescription> cameras;
   final Function(String) onTapWord;
-  const CameraView({required this.cameras, required this.onTapWord});
+  final bool enableTap;
+  final CameraViewController? controller;
+
+  const CameraView(
+      {required this.cameras,
+      required this.onTapWord,
+      this.enableTap = true,
+      this.controller});
 
   @override
   State<StatefulWidget> createState() => _CameraViewState();
@@ -16,15 +23,25 @@ class _CameraViewState extends State<CameraView> {
   final textDetector = GoogleMlKit.vision.textDetector();
   late CameraController _cameraController;
   late InputImage _inputImage;
+  late bool _enableTap;
 
   @override
   void initState() {
     super.initState();
+
+    // Camera Setup
     _cameraController =
         CameraController(widget.cameras.first, ResolutionPreset.high);
     _cameraController.initialize().then((_) async {
       if (!mounted) {
         return;
+      }
+
+      // Controller Setup
+      _enableTap = widget.enableTap;
+      final controller = widget.controller;
+      if (controller != null) {
+        controller.setEnableTap = _setEnableTap;
       }
 
       await _cameraController.startImageStream(_processCameraImage);
@@ -88,44 +105,52 @@ class _CameraViewState extends State<CameraView> {
         alignment: Alignment.topCenter,
         child: GestureDetector(
           child: CameraPreview(_cameraController),
-          onTapDown: (details) async {
-            final RecognisedText recognisedText =
-                await textDetector.processImage(_inputImage);
-
-            String text = recognisedText.text;
-            for (TextBlock block in recognisedText.blocks) {
-              final Rect rect = block.rect;
-              final List<Offset> cornerPoints = block.cornerPoints;
-              final String text = block.text;
-              final List<String> languages = block.recognizedLanguages;
-
-              for (TextLine line in block.lines) {
-                for (TextElement element in line.elements) {
-                  final densityPixel = MediaQuery.of(context).devicePixelRatio;
-                  final newOffset = Offset(
-                      details.localPosition.dx * densityPixel,
-                      details.localPosition.dy * densityPixel);
-                  final isOverlaps = element.rect.contains(newOffset);
-
-                  if (isOverlaps) {
-                    widget.onTapWord(element.text);
-                    return;
-                  }
-                }
-              }
-            }
-
-            widget.onTapWord('');
-          },
+          onTapDown: _enableTap ? _onTap : null,
         ),
       ),
     );
+  }
+
+  void _onTap(TapDownDetails details) async {
+    final RecognisedText recognisedText =
+        await textDetector.processImage(_inputImage);
+
+    String text = recognisedText.text;
+    for (TextBlock block in recognisedText.blocks) {
+      final Rect rect = block.rect;
+      final List<Offset> cornerPoints = block.cornerPoints;
+      final String text = block.text;
+      final List<String> languages = block.recognizedLanguages;
+
+      for (TextLine line in block.lines) {
+        for (TextElement element in line.elements) {
+          final densityPixel = MediaQuery.of(context).devicePixelRatio;
+          final newOffset = Offset(details.localPosition.dx * densityPixel,
+              details.localPosition.dy * densityPixel);
+          final isOverlaps = element.rect.contains(newOffset);
+
+          if (isOverlaps) {
+            widget.onTapWord(element.text);
+            return;
+          }
+        }
+      }
+    }
+
+    widget.onTapWord('');
   }
 
   @override
   void dispose() {
     _cameraController.dispose();
     super.dispose();
+  }
+
+  // Controller Implementation
+  void _setEnableTap(bool enable) {
+    setState(() {
+      _enableTap = enable;
+    });
   }
 }
 
@@ -141,4 +166,8 @@ class _MediaSizeClipper extends CustomClipper<Rect> {
   bool shouldReclip(CustomClipper<Rect> oldClipper) {
     return true;
   }
+}
+
+class CameraViewController {
+  Function(bool)? setEnableTap;
 }

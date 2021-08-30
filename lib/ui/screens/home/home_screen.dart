@@ -48,40 +48,45 @@ class _HomeScreenState extends State<HomeScreen> {
 
 class _HomeContent extends StatelessWidget {
   final List<CameraDescription> cameras;
+  final _cameraViewController = CameraViewController();
 
   _HomeContent(this.cameras);
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Align(
-          alignment: Alignment.topCenter,
-          child: CameraView(
-            cameras: cameras,
-            onTapWord: (word) {
-              print('The tapped word is $word');
-              if (word.isEmpty) {
-                print('Word is empty');
-              } else {
-                BlocProvider.of<HomeBloc>(context).add(HomeTapText(word));
-              }
-            },
+    return GestureDetector(
+      child: Stack(
+        children: [
+          Align(
+            alignment: Alignment.topCenter,
+            child: CameraView(
+              controller: _cameraViewController,
+              cameras: cameras,
+              onTapWord: (word) {
+                print('The tapped word is $word');
+                if (word.isEmpty) {
+                  print('Word is empty');
+                } else {
+                  _cameraViewController.setEnableTap!(false);
+                  BlocProvider.of<HomeBloc>(context).add(HomeTapText(word));
+                }
+              },
+            ),
           ),
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: ActionBar(),
-        ),
-        Align(
-          alignment: Alignment.topCenter,
-          child: _searchBar(),
-        ),
-        Align(
-          alignment: Alignment.topCenter,
-          child: _wordInfo(),
-        ),
-      ],
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: ActionBar(),
+          ),
+          Align(
+            alignment: Alignment.topCenter,
+            child: _searchBar(),
+          ),
+          Align(
+            alignment: Alignment.topCenter,
+            child: _wordInfo(),
+          ),
+        ],
+      ),
     );
   }
 
