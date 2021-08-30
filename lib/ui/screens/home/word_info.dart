@@ -1,13 +1,58 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_tts/flutter_tts.dart';
+import 'package:project_lyca/blocs/blocs.dart';
 import 'package:project_lyca/models/models.dart';
 
-class WordInfo extends StatelessWidget {
-  final Word word;
+class WordInfo extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _WordInfoState();
+}
 
-  WordInfo({required this.word});
+class _WordInfoState extends State<WordInfo> {
+  final FlutterTts flutterTts = FlutterTts();
+
+  @override
+  void initState() {
+    super.initState();
+    flutterTts.setCompletionHandler(() {
+      setState(() {
+        BlocProvider.of<HomeBloc>(context).add(HomeToggleTts(false));
+      });
+    });
+
+    flutterTts.setErrorHandler((msg) {
+      setState(() {
+        BlocProvider.of<HomeBloc>(context).add(HomeToggleTts(false));
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    return BlocListener<HomeBloc, HomeState>(
+      listener: (previous, current) {
+        if (current.isTtsReading) {
+          flutterTts.speak(current.word!.name);
+        } else {
+          flutterTts.stop();
+        }
+      },
+      listenWhen: (previous, current) =>
+          previous.isTtsReading != current.isTtsReading,
+      child: BlocBuilder<HomeBloc, HomeState>(
+        buildWhen: (previous, current) => previous.word != current.word,
+        builder: (context, state) {
+          if (state.isShowWordInfo) {
+            return _cardContainer(state.word!);
+          }
+          return Container();
+        },
+      ),
+    );
+  }
+
+  Widget _cardContainer(Word word) {
     return Card(
       color: Colors.blue,
       child: Padding(
@@ -17,8 +62,16 @@ class WordInfo extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(this.word.name),
-              Text(this.word.pronunciation!.all),
+              TextButton(
+                onPressed: () {
+                  BlocProvider.of<HomeBloc>(context).add(HomeToggleTts(true));
+                },
+                child: Text(
+                  word.name,
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+              Text(word.pronunciation!.all),
               ListView.separated(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
@@ -28,7 +81,7 @@ class WordInfo extends StatelessWidget {
                 separatorBuilder: (context, index) {
                   return Divider();
                 },
-                itemCount: this.word.results.length,
+                itemCount: word.results.length,
               ),
             ],
           ),

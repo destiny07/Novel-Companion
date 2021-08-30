@@ -6,6 +6,7 @@ class HomeState extends Equatable {
   final bool isManualShowWordInfoToggle;
   final bool isTorchOn;
   final bool isSearchLoading;
+  final bool isTtsReading;
   final String? inputWord;
   final Word? word;
 
@@ -15,6 +16,7 @@ class HomeState extends Equatable {
     this.isManualShowWordInfoToggle = false,
     this.isTorchOn = false,
     this.isSearchLoading = false,
+    this.isTtsReading = false,
     this.inputWord,
     this.word,
   });
@@ -25,6 +27,7 @@ class HomeState extends Equatable {
     bool? isManualShowWordInfoToggle,
     bool? isTorchOn,
     bool? isSearchLoading,
+    bool? isTtsReading,
     String? inputWord,
     Word? word,
   }) {
@@ -35,6 +38,7 @@ class HomeState extends Equatable {
           isManualShowWordInfoToggle ?? this.isManualShowWordInfoToggle,
       isTorchOn: isTorchOn ?? this.isTorchOn,
       isSearchLoading: isSearchLoading ?? this.isSearchLoading,
+      isTtsReading: isTtsReading ?? this.isTtsReading,
       inputWord: inputWord ?? this.inputWord,
       word: word ?? this.word,
     );
@@ -46,6 +50,7 @@ class HomeState extends Equatable {
         isShowWordInfo,
         isTorchOn,
         isSearchLoading,
+        isTtsReading,
         inputWord,
         word,
       ];

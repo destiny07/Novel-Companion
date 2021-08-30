@@ -42,3 +42,12 @@ class HomeToggleTorch extends HomeEvent {
   @override
   List<Object> get props => [turnOn];
 }
+
+class HomeToggleTts extends HomeEvent {
+  final bool isStart;
+
+  const HomeToggleTts(this.isStart);
+
+  @override
+  List<Object> get props => [isStart];
+}

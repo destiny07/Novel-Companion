@@ -23,6 +23,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       yield* _mapHomeSearchWord(event);
     } else if (event is HomeToggleWordInfo) {
       yield* _mapToggleToggleWordInfo(event);
+    } else if (event is HomeToggleTts) {
+      yield* _mapHomeToggleTtsToState(event);
     }
   }
 
@@ -68,5 +70,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       HomeToggleSearchBar event) async* {
     final currentState = state.isShowSearchBar;
     yield state.copyWith(isShowSearchBar: !currentState, isShowWordInfo: false);
+  }
+
+  Stream<HomeState> _mapHomeToggleTtsToState(HomeToggleTts event) async* {
+    yield state.copyWith(isTtsReading: event.isStart);
   }
 }

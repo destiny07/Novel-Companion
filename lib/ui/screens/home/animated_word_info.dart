@@ -57,15 +57,7 @@ class _AnimatedWordInfo extends State<AnimatedWordInfo>
       listenWhen: (previous, current) => current.isManualShowWordInfoToggle,
       child: SlideTransition(
         position: _offsetAnimation,
-        child: BlocBuilder<HomeBloc, HomeState>(
-          buildWhen: (previous, current) => previous.word != current.word,
-          builder: (context, state) {
-            if (state.isShowWordInfo) {
-              return WordInfo(word: state.word!);
-            }
-            return Container();
-          },
-        ),
+        child: WordInfo(),
       ),
     );
   }
