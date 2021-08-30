@@ -17,7 +17,7 @@ class _SearchBar extends State<SearchBar> with SingleTickerProviderStateMixin {
     end: const Offset(0.0, -2.0),
   ).animate(CurvedAnimation(
     parent: _controller,
-    curve: Curves.easeIn,
+    curve: Curves.elasticOut,
   ));
 
   @override
