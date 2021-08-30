@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_lyca/blocs/blocs.dart';
 import 'package:project_lyca/services/services.dart';
 import 'package:project_lyca/ui/screens/home/action_bar.dart';
-import 'package:project_lyca/ui/screens/home/animted_word_info.dart';
+import 'package:project_lyca/ui/screens/home/animated_word_info.dart';
 import 'package:project_lyca/ui/screens/home/camera_view.dart';
 import 'package:project_lyca/ui/screens/home/search_bar.dart';
 import 'package:project_lyca/ui/screens/home/word_info.dart';
