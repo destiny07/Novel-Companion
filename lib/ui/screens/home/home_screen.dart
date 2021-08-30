@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_lyca/blocs/blocs.dart';
 import 'package:project_lyca/services/services.dart';
 import 'package:project_lyca/ui/screens/home/action_bar.dart';
+import 'package:project_lyca/ui/screens/home/animted_word_info.dart';
 import 'package:project_lyca/ui/screens/home/camera_view.dart';
 import 'package:project_lyca/ui/screens/home/search_bar.dart';
 import 'package:project_lyca/ui/screens/home/word_info.dart';
@@ -55,6 +56,17 @@ class _HomeContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onHorizontalDragEnd: (details) {
+        // Swipe Left
+        if (details.primaryVelocity! < 0) {
+          print('Swiped Left');
+          BlocProvider.of<HomeBloc>(context).add(HomeToggleWordInfo(false));
+          // Swipe Right
+        } else if (details.primaryVelocity! > 0) {
+          print('Swiped Right');
+          BlocProvider.of<HomeBloc>(context).add(HomeToggleWordInfo(true));
+        }
+      },
       child: Stack(
         children: [
           Align(
@@ -121,19 +133,17 @@ class _HomeContent extends StatelessWidget {
   }
 
   Widget _wordInfo() {
-    return BlocBuilder<HomeBloc, HomeState>(
-      buildWhen: (previous, current) =>
-          previous.isShowWordInfo != current.isShowWordInfo ||
-          previous.word != current.word,
-      builder: (context, state) {
-        if (state.isShowWordInfo) {
-          return Container(
-            margin: EdgeInsets.fromLTRB(8.0, 24, 8.0, 128.0),
-            child: WordInfo(word: state.word!),
-          );
-        }
-        return Container();
-      },
+    return Container(
+      margin: EdgeInsets.fromLTRB(8.0, 24, 8.0, 128.0),
+      child: AnimatedWordInfo(
+        onVisibilityChanged: (isVisible) {
+          if (isVisible) {
+            _cameraViewController.setEnableTap!(false);
+          } else {
+            _cameraViewController.setEnableTap!(true);
+          }
+        },
+      ),
     );
   }
 

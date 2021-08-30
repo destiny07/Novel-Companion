@@ -21,6 +21,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       yield* _mapHomeTapTextToState(event);
     } else if (event is HomeSearchWord) {
       yield* _mapHomeSearchWord(event);
+    } else if (event is HomeToggleWordInfo) {
+      yield* _mapToggleToggleWordInfo(event);
     }
   }
 
@@ -46,8 +48,20 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       isSearchLoading: false,
       isShowSearchBar: false,
       isShowWordInfo: true,
+      isManualShowWordInfoToggle: false,
       word: result,
     );
+  }
+
+  Stream<HomeState> _mapToggleToggleWordInfo(HomeToggleWordInfo event) async* {
+    final isShow = state.isShowWordInfo;
+
+    if (isShow == event.show) {
+      return;
+    }
+
+    yield state.copyWith(
+        isShowWordInfo: event.show, isManualShowWordInfoToggle: true);
   }
 
   Stream<HomeState> _mapHomeToggleSearchBarToState(

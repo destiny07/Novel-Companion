@@ -25,6 +25,11 @@ class HomeSearchWord extends HomeEvent {
   List<Object> get props => [word];
 }
 
+class HomeToggleWordInfo extends HomeEvent {
+  final bool show;
+  const HomeToggleWordInfo(this.show);
+}
+
 class HomeToggleSearchBar extends HomeEvent {
   const HomeToggleSearchBar();
 }
