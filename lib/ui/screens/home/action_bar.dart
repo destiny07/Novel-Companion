@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_lyca/blocs/blocs.dart';
-import 'package:project_lyca/ui/screens/settings_screen.dart';
+import 'package:project_lyca/ui/screens/settings/settings_screen.dart';
 
 class ActionBar extends StatelessWidget {
   final bool enable;
