@@ -4,6 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:project_lyca/blocs/blocs.dart';
+import 'package:project_lyca/repositories/contracts/contracts.dart';
 import 'package:project_lyca/services/services.dart';
 import 'package:project_lyca/ui/screens/home/action_bar.dart';
 import 'package:project_lyca/ui/screens/home/animated_word_info.dart';
@@ -37,6 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
           create: (context) {
             return HomeBloc(
               dictionaryService: FunctionsDictionaryService(),
+              dataRepository: RepositoryProvider.of<DataRepository>(context)
             );
           },
           child: _HomeContent(widget.cameras),

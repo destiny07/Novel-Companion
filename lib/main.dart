@@ -29,6 +29,7 @@ void main() async {
   runApp(
     App(
       authenticationRepository: FirebaseAuthRepository(),
+      dataRepository: FirestoreRepository(),
       camera: cameras,
     ),
   );
@@ -36,11 +37,13 @@ void main() async {
 
 class App extends StatelessWidget {
   final AuthRepository authenticationRepository;
+  final DataRepository dataRepository;
   final List<CameraDescription> camera;
 
   const App({
     Key? key,
     required this.authenticationRepository,
+    required this.dataRepository,
     required this.camera,
   }) : super(key: key);
 
@@ -50,6 +53,9 @@ class App extends StatelessWidget {
       providers: [
         RepositoryProvider<AuthRepository>(
           create: (context) => authenticationRepository,
+        ),
+        RepositoryProvider<DataRepository>(
+          create: (context) => dataRepository,
         ),
       ],
       child: BlocProvider(

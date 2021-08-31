@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_lyca/models/models.dart';
+import 'package:project_lyca/repositories/contracts/contracts.dart';
 import 'package:project_lyca/services/services.dart';
 
 part 'home_event.dart';
@@ -8,9 +9,11 @@ part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final DictionaryService dictionaryService;
+  final DataRepository dataRepository;
 
   HomeBloc({
     required this.dictionaryService,
+    required this.dataRepository,
   }) : super(const HomeState());
 
   @override
