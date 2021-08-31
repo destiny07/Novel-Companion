@@ -3,9 +3,17 @@ part of 'user_config_bloc.dart';
 class UserConfigState extends Equatable {
   final UserConfig? userConfig;
 
-  const UserConfigState._({this.userConfig});
+  const UserConfigState({this.userConfig});
 
-  const UserConfigState.initial() : this._();
+  factory UserConfigState.initial() {
+    return UserConfigState(userConfig: UserConfig(fontSize: 11, history: []));
+  }
+
+  UserConfigState copyWith({
+    UserConfig? userConfig,
+  }) {
+    return UserConfigState(userConfig: userConfig ?? this.userConfig);
+  }
 
   @override
   List<Object?> get props => [];

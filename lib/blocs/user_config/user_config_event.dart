@@ -6,3 +6,12 @@ abstract class UserConfigEvent extends Equatable {
   @override
   List<Object?> get props => [];
 }
+
+class UserConfigUpdateFontSize extends UserConfigEvent {
+  final int fontSize;
+
+  const UserConfigUpdateFontSize(this.fontSize);
+
+  @override
+  List<Object?> get props => [fontSize];
+}

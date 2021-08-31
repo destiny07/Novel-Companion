@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_lyca/blocs/authentication/authentication_bloc.dart';
+import 'package:project_lyca/blocs/blocs.dart';
 import 'package:project_lyca/ui/screens/change_password_screen.dart';
+import 'package:project_lyca/ui/screens/settings/font_dialog.dart';
 
 class SettingsScreen extends StatelessWidget {
   static Route route() {
@@ -29,7 +31,15 @@ class SettingsScreen extends StatelessWidget {
             Divider(),
             ListTile(
               title: Text('FontSize'),
-              subtitle: Text('11'),
+              subtitle: _fontSize(),
+              onTap: () async {
+                await showDialog(
+                  context: context,
+                  builder: (context) {
+                    return FontDialog();
+                  },
+                );
+              },
             ),
             Divider(),
             ListTile(
@@ -51,6 +61,14 @@ class SettingsScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _fontSize() {
+    return BlocBuilder<UserConfigBloc, UserConfigState>(
+      buildWhen: (previous, current) =>
+          previous.userConfig!.fontSize != current.userConfig!.fontSize,
+      builder: (context, state) => Text(state.userConfig!.fontSize.toString()),
     );
   }
 }

@@ -10,10 +10,26 @@ class UserConfigBloc extends Bloc<UserConfigEvent, UserConfigState> {
   final DataRepository dataRepository;
 
   UserConfigBloc({required this.dataRepository})
-      : super(const UserConfigState.initial());
+      : super(UserConfigState.initial());
 
   @override
-  Stream<UserConfigState> mapEventToState(UserConfigEvent event) {
-    throw UnimplementedError();
+  Stream<UserConfigState> mapEventToState(UserConfigEvent event) async* {
+    if (event is UserConfigUpdateFontSize) {
+      yield* _mapUserConfigUpdateFontSizeToState(event);
+    }
+  }
+
+  Stream<UserConfigState> _mapUserConfigUpdateFontSizeToState(
+    UserConfigUpdateFontSize event,
+  ) async* {
+    UserConfig? userConfig = state.userConfig;
+
+    if (userConfig == null) {
+      userConfig = UserConfig(history: [], fontSize: event.fontSize);
+    } else {
+      userConfig = userConfig.copyWith(fontSize: event.fontSize);
+    }
+
+    yield state.copyWith(userConfig: userConfig);
   }
 }
