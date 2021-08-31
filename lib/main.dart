@@ -6,8 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:project_lyca/blocs/app_observer.dart';
-import 'package:project_lyca/blocs/authentication/authentication_bloc.dart';
+import 'package:project_lyca/blocs/blocs.dart';
 import 'package:project_lyca/repositories/contracts/contracts.dart';
 import 'package:project_lyca/repositories/repositories.dart';
 import 'package:project_lyca/ui/screens/screens.dart';
@@ -58,9 +57,16 @@ class App extends StatelessWidget {
           create: (context) => dataRepository,
         ),
       ],
-      child: BlocProvider(
-        create: (_) => AuthenticationBloc(
-            authenticationRepository: authenticationRepository),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<AuthenticationBloc>(
+            create: (_) => AuthenticationBloc(
+                authenticationRepository: authenticationRepository),
+          ),
+          BlocProvider<UserConfigBloc>(
+            create: (_) => UserConfigBloc(dataRepository: dataRepository),
+          )
+        ],
         child: AppView(camera: camera),
       ),
     );
