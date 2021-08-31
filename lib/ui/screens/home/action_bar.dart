@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_lyca/blocs/blocs.dart';
+import 'package:project_lyca/ui/screens/settings_screen.dart';
 
 class ActionBar extends StatelessWidget {
   final bool enable;
@@ -22,14 +23,20 @@ class ActionBar extends StatelessWidget {
           icon: Icon(Icons.search_rounded),
           color: Colors.white,
           iconSize: 30.0,
-          onPressed: enable ? () {
-            BlocProvider.of<HomeBloc>(context).add(HomeToggleSearchBar());
-          } : null,
+          onPressed: enable
+              ? () {
+                  BlocProvider.of<HomeBloc>(context).add(HomeToggleSearchBar());
+                }
+              : null,
         ),
         IconButton(
-          icon: Icon(Icons.history_rounded),
+          icon: Icon(Icons.settings),
           color: Colors.white,
-          onPressed: enable ? () {} : null,
+          onPressed: enable
+              ? () {
+                  Navigator.of(context).push(SettingsScreen.route());
+                }
+              : null,
         ),
       ],
     );
