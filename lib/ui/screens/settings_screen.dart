@@ -18,12 +18,27 @@ class SettingsScreen extends StatelessWidget {
         child: ListView(
           children: <Widget>[
             ListTile(
+              title: Text('Theme'),
+              subtitle: Text('Default'),
+            ),
+            Divider(),
+            ListTile(
+              title: Text('Font'),
+              subtitle: Text('Arial'),
+            ),
+            Divider(),
+            ListTile(
+              title: Text('FontSize'),
+              subtitle: Text('11'),
+            ),
+            Divider(),
+            ListTile(
               title: Text('Change password'),
               onTap: () {
                 Navigator.of(context).push(ChangePasswordScreen.route());
               },
             ),
-            Divider(thickness: 1.0),
+            Divider(),
             ListTile(
               title: Text('Logout'),
               onTap: () {
@@ -32,7 +47,7 @@ class SettingsScreen extends StatelessWidget {
                     .add(AuthenticationLogoutRequested());
               },
             ),
-            Divider(thickness: 1.0),
+            Divider(),
           ],
         ),
       ),
