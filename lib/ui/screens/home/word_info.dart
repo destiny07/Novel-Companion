@@ -62,14 +62,14 @@ class _WordInfoState extends State<WordInfo> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TextButton(
-                onPressed: () {
-                  BlocProvider.of<HomeBloc>(context).add(HomeToggleTts(true));
-                },
-                child: Text(
-                  word.name,
-                  style: TextStyle(color: Colors.white),
+              InkWell(
+                child: Row(
+                  children: [Text(word.name), Icon(Icons.volume_up)],
                 ),
+                onTap: () {
+                  flutterTts.stop();
+                  flutterTts.speak(word.name);
+                },
               ),
               Text(word.pronunciation!.all),
               ListView.separated(
