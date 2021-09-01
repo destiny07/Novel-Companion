@@ -24,3 +24,12 @@ class UserConfigUpdateFontStyle extends UserConfigEvent {
   @override
   List<Object?> get props => [fontStyle];
 }
+
+class UserConfigUpdateTheme extends UserConfigEvent {
+  final String theme;
+
+  const UserConfigUpdateTheme(this.theme);
+
+  @override
+  List<Object?> get props => [theme];
+}

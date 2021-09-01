@@ -18,6 +18,8 @@ class UserConfigBloc extends Bloc<UserConfigEvent, UserConfigState> {
       yield* _mapUserConfigUpdateFontSizeToState(event);
     } else if (event is UserConfigUpdateFontStyle) {
       yield* _mapUserConfigUpdateFontStyleToState(event);
+    } else if (event is UserConfigUpdateTheme) {
+      yield* _mapUserConfigUpdateThemeToState(event);
     }
   }
 
@@ -31,5 +33,11 @@ class UserConfigBloc extends Bloc<UserConfigEvent, UserConfigState> {
     UserConfigUpdateFontStyle event,
   ) async* {
     yield state.copyWith(fontStyle: event.fontStyle);
+  }
+
+  Stream<UserConfigState> _mapUserConfigUpdateThemeToState(
+    UserConfigUpdateTheme event,
+  ) async* {
+    yield state.copyWith(theme: event.theme);
   }
 }

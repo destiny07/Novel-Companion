@@ -6,6 +6,7 @@ import 'package:project_lyca/ui/screens/change_password_screen.dart';
 import 'package:project_lyca/ui/screens/settings/font_dialog.dart';
 import 'package:project_lyca/ui/screens/settings/font_size_dialog.dart';
 import 'package:project_lyca/constants.dart' as constants;
+import 'package:project_lyca/ui/screens/settings/theme_dialog.dart';
 
 class SettingsScreen extends StatelessWidget {
   static Route route() {
@@ -23,7 +24,13 @@ class SettingsScreen extends StatelessWidget {
           children: <Widget>[
             ListTile(
               title: Text('Theme'),
-              subtitle: Text('Default'),
+              subtitle: _theme(),
+              onTap: () async {
+                await showDialog(
+                  context: context,
+                  builder: (context) => ThemeDialog(),
+                );
+              },
             ),
             Divider(),
             ListTile(
@@ -74,8 +81,7 @@ class SettingsScreen extends StatelessWidget {
 
   Widget _fontStyle() {
     return BlocBuilder<UserConfigBloc, UserConfigState>(
-      buildWhen: (previous, current) =>
-          previous.fontStyle != current.fontStyle,
+      buildWhen: (previous, current) => previous.fontStyle != current.fontStyle,
       builder: (context, state) {
         final fontName = constants.fontNameMap[state.fontStyle]!;
         return Text(fontName);
@@ -85,9 +91,15 @@ class SettingsScreen extends StatelessWidget {
 
   Widget _fontSize() {
     return BlocBuilder<UserConfigBloc, UserConfigState>(
-      buildWhen: (previous, current) =>
-          previous.fontSize != current.fontSize,
+      buildWhen: (previous, current) => previous.fontSize != current.fontSize,
       builder: (context, state) => Text(state.fontSize.toString()),
+    );
+  }
+
+  Widget _theme() {
+    return BlocBuilder<UserConfigBloc, UserConfigState>(
+      buildWhen: (previous, current) => previous.theme != current.theme,
+      builder: (context, state) => Text(constants.themeNameMap[state.theme]!),
     );
   }
 }
