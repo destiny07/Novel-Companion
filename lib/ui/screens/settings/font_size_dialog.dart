@@ -14,7 +14,7 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
   @override
   void initState() {
     final blocState = BlocProvider.of<UserConfigBloc>(context).state;
-    final fontSizeValue = blocState.userConfig!.fontSize;
+    final fontSizeValue = blocState.fontSize;
 
     _currentFontSize = fontSizeValue;
 

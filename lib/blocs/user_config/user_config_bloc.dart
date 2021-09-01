@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:project_lyca/models/models.dart';
 import 'package:project_lyca/repositories/contracts/contracts.dart';
+import 'package:project_lyca/constants.dart' as constants;
 
 part 'user_config_event.dart';
 part 'user_config_state.dart';
@@ -16,20 +16,20 @@ class UserConfigBloc extends Bloc<UserConfigEvent, UserConfigState> {
   Stream<UserConfigState> mapEventToState(UserConfigEvent event) async* {
     if (event is UserConfigUpdateFontSize) {
       yield* _mapUserConfigUpdateFontSizeToState(event);
+    } else if (event is UserConfigUpdateFontStyle) {
+      yield* _mapUserConfigUpdateFontStyleToState(event);
     }
   }
 
   Stream<UserConfigState> _mapUserConfigUpdateFontSizeToState(
     UserConfigUpdateFontSize event,
   ) async* {
-    UserConfig? userConfig = state.userConfig;
+    yield state.copyWith(fontSize: event.fontSize);
+  }
 
-    if (userConfig == null) {
-      userConfig = UserConfig(history: [], fontSize: event.fontSize);
-    } else {
-      userConfig = userConfig.copyWith(fontSize: event.fontSize);
-    }
-
-    yield state.copyWith(userConfig: userConfig);
+  Stream<UserConfigState> _mapUserConfigUpdateFontStyleToState(
+    UserConfigUpdateFontStyle event,
+  ) async* {
+    yield state.copyWith(fontStyle: event.fontStyle);
   }
 }

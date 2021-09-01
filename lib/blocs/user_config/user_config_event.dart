@@ -15,3 +15,12 @@ class UserConfigUpdateFontSize extends UserConfigEvent {
   @override
   List<Object?> get props => [fontSize];
 }
+
+class UserConfigUpdateFontStyle extends UserConfigEvent {
+  final String fontStyle;
+
+  const UserConfigUpdateFontStyle(this.fontStyle);
+
+  @override
+  List<Object?> get props => [fontStyle];
+}

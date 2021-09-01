@@ -1,20 +1,25 @@
 part of 'user_config_bloc.dart';
 
 class UserConfigState extends Equatable {
-  final UserConfig? userConfig;
+  final String fontStyle;
+  final int fontSize;
 
-  const UserConfigState({this.userConfig});
+  const UserConfigState({required this.fontStyle, required this.fontSize});
 
   factory UserConfigState.initial() {
-    return UserConfigState(userConfig: UserConfig(fontSize: 11, history: []));
+    return UserConfigState(fontStyle: constants.latoKey, fontSize: 11);
   }
 
   UserConfigState copyWith({
-    UserConfig? userConfig,
+    String? fontStyle,
+    int? fontSize,
   }) {
-    return UserConfigState(userConfig: userConfig ?? this.userConfig);
+    return UserConfigState(
+      fontStyle: fontStyle ?? this.fontStyle,
+      fontSize: fontSize ?? this.fontSize,
+    );
   }
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [fontStyle, fontSize];
 }

@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_lyca/blocs/authentication/authentication_bloc.dart';
 import 'package:project_lyca/blocs/blocs.dart';
 import 'package:project_lyca/ui/screens/change_password_screen.dart';
+import 'package:project_lyca/ui/screens/settings/font_dialog.dart';
 import 'package:project_lyca/ui/screens/settings/font_size_dialog.dart';
+import 'package:project_lyca/constants.dart' as constants;
 
 class SettingsScreen extends StatelessWidget {
   static Route route() {
@@ -26,7 +28,13 @@ class SettingsScreen extends StatelessWidget {
             Divider(),
             ListTile(
               title: Text('Font'),
-              subtitle: Text('Arial'),
+              subtitle: _fontStyle(),
+              onTap: () async {
+                await showDialog(
+                  context: context,
+                  builder: (context) => FontDialog(),
+                );
+              },
             ),
             Divider(),
             ListTile(
@@ -64,11 +72,22 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
+  Widget _fontStyle() {
+    return BlocBuilder<UserConfigBloc, UserConfigState>(
+      buildWhen: (previous, current) =>
+          previous.fontStyle != current.fontStyle,
+      builder: (context, state) {
+        final fontName = constants.fontNameMap[state.fontStyle]!;
+        return Text(fontName);
+      },
+    );
+  }
+
   Widget _fontSize() {
     return BlocBuilder<UserConfigBloc, UserConfigState>(
       buildWhen: (previous, current) =>
-          previous.userConfig!.fontSize != current.userConfig!.fontSize,
-      builder: (context, state) => Text(state.userConfig!.fontSize.toString()),
+          previous.fontSize != current.fontSize,
+      builder: (context, state) => Text(state.fontSize.toString()),
     );
   }
 }
