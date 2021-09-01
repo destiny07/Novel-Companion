@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:project_lyca/blocs/blocs.dart';
 import 'package:project_lyca/constants.dart' as constants;
+import 'package:project_lyca/ui/custom_font.dart';
 
 class FontDialog extends StatefulWidget {
   @override
@@ -10,14 +10,6 @@ class FontDialog extends StatefulWidget {
 }
 
 class _FontDialogState extends State<FontDialog> {
-  static final Map<String, TextStyle> fontStyleMap = {
-    constants.latoKey: GoogleFonts.lato(),
-    constants.notoSansKey: GoogleFonts.notoSans(),
-    constants.openSansKey: GoogleFonts.openSans(),
-    constants.oswaldKey: GoogleFonts.oswald(),
-    constants.poppinsKey: GoogleFonts.poppins(),
-    constants.robotoKey: GoogleFonts.roboto(),
-  };
   late String _currentFontStyle;
 
   @override
@@ -67,7 +59,7 @@ class _FontDialogState extends State<FontDialog> {
                 value: fontNameKey,
                 child: Text(
                   constants.fontNameMap[fontNameKey]!,
-                  style: fontStyleMap[fontNameKey],
+                  style: CustomFont.fontStyleMap[fontNameKey],
                 ),
               ))
           .toList(),

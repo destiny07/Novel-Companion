@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_lyca/blocs/blocs.dart';
 import 'package:project_lyca/constants.dart' as constants;
+import 'package:project_lyca/ui/custom_font.dart';
 import 'package:project_lyca/ui/custom_theme.dart';
 
 class ThemeDialog extends StatefulWidget {
@@ -11,13 +12,16 @@ class ThemeDialog extends StatefulWidget {
 
 class _ThemeDialogState extends State<ThemeDialog> {
   late String _currentTheme;
+  late TextStyle _fontStyleTheme;
 
   @override
   void initState() {
     super.initState();
     final blocState = BlocProvider.of<UserConfigBloc>(context).state;
     final fontSizeValue = blocState.theme;
+    final fontStyle = blocState.fontStyle;
 
+    _fontStyleTheme = CustomFont.fontStyleMap[fontStyle]!;
     _currentTheme = fontSizeValue;
   }
 
@@ -25,7 +29,7 @@ class _ThemeDialogState extends State<ThemeDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       content: Container(
-        height: 150.0,
+        height: 170.0,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
@@ -73,9 +77,11 @@ class _ThemeDialogState extends State<ThemeDialog> {
                     children: [
                       Text(
                         'Example',
-                        style: _getThemeDataByName(_currentTheme)
-                            .textTheme
-                            .bodyText1,
+                        style: _fontStyleTheme.copyWith(
+                            color: _getThemeDataByName(_currentTheme)
+                                .textTheme
+                                .bodyText1!
+                                .color),
                       ),
                       Icon(
                         Icons.volume_up,
@@ -88,8 +94,11 @@ class _ThemeDialogState extends State<ThemeDialog> {
                   ),
                   Text(
                     'Some example text for you.',
-                    style:
-                        _getThemeDataByName(_currentTheme).textTheme.bodyText1,
+                    style: _fontStyleTheme.copyWith(
+                        color: _getThemeDataByName(_currentTheme)
+                            .textTheme
+                            .bodyText1!
+                            .color),
                   ),
                 ],
               ),
