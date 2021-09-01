@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_lyca/blocs/authentication/authentication_bloc.dart';
 import 'package:project_lyca/blocs/blocs.dart';
 import 'package:project_lyca/ui/screens/change_password_screen.dart';
-import 'package:project_lyca/ui/screens/settings/font_dialog.dart';
+import 'package:project_lyca/ui/screens/settings/font_size_dialog.dart';
 
 class SettingsScreen extends StatelessWidget {
   static Route route() {
@@ -36,7 +36,7 @@ class SettingsScreen extends StatelessWidget {
                 await showDialog(
                   context: context,
                   builder: (context) {
-                    return FontDialog();
+                    return FontSizeDialog();
                   },
                 );
               },

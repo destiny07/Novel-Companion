@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_lyca/blocs/blocs.dart';
 
-class FontDialog extends StatefulWidget {
+class FontSizeDialog extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _FontDialogState();
+  State<StatefulWidget> createState() => _FontSizeDialogState();
 }
 
-class _FontDialogState extends State<FontDialog> {
+class _FontSizeDialogState extends State<FontSizeDialog> {
   final List<int> fontSizes = [11, 12, 13, 14, 15, 16, 17];
   late int _currentFontSize;
 
