@@ -23,11 +23,19 @@ class _SearchBar extends State<SearchBar> with SingleTickerProviderStateMixin {
     parent: _controller,
     curve: Curves.elasticOut,
   ));
+  late FocusNode _focusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode = FocusNode();
+  }
 
   @override
   void dispose() {
-    super.dispose();
+    _focusNode.dispose();
     _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -37,9 +45,11 @@ class _SearchBar extends State<SearchBar> with SingleTickerProviderStateMixin {
         if (current.isShowSearchBar) {
           _controller.forward();
           widget.onVisibilityChanged(true);
+          _focusNode.requestFocus();
         } else {
           _controller.reverse();
           widget.onVisibilityChanged(false);
+          FocusScope.of(context).unfocus();
         }
       },
       listenWhen: (previous, current) =>
@@ -64,6 +74,7 @@ class _SearchBar extends State<SearchBar> with SingleTickerProviderStateMixin {
 
   Widget _textField() {
     return TextField(
+      focusNode: _focusNode,
       style: TextStyle(
         fontSize: 25.0,
         color: Colors.blueAccent,
