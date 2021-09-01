@@ -54,7 +54,7 @@ class _WordInfoState extends State<WordInfo> {
 
   Widget _cardContainer(Word word) {
     return Card(
-      color: Colors.blue,
+      color: Theme.of(context).backgroundColor,
       child: Padding(
         padding: EdgeInsets.all(8.0),
         child: SingleChildScrollView(
@@ -64,14 +64,23 @@ class _WordInfoState extends State<WordInfo> {
             children: [
               InkWell(
                 child: Row(
-                  children: [Text(word.name), Icon(Icons.volume_up)],
+                  children: [
+                    Text(
+                      word.name,
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                    Icon(Icons.volume_up),
+                  ],
                 ),
                 onTap: () {
                   flutterTts.stop();
                   flutterTts.speak(word.name);
                 },
               ),
-              Text(word.pronunciation!.all),
+              Text(
+                word.pronunciation!.all,
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
               ListView.separated(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
@@ -94,20 +103,50 @@ class _WordInfoState extends State<WordInfo> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(result.partOfSpeech),
-        Text(result.definition),
-        result.synonyms.isEmpty ? Container() : Text('Synonyms'),
+        Text(
+          result.partOfSpeech,
+          style: Theme.of(context).textTheme.bodyText1,
+        ),
+        Text(
+          result.definition,
+          style: Theme.of(context).textTheme.bodyText1,
+        ),
         result.synonyms.isEmpty
             ? Container()
-            : Text(result.synonyms.join(', ')),
-        result.antonyms.isEmpty ? Container() : Text('Antonyms'),
+            : Text(
+                'Synonyms',
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+        result.synonyms.isEmpty
+            ? Container()
+            : Text(
+                result.synonyms.join(', '),
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
         result.antonyms.isEmpty
             ? Container()
-            : Text(result.antonyms.join(', ')),
-        result.examples.isEmpty ? Container() : Text('Examples'),
+            : Text(
+                'Antonyms',
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+        result.antonyms.isEmpty
+            ? Container()
+            : Text(
+                result.antonyms.join(', '),
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
         result.examples.isEmpty
             ? Container()
-            : Text(result.examples.join('; ')),
+            : Text(
+                'Examples',
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+        result.examples.isEmpty
+            ? Container()
+            : Text(
+                result.examples.join('; '),
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
       ],
     );
   }

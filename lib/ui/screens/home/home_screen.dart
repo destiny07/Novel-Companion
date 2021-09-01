@@ -6,6 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_lyca/blocs/blocs.dart';
 import 'package:project_lyca/repositories/contracts/contracts.dart';
 import 'package:project_lyca/services/services.dart';
+import 'package:project_lyca/ui/custom_font.dart';
+import 'package:project_lyca/ui/custom_theme.dart';
 import 'package:project_lyca/ui/screens/home/action_bar.dart';
 import 'package:project_lyca/ui/screens/home/animated_word_info.dart';
 import 'package:project_lyca/ui/screens/home/camera_view.dart';
@@ -37,9 +39,8 @@ class _HomeScreenState extends State<HomeScreen> {
         child: BlocProvider(
           create: (context) {
             return HomeBloc(
-              dictionaryService: FunctionsDictionaryService(),
-              dataRepository: RepositoryProvider.of<DataRepository>(context)
-            );
+                dictionaryService: FunctionsDictionaryService(),
+                dataRepository: RepositoryProvider.of<DataRepository>(context));
           },
           child: _HomeContent(widget.cameras),
         ),
@@ -96,7 +97,7 @@ class _HomeContent extends StatelessWidget {
           ),
           Align(
             alignment: Alignment.topCenter,
-            child: _wordInfo(),
+            child: _wordInfo(context),
           ),
           Align(
             alignment: Alignment.center,
@@ -132,17 +133,25 @@ class _HomeContent extends StatelessWidget {
     );
   }
 
-  Widget _wordInfo() {
-    return Container(
-      margin: EdgeInsets.fromLTRB(8.0, 24, 8.0, 128.0),
-      child: AnimatedWordInfo(
-        onVisibilityChanged: (isVisible) {
-          if (isVisible) {
-            _cameraViewController.setEnableTap!(false);
-          } else {
-            _cameraViewController.setEnableTap!(true);
-          }
-        },
+  Widget _wordInfo(BuildContext context) {
+    return BlocBuilder<UserConfigBloc, UserConfigState>(
+      builder: (context, state) => Container(
+        margin: EdgeInsets.fromLTRB(8.0, 24, 8.0, 128.0),
+        child: Theme(
+          data: CustomTheme.getThemeByName(
+            state.theme,
+            textStyle: CustomFont.fontStyleMap[state.fontStyle]!,
+          ),
+          child: AnimatedWordInfo(
+            onVisibilityChanged: (isVisible) {
+              if (isVisible) {
+                _cameraViewController.setEnableTap!(false);
+              } else {
+                _cameraViewController.setEnableTap!(true);
+              }
+            },
+          ),
+        ),
       ),
     );
   }

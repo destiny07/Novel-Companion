@@ -65,7 +65,7 @@ class _ThemeDialogState extends State<ThemeDialog> {
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5.0),
-              color: _getThemeDataByName(_currentTheme).backgroundColor,
+              color: CustomTheme.getThemeByName(_currentTheme).backgroundColor,
             ),
             margin: EdgeInsets.all(8.0),
             child: Padding(
@@ -78,14 +78,14 @@ class _ThemeDialogState extends State<ThemeDialog> {
                       Text(
                         'Example',
                         style: _fontStyleTheme.copyWith(
-                            color: _getThemeDataByName(_currentTheme)
+                            color: CustomTheme.getThemeByName(_currentTheme)
                                 .textTheme
                                 .bodyText1!
                                 .color),
                       ),
                       Icon(
                         Icons.volume_up,
-                        color: _getThemeDataByName(_currentTheme)
+                        color: CustomTheme.getThemeByName(_currentTheme)
                             .textTheme
                             .bodyText1!
                             .color,
@@ -95,7 +95,7 @@ class _ThemeDialogState extends State<ThemeDialog> {
                   Text(
                     'Some example text for you.',
                     style: _fontStyleTheme.copyWith(
-                        color: _getThemeDataByName(_currentTheme)
+                        color: CustomTheme.getThemeByName(_currentTheme)
                             .textTheme
                             .bodyText1!
                             .color),
@@ -109,15 +109,15 @@ class _ThemeDialogState extends State<ThemeDialog> {
             children: [
               Icon(
                 Icons.flash_on,
-                color: _getThemeDataByName(_currentTheme).iconTheme.color,
+                color: CustomTheme.getThemeByName(_currentTheme).iconTheme.color,
               ),
               Icon(
                 Icons.search,
-                color: _getThemeDataByName(_currentTheme).iconTheme.color,
+                color: CustomTheme.getThemeByName(_currentTheme).iconTheme.color,
               ),
               Icon(
                 Icons.settings,
-                color: _getThemeDataByName(_currentTheme).iconTheme.color,
+                color: CustomTheme.getThemeByName(_currentTheme).iconTheme.color,
               ),
             ],
           )
@@ -141,22 +141,5 @@ class _ThemeDialogState extends State<ThemeDialog> {
         });
       },
     );
-  }
-
-  ThemeData _getThemeDataByName(String themeName) {
-    switch (themeName) {
-      case constants.blueThemeKey:
-        return CustomTheme.blueTheme;
-      case constants.whiteThemeKey:
-        return CustomTheme.whiteTheme;
-      case constants.darkThemeKey:
-        return CustomTheme.darkTheme;
-      case constants.grayThemeKey:
-        return CustomTheme.grayTheme;
-      case constants.pinkThemeKey:
-        return CustomTheme.pinkTheme;
-      default:
-        return CustomTheme.blueTheme;
-    }
   }
 }
