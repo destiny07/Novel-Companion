@@ -35,7 +35,7 @@ class _FontDialogState extends State<FontDialog> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Text('Font Size'),
+            Text('Font'),
             _fontStyleDropdown(),
           ],
         ),
