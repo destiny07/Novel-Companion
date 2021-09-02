@@ -53,7 +53,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       isSearchLoading: false,
       isShowSearchBar: false,
       isShowWordInfo: true,
-      isManualShowWordInfoToggle: false,
       word: result,
     );
   }
@@ -65,8 +64,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       return;
     }
 
-    yield state.copyWith(
-        isShowWordInfo: event.show, isManualShowWordInfoToggle: true);
+    yield state.copyWith(isShowWordInfo: event.show);
   }
 
   Stream<HomeState> _mapHomeToggleSearchBarToState(

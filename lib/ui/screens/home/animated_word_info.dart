@@ -54,7 +54,9 @@ class _AnimatedWordInfo extends State<AnimatedWordInfo>
           widget.onVisibilityChanged(false);
         }
       },
-      listenWhen: (previous, current) => current.isManualShowWordInfoToggle,
+      listenWhen: (previous, current) =>
+          previous.isShowWordInfo !=
+          current.isShowWordInfo,
       child: SlideTransition(
         position: _offsetAnimation,
         child: WordInfo(),
