@@ -19,9 +19,9 @@ class CameraView extends StatefulWidget {
   State<StatefulWidget> createState() => _CameraViewState();
 }
 
-class _CameraViewState extends State<CameraView> {
+class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
   final textDetector = GoogleMlKit.vision.textDetector();
-  late CameraController _cameraController;
+  late CameraController? _cameraController;
   late InputImage _inputImage;
   late bool _enableTap;
 
@@ -32,7 +32,7 @@ class _CameraViewState extends State<CameraView> {
     // Camera Setup
     _cameraController =
         CameraController(widget.cameras.first, ResolutionPreset.high);
-    _cameraController.initialize().then((_) async {
+    _cameraController?.initialize().then((_) async {
       if (!mounted) {
         return;
       }
@@ -44,9 +44,24 @@ class _CameraViewState extends State<CameraView> {
         controller.setEnableTap = _setEnableTap;
       }
 
-      await _cameraController.startImageStream(_processCameraImage);
+      await _cameraController?.startImageStream(_processCameraImage);
       setState(() {});
     });
+  }
+
+   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // App state changed before we got the chance to initialize.
+    if (_cameraController == null || !_cameraController!.value.isInitialized) {
+      return;
+    }
+    if (state == AppLifecycleState.inactive) {
+      _cameraController?.dispose();
+    } else if (state == AppLifecycleState.resumed) {
+      if (_cameraController != null) {
+        // onNewCameraSelected(_cameraController.description);
+      }
+    }
   }
 
   Future _processCameraImage(CameraImage image) async {
@@ -91,20 +106,20 @@ class _CameraViewState extends State<CameraView> {
 
   @override
   Widget build(BuildContext context) {
-    if (!_cameraController.value.isInitialized) {
+    if (!_cameraController!.value.isInitialized) {
       return Container();
     }
     final mediaSize = MediaQuery.of(context).size;
     final scale =
-        1 / (_cameraController.value.aspectRatio * mediaSize.aspectRatio);
-    print('Preview Size: ${_cameraController.value.previewSize}');
+        1 / (_cameraController!.value.aspectRatio * mediaSize.aspectRatio);
+    print('Preview Size: ${_cameraController!.value.previewSize}');
     return ClipRect(
       clipper: _MediaSizeClipper(mediaSize),
       child: Transform.scale(
         scale: scale,
         alignment: Alignment.topCenter,
         child: GestureDetector(
-          child: CameraPreview(_cameraController),
+          child: CameraPreview(_cameraController!),
           onTapDown: _enableTap ? _onTap : null,
         ),
       ),
@@ -142,7 +157,7 @@ class _CameraViewState extends State<CameraView> {
 
   @override
   void dispose() {
-    _cameraController.dispose();
+    _cameraController?.dispose();
     super.dispose();
   }
 
