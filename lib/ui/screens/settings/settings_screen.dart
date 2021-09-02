@@ -70,6 +70,10 @@ class SettingsScreen extends StatelessWidget {
                 context
                     .read<AuthenticationBloc>()
                     .add(AuthenticationLogoutRequested());
+
+                // Required so that login screen will be displayed
+                // Not included when popping other routes?
+                Navigator.of(context).pop();
               },
             ),
             Divider(),
