@@ -6,8 +6,11 @@ import 'package:project_lyca/models/models.dart' as models;
 
 class FirebaseAuthRepository implements AuthRepository {
   final FirebaseAuth _firebaseAuth;
+  final GoogleSignIn _googleSignIn;
 
-  FirebaseAuthRepository() : _firebaseAuth = FirebaseAuth.instance;
+  FirebaseAuthRepository()
+      : _firebaseAuth = FirebaseAuth.instance,
+        _googleSignIn = GoogleSignIn();
 
   bool get isAuthenticated {
     final currentUser = _firebaseAuth.currentUser;
@@ -61,7 +64,7 @@ class FirebaseAuthRepository implements AuthRepository {
   @override
   Future<void> signInWithGoogle() async {
     try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       final GoogleSignInAuthentication googleAuth =
           await googleUser!.authentication;
       final AuthCredential credential = GoogleAuthProvider.credential(
@@ -118,6 +121,7 @@ class FirebaseAuthRepository implements AuthRepository {
   @override
   Future<void> signOut() async {
     try {
+      await _googleSignIn.signOut();
       await _firebaseAuth.signOut();
     } on Exception {
       throw LogOutFailure();
