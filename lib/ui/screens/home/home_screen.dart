@@ -119,16 +119,24 @@ class _HomeContent extends StatelessWidget {
   }
 
   Widget _searchBar() {
-    return Container(
-      margin: EdgeInsets.fromLTRB(8.0, 24, 8.0, 128.0),
-      child: SearchBar(
-        onVisibilityChanged: (isVisible) {
-          if (isVisible) {
-            _cameraViewController.setEnableTap!(false);
-          } else {
-            _cameraViewController.setEnableTap!(true);
-          }
-        },
+    return BlocBuilder<UserConfigBloc, UserConfigState>(
+      builder: (context, state) => Container(
+        margin: EdgeInsets.fromLTRB(8.0, 24, 8.0, 128.0),
+        child: Theme(
+          data: CustomTheme.getThemeByName(
+            state.theme,
+            textStyle: CustomFont.fontStyleMap[state.fontStyle]!,
+          ),
+          child: SearchBar(
+            onVisibilityChanged: (isVisible) {
+              if (isVisible) {
+                _cameraViewController.setEnableTap!(false);
+              } else {
+                _cameraViewController.setEnableTap!(true);
+              }
+            },
+          ),
+        ),
       ),
     );
   }
