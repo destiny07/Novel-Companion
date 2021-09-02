@@ -9,6 +9,11 @@
         android:label="project_lyca"
         android:icon="@mipmap/ic_launcher"
         android:requestLegacyExternalStorage="true">
+
+        <meta-data
+          android:name="com.google.mlkit.vision.DEPENDENCIES"
+          android:value="ica" />
+          
         <!-- Required to fetch data from the internet. -->
         <activity
             android:name=".MainActivity"
