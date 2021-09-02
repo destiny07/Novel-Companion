@@ -43,7 +43,7 @@ class _WordInfoState extends State<WordInfo> {
       child: BlocBuilder<HomeBloc, HomeState>(
         buildWhen: (previous, current) => previous.word != current.word,
         builder: (context, state) {
-          if (state.isShowWordInfo) {
+          if (state.word != null) {
             return _cardContainer(state.word!);
           }
           return Container();
