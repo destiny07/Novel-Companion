@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:project_lyca/ui/shared/shared.dart';
 
 class CameraView extends StatefulWidget {
   final List<CameraDescription> cameras;
@@ -114,7 +115,7 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
         1 / (_cameraController!.value.aspectRatio * mediaSize.aspectRatio);
     print('Preview Size: ${_cameraController!.value.previewSize}');
     return ClipRect(
-      clipper: _MediaSizeClipper(mediaSize),
+      clipper: MediaSizeClipper(mediaSize),
       child: Transform.scale(
         scale: scale,
         alignment: Alignment.topCenter,
@@ -166,20 +167,6 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
     setState(() {
       _enableTap = enable;
     });
-  }
-}
-
-class _MediaSizeClipper extends CustomClipper<Rect> {
-  final Size mediaSize;
-  const _MediaSizeClipper(this.mediaSize);
-  @override
-  Rect getClip(Size size) {
-    return Rect.fromLTWH(0, 0, mediaSize.width, mediaSize.height);
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Rect> oldClipper) {
-    return true;
   }
 }
 
