@@ -6,6 +6,8 @@ class HomeState extends Equatable {
   final bool isTorchOn;
   final bool isSearchLoading;
   final bool isTtsReading;
+  final bool hasPermissions;
+  final bool isPermanentlyDeniedPermissions;
   final String? inputWord;
   final Word? word;
 
@@ -15,6 +17,8 @@ class HomeState extends Equatable {
     this.isTorchOn = false,
     this.isSearchLoading = false,
     this.isTtsReading = false,
+    this.hasPermissions = false,
+    this.isPermanentlyDeniedPermissions = false,
     this.inputWord,
     this.word,
   });
@@ -27,6 +31,8 @@ class HomeState extends Equatable {
     bool? isTtsReading,
     String? inputWord,
     Word? word,
+    bool? hasPermissions,
+    bool? isPermanentlyDeniedPermissions,
   }) {
     return HomeState(
       isShowSearchBar: isShowSearchBar ?? this.isShowSearchBar,
@@ -36,6 +42,9 @@ class HomeState extends Equatable {
       isTtsReading: isTtsReading ?? this.isTtsReading,
       inputWord: inputWord ?? this.inputWord,
       word: word ?? this.word,
+      hasPermissions: hasPermissions ?? this.hasPermissions,
+      isPermanentlyDeniedPermissions:
+          isPermanentlyDeniedPermissions ?? this.isPermanentlyDeniedPermissions,
     );
   }
 
@@ -48,5 +57,7 @@ class HomeState extends Equatable {
         isTtsReading,
         inputWord,
         word,
+        hasPermissions,
+        isPermanentlyDeniedPermissions,
       ];
 }

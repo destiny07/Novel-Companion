@@ -51,3 +51,12 @@ class HomeToggleTts extends HomeEvent {
   @override
   List<Object> get props => [isStart];
 }
+
+class HomePermissionsUpdated extends HomeEvent {
+  final bool hasPermissions;
+
+  const HomePermissionsUpdated(this.hasPermissions);
+
+  @override
+  List<Object> get props => [hasPermissions];
+}

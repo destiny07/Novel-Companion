@@ -28,6 +28,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       yield* _mapToggleToggleWordInfo(event);
     } else if (event is HomeToggleTts) {
       yield* _mapHomeToggleTtsToState(event);
+    } else if (event is HomePermissionsUpdated) {
+      yield* _mapHomePermissionsUpdated(event);
     }
   }
 
@@ -75,5 +77,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   Stream<HomeState> _mapHomeToggleTtsToState(HomeToggleTts event) async* {
     yield state.copyWith(isTtsReading: event.isStart);
+  }
+
+  Stream<HomeState> _mapHomePermissionsUpdated(
+    HomePermissionsUpdated event,
+  ) async* {
+    yield state.copyWith(hasPermissions: event.hasPermissions);
   }
 }

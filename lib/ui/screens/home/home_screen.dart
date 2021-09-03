@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import 'package:camera/camera.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'package:project_lyca/blocs/blocs.dart';
 import 'package:project_lyca/repositories/contracts/contracts.dart';
@@ -13,7 +16,7 @@ import 'package:project_lyca/ui/screens/home/animated_word_info.dart';
 import 'package:project_lyca/ui/screens/home/camera_view.dart';
 import 'package:project_lyca/ui/screens/home/search_bar.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   final List<CameraDescription> cameras;
 
   static Route route(List<CameraDescription> cameras) {
@@ -24,12 +27,6 @@ class HomeScreen extends StatefulWidget {
   }
 
   const HomeScreen({Key? key, required this.cameras}) : super(key: key);
-
-  @override
-  State<StatefulWidget> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,21 +39,59 @@ class _HomeScreenState extends State<HomeScreen> {
                 dictionaryService: FunctionsDictionaryService(),
                 dataRepository: RepositoryProvider.of<DataRepository>(context));
           },
-          child: _HomeContent(widget.cameras),
+          child: _HomeContent(cameras),
         ),
       ),
     );
   }
 }
 
-class _HomeContent extends StatelessWidget {
+class _HomeContent extends StatefulWidget {
   final List<CameraDescription> cameras;
-  final _cameraViewController = CameraViewController();
 
   _HomeContent(this.cameras);
 
   @override
+  State<StatefulWidget> createState() => _HomeContentState();
+}
+
+class _HomeContentState extends State<_HomeContent>
+    with WidgetsBindingObserver {
+  final _cameraViewController = CameraViewController();
+  late bool _hasPermissions = false;
+  bool? _hasPermanentlyDeniedPermissions;
+
+  void _reloadPermissions() {
+    Permission.camera.status.then((camStatusValue) {
+      Permission.microphone.status.then((micStatusValue) {
+        setState(() {
+          _hasPermissions = camStatusValue == PermissionStatus.granted &&
+              micStatusValue == PermissionStatus.granted;
+          _hasPermanentlyDeniedPermissions = null;
+        });
+      });
+    });
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _reloadPermissions();
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _reloadPermissions();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    return _hasPermissions ? _content() : _noPermissionsContent();
+  }
+
+  Widget _content() {
     return GestureDetector(
       onHorizontalDragEnd: (details) {
         // Swipe Left
@@ -75,7 +110,7 @@ class _HomeContent extends StatelessWidget {
             alignment: Alignment.topCenter,
             child: CameraView(
               controller: _cameraViewController,
-              cameras: cameras,
+              cameras: widget.cameras,
               onTapWord: (word) {
                 print('The tapped word is $word');
                 if (word.isEmpty) {
@@ -104,6 +139,57 @@ class _HomeContent extends StatelessWidget {
             child: _progressIndicator(),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _noPermissionsContent() {
+    return Container(
+      child: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Camera permissions required.',
+              style: TextStyle(color: Colors.blue),
+            ),
+            TextButton(
+              child: Text('Give permission'),
+              onPressed: () async {
+                final camStatus = await Permission.camera.status;
+                final micStatus = await Permission.microphone.status;
+
+                if (Platform.isIOS &&
+                    (camStatus == PermissionStatus.denied ||
+                        micStatus == PermissionStatus.denied)) {
+                  openAppSettings();
+                } else {
+                  final reqStatus = await [
+                    Permission.camera,
+                    Permission.microphone
+                  ].request();
+
+                  if (_hasPermanentlyDeniedPermissions != null &&
+                      _hasPermanentlyDeniedPermissions!) {
+                    openAppSettings();
+                  } else if (reqStatus.values
+                      .contains(PermissionStatus.denied)) {
+                    _hasPermanentlyDeniedPermissions = null;
+                  } else if (reqStatus.values
+                      .contains(PermissionStatus.permanentlyDenied)) {
+                    _hasPermanentlyDeniedPermissions = true;
+                  } else {
+                    setState(() {
+                      _hasPermissions = true;
+                      _hasPermanentlyDeniedPermissions = null;
+                    });
+                  }
+                }
+              },
+            )
+          ],
+        ),
       ),
     );
   }
