@@ -131,13 +131,7 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
     final RecognisedText recognisedText =
         await textDetector.processImage(_inputImage);
 
-    String text = recognisedText.text;
     for (TextBlock block in recognisedText.blocks) {
-      final Rect rect = block.rect;
-      final List<Offset> cornerPoints = block.cornerPoints;
-      final String text = block.text;
-      final List<String> languages = block.recognizedLanguages;
-
       for (TextLine line in block.lines) {
         for (TextElement element in line.elements) {
           final densityPixel = MediaQuery.of(context).devicePixelRatio;
