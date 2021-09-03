@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:camera/camera.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'package:project_lyca/blocs/blocs.dart';
@@ -39,7 +40,15 @@ class HomeScreen extends StatelessWidget {
                 dictionaryService: FunctionsDictionaryService(),
                 dataRepository: RepositoryProvider.of<DataRepository>(context));
           },
-          child: _HomeContent(cameras),
+          child: BlocBuilder<UserConfigBloc, UserConfigState>(
+            builder: (context, state) => Theme(
+              data: CustomTheme.getThemeByName(
+                state.theme,
+                textStyle: CustomFont.fontStyleMap[state.fontStyle]!,
+              ),
+              child: _HomeContent(cameras),
+            ),
+          ),
         ),
       ),
     );
@@ -119,10 +128,18 @@ class _HomeContentState extends State<_HomeContent>
             child: CameraView(
               controller: _cameraViewController,
               cameras: widget.cameras,
-              onTapWord: (word) {
+              onTapWord: (word) async {
                 print('The tapped word is $word');
                 if (word.isEmpty) {
-                  print('Word is empty');
+                  await Fluttertoast.cancel();
+                  await Fluttertoast.showToast(
+                    msg: "Please tap again",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.CENTER,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Theme.of(context).backgroundColor,
+                    textColor: Theme.of(context).textTheme.bodyText1!.color,
+                  );
                 } else {
                   _cameraViewController.setEnableTap!(false);
                   BlocProvider.of<HomeBloc>(context).add(HomeTapText(word));
