@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:project_lyca/constants.dart' as constants;
 
 class CustomTheme {
-  static ThemeData getThemeByName(String themeName, {TextStyle? textStyle}) {
+  static ThemeData getThemeByName(String themeName, {TextStyle? textStyle, int? fontSize}) {
     switch (themeName) {
       case constants.blueThemeKey:
         return CustomTheme.blueTheme(textStyle);
