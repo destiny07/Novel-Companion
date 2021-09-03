@@ -58,7 +58,8 @@ class _HomeContent extends StatefulWidget {
 class _HomeContentState extends State<_HomeContent>
     with WidgetsBindingObserver {
   final _cameraViewController = CameraViewController();
-  late bool _hasPermissions = false;
+  bool _hasPermissions = false;
+  bool _hasOpenedSettings = false;
   bool? _hasPermanentlyDeniedPermissions;
 
   void _reloadPermissions() {
@@ -75,7 +76,7 @@ class _HomeContentState extends State<_HomeContent>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
+    if (state == AppLifecycleState.resumed && _hasOpenedSettings) {
       _reloadPermissions();
     }
   }
@@ -83,7 +84,14 @@ class _HomeContentState extends State<_HomeContent>
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance!.addObserver(this);
     _reloadPermissions();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance!.removeObserver(this);
+    super.dispose();
   }
 
   @override
@@ -163,28 +171,30 @@ class _HomeContentState extends State<_HomeContent>
                 if (Platform.isIOS &&
                     (camStatus == PermissionStatus.denied ||
                         micStatus == PermissionStatus.denied)) {
+                  _hasOpenedSettings = true;
                   openAppSettings();
-                } else {
-                  final reqStatus = await [
-                    Permission.camera,
-                    Permission.microphone
-                  ].request();
+                  return;
+                }
 
-                  if (_hasPermanentlyDeniedPermissions != null &&
-                      _hasPermanentlyDeniedPermissions!) {
-                    openAppSettings();
-                  } else if (reqStatus.values
-                      .contains(PermissionStatus.denied)) {
-                    _hasPermanentlyDeniedPermissions = null;
-                  } else if (reqStatus.values
-                      .contains(PermissionStatus.permanentlyDenied)) {
-                    _hasPermanentlyDeniedPermissions = true;
-                  } else {
-                    setState(() {
-                      _hasPermissions = true;
-                      _hasPermanentlyDeniedPermissions = null;
-                    });
-                  }
+                if (_hasPermanentlyDeniedPermissions != null &&
+                    _hasPermanentlyDeniedPermissions!) {
+                  _hasOpenedSettings = true;
+                  openAppSettings();
+                  return;
+                }
+
+                _hasOpenedSettings = false;
+
+                final reqStatus =
+                    await [Permission.camera, Permission.microphone].request();
+
+                if (reqStatus.values.contains(PermissionStatus.denied)) {
+                  _hasPermanentlyDeniedPermissions = null;
+                } else if (reqStatus.values
+                    .contains(PermissionStatus.permanentlyDenied)) {
+                  _hasPermanentlyDeniedPermissions = true;
+                } else {
+                  _reloadPermissions();
                 }
               },
             )
