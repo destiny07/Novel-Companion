@@ -8,8 +8,8 @@ class FontSizeDialog extends StatefulWidget {
 }
 
 class _FontSizeDialogState extends State<FontSizeDialog> {
-  final List<int> fontSizes = [11, 12, 13, 14, 15, 16, 17];
-  late int _currentFontSize;
+  final List<double> fontSizes = [11, 12, 13, 14, 15, 16, 17];
+  late double _currentFontSize;
 
   @override
   void initState() {
@@ -54,10 +54,10 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
   }
 
   Widget _fontSizeDropdown() {
-    return DropdownButton<int>(
+    return DropdownButton<double>(
       value: _currentFontSize,
       items: fontSizes
-          .map((fontSize) => DropdownMenuItem<int>(
+          .map((fontSize) => DropdownMenuItem<double>(
                 value: fontSize,
                 child: Text(
                   fontSize.toString(),

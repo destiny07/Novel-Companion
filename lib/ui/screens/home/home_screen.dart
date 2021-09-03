@@ -45,6 +45,7 @@ class HomeScreen extends StatelessWidget {
               data: CustomTheme.getThemeByName(
                 state.theme,
                 textStyle: CustomFont.fontStyleMap[state.fontStyle]!,
+                fontSize: state.fontSize,
               ),
               child: _HomeContent(cameras),
             ),
@@ -139,6 +140,7 @@ class _HomeContentState extends State<_HomeContent>
                     timeInSecForIosWeb: 1,
                     backgroundColor: Theme.of(context).backgroundColor,
                     textColor: Theme.of(context).textTheme.bodyText1!.color,
+                    fontSize: Theme.of(context).textTheme.bodyText1!.fontSize,
                   );
                 } else {
                   _cameraViewController.setEnableTap!(false);

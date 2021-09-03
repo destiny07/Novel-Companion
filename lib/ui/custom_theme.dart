@@ -2,30 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:project_lyca/constants.dart' as constants;
 
 class CustomTheme {
-  static ThemeData getThemeByName(String themeName, {TextStyle? textStyle, int? fontSize}) {
+  static ThemeData getThemeByName(String themeName, {TextStyle? textStyle, double? fontSize}) {
     switch (themeName) {
       case constants.blueThemeKey:
-        return CustomTheme.blueTheme(textStyle);
+        return CustomTheme.blueTheme(textStyle, fontSize);
       case constants.whiteThemeKey:
-        return CustomTheme.whiteTheme(textStyle);
+        return CustomTheme.whiteTheme(textStyle, fontSize);
       case constants.darkThemeKey:
-        return CustomTheme.darkTheme(textStyle);
+        return CustomTheme.darkTheme(textStyle, fontSize);
       case constants.grayThemeKey:
-        return CustomTheme.grayTheme(textStyle);
+        return CustomTheme.grayTheme(textStyle, fontSize);
       case constants.pinkThemeKey:
-        return CustomTheme.pinkTheme(textStyle);
+        return CustomTheme.pinkTheme(textStyle, fontSize);
       default:
-        return CustomTheme.blueTheme(textStyle);
+        return CustomTheme.blueTheme(textStyle, fontSize);
     }
   }
 
-  static ThemeData blueTheme(TextStyle? textStyle) {
+  static ThemeData blueTheme(TextStyle? textStyle, double? fontSize) {
     return ThemeData(
       textTheme: TextTheme(
         bodyText1: TextStyle(
           color: Colors.white,
           fontStyle: textStyle?.fontStyle,
           fontFamily: textStyle?.fontFamily,
+          fontSize: fontSize
         ),
       ),
       iconTheme: IconThemeData(color: Colors.white),
@@ -33,13 +34,14 @@ class CustomTheme {
     );
   }
 
-  static ThemeData pinkTheme(TextStyle? textStyle) {
+  static ThemeData pinkTheme(TextStyle? textStyle, double? fontSize) {
     return ThemeData(
       textTheme: TextTheme(
         bodyText1: TextStyle(
           color: Colors.white,
           fontStyle: textStyle?.fontStyle,
           fontFamily: textStyle?.fontFamily,
+          fontSize: fontSize
         ),
       ),
       iconTheme: IconThemeData(color: Colors.white),
@@ -47,13 +49,14 @@ class CustomTheme {
     );
   }
 
-  static ThemeData whiteTheme(TextStyle? textStyle) {
+  static ThemeData whiteTheme(TextStyle? textStyle, double? fontSize) {
     return ThemeData(
       textTheme: TextTheme(
         bodyText1: TextStyle(
           color: Colors.black,
           fontStyle: textStyle?.fontStyle,
           fontFamily: textStyle?.fontFamily,
+          fontSize: fontSize,
         ),
       ),
       iconTheme: IconThemeData(color: Colors.white),
@@ -61,13 +64,14 @@ class CustomTheme {
     );
   }
 
-  static ThemeData darkTheme(TextStyle? textStyle) {
+  static ThemeData darkTheme(TextStyle? textStyle, double? fontSize) {
     return ThemeData(
       textTheme: TextTheme(
         bodyText1: TextStyle(
           color: Colors.white,
           fontStyle: textStyle?.fontStyle,
           fontFamily: textStyle?.fontFamily,
+          fontSize: fontSize,
         ),
       ),
       iconTheme: IconThemeData(color: Colors.white),
@@ -75,13 +79,14 @@ class CustomTheme {
     );
   }
 
-  static ThemeData grayTheme(TextStyle? textStyle) {
+  static ThemeData grayTheme(TextStyle? textStyle, double? fontSize) {
     return ThemeData(
       textTheme: TextTheme(
         bodyText1: TextStyle(
           color: Colors.white,
           fontStyle: textStyle?.fontStyle,
           fontFamily: textStyle?.fontFamily,
+          fontSize: fontSize,
         ),
       ),
       iconTheme: IconThemeData(color: Colors.white),

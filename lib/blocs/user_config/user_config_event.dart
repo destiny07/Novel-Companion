@@ -8,7 +8,7 @@ abstract class UserConfigEvent extends Equatable {
 }
 
 class UserConfigUpdateFontSize extends UserConfigEvent {
-  final int fontSize;
+  final double fontSize;
 
   const UserConfigUpdateFontSize(this.fontSize);
 

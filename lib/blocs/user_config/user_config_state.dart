@@ -2,7 +2,7 @@ part of 'user_config_bloc.dart';
 
 class UserConfigState extends Equatable {
   final String fontStyle;
-  final int fontSize;
+  final double fontSize;
   final String theme;
 
   const UserConfigState({
@@ -21,7 +21,7 @@ class UserConfigState extends Equatable {
 
   UserConfigState copyWith({
     String? fontStyle,
-    int? fontSize,
+    double? fontSize,
     String? theme,
   }) {
     return UserConfigState(
