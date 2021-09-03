@@ -60,7 +60,6 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
       _cameraController?.dispose();
     } else if (state == AppLifecycleState.resumed) {
       if (_cameraController != null) {
-        // onNewCameraSelected(_cameraController.description);
       }
     }
   }
