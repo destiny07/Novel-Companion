@@ -74,13 +74,41 @@ class _HomeContentState extends State<_HomeContent>
 
   void _reloadPermissions() {
     Permission.camera.status.then((camStatusValue) {
-      Permission.microphone.status.then((micStatusValue) {
+      if (Platform.isIOS) {
         setState(() {
-          _hasPermissions = camStatusValue == PermissionStatus.granted &&
-              micStatusValue == PermissionStatus.granted;
+          _hasPermissions = camStatusValue == PermissionStatus.granted;
           _hasPermanentlyDeniedPermissions = null;
         });
-      });
+      } else {
+        Permission.microphone.status.then((micStatusValue) {
+          setState(() {
+            _hasPermissions = camStatusValue == PermissionStatus.granted &&
+                micStatusValue == PermissionStatus.granted;
+            _hasPermanentlyDeniedPermissions = null;
+          });
+        });
+      }
+    });
+  }
+
+  void _requestPermission() {
+    Permission.camera.request().then((camValue) {
+      if (Platform.isIOS) {
+        setState(() {
+          print('request cam ios: ${camValue.isGranted}');
+          _hasPermissions = camValue.isGranted;
+          _hasPermanentlyDeniedPermissions = null;
+          _hasOpenedSettings = false;
+        });
+      } else {
+        Permission.microphone.request().then((micValue) {
+          setState(() {
+            _hasPermissions = camValue.isGranted && micValue.isGranted;
+            _hasPermanentlyDeniedPermissions = null;
+            _hasOpenedSettings = false;
+          });
+        });
+      }
     });
   }
 
@@ -95,7 +123,9 @@ class _HomeContentState extends State<_HomeContent>
   void initState() {
     super.initState();
     WidgetsBinding.instance!.addObserver(this);
-    _reloadPermissions();
+
+    _requestPermission();
+    // _reloadPermissions();
   }
 
   @override
