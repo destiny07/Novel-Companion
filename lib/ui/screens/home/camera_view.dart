@@ -1,8 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
-import 'package:project_lyca/ui/shared/shared.dart';
+import 'package:project_lyca/blocs/blocs.dart';
 
 class CameraView extends StatefulWidget {
   final List<CameraDescription> cameras;
@@ -123,9 +124,20 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
     //     ),
     //   ),
     // );
-    return GestureDetector(
-      child: CameraPreview(_cameraController!),
-      onTapDown: _enableTap ? _onTap : null,
+    return BlocListener<HomeBloc, HomeState>(
+      listenWhen: (previous, current) =>
+          previous.isTorchOn != current.isTorchOn,
+      listener: (context, state) async {
+        if (state.isTorchOn) {
+          await _cameraController?.setFlashMode(FlashMode.torch);
+        } else {
+          await _cameraController?.setFlashMode(FlashMode.off);
+        }
+      },
+      child: GestureDetector(
+        child: CameraPreview(_cameraController!),
+        onTapDown: _enableTap ? _onTap : null,
+      ),
     );
   }
 

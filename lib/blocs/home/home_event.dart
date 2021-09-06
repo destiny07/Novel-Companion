@@ -35,12 +35,10 @@ class HomeToggleSearchBar extends HomeEvent {
 }
 
 class HomeToggleTorch extends HomeEvent {
-  final bool turnOn;
-
-  const HomeToggleTorch(this.turnOn);
+  const HomeToggleTorch();
 
   @override
-  List<Object> get props => [turnOn];
+  List<Object> get props => [];
 }
 
 class HomeToggleTts extends HomeEvent {

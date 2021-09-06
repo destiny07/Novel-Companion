@@ -30,6 +30,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       yield* _mapHomeToggleTtsToState(event);
     } else if (event is HomePermissionsUpdated) {
       yield* _mapHomePermissionsUpdated(event);
+    } else if (event is HomeToggleTorch) {
+      yield* _mapHomeToggleTorch(event);
     }
   }
 
@@ -83,5 +85,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     HomePermissionsUpdated event,
   ) async* {
     yield state.copyWith(hasPermissions: event.hasPermissions);
+  }
+
+  Stream<HomeState> _mapHomeToggleTorch(HomeToggleTorch event) async* {
+    final isTorchOn = state.isTorchOn;
+    yield state.copyWith(isTorchOn: !isTorchOn);
   }
 }

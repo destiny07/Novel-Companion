@@ -17,7 +17,11 @@ class ActionBar extends StatelessWidget {
         IconButton(
           icon: Icon(Icons.flash_on),
           color: Colors.white,
-          onPressed: enable ? () {} : null,
+          onPressed: enable
+              ? () {
+                  BlocProvider.of<HomeBloc>(context).add(HomeToggleTorch());
+                }
+              : null,
         ),
         IconButton(
           icon: Icon(Icons.search_rounded),
