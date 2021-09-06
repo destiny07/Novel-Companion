@@ -60,7 +60,24 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
     if (state == AppLifecycleState.inactive) {
       _cameraController?.dispose();
     } else if (state == AppLifecycleState.resumed) {
-      if (_cameraController != null) {}
+      if (_cameraController != null) {
+      } else {
+        _cameraController?.initialize().then((_) async {
+          if (!mounted) {
+            return;
+          }
+
+          // Controller Setup
+          _enableTap = widget.enableTap;
+          final controller = widget.controller;
+          if (controller != null) {
+            controller.setEnableTap = _setEnableTap;
+          }
+
+          await _cameraController?.startImageStream(_processCameraImage);
+          setState(() {});
+        });
+      }
     }
   }
 
