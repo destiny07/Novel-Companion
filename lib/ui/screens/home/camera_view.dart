@@ -50,7 +50,7 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
     });
   }
 
-   @override
+  @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     // App state changed before we got the chance to initialize.
     if (_cameraController == null || !_cameraController!.value.isInitialized) {
@@ -59,8 +59,7 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
     if (state == AppLifecycleState.inactive) {
       _cameraController?.dispose();
     } else if (state == AppLifecycleState.resumed) {
-      if (_cameraController != null) {
-      }
+      if (_cameraController != null) {}
     }
   }
 
@@ -109,20 +108,24 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
     if (!_cameraController!.value.isInitialized) {
       return Container();
     }
-    final mediaSize = MediaQuery.of(context).size;
-    final scale =
-        1 / (_cameraController!.value.aspectRatio * mediaSize.aspectRatio);
-    print('Preview Size: ${_cameraController!.value.previewSize}');
-    return ClipRect(
-      clipper: MediaSizeClipper(mediaSize),
-      child: Transform.scale(
-        scale: scale,
-        alignment: Alignment.topCenter,
-        child: GestureDetector(
-          child: CameraPreview(_cameraController!),
-          onTapDown: _enableTap ? _onTap : null,
-        ),
-      ),
+    // final mediaSize = MediaQuery.of(context).size;
+    // final scale =
+    //     1 / (_cameraController!.value.aspectRatio * mediaSize.aspectRatio);
+    // print('Preview Size: ${_cameraController!.value.previewSize}');
+    // return ClipRect(
+    //   clipper: MediaSizeClipper(mediaSize),
+    //   child: Transform.scale(
+    //     scale: scale,
+    //     alignment: Alignment.topCenter,
+    //     child: GestureDetector(
+    //       child: CameraPreview(_cameraController!),
+    //       onTapDown: _enableTap ? _onTap : null,
+    //     ),
+    //   ),
+    // );
+    return GestureDetector(
+      child: CameraPreview(_cameraController!),
+      onTapDown: _enableTap ? _onTap : null,
     );
   }
 

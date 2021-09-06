@@ -125,7 +125,7 @@ class _HomeContentState extends State<_HomeContent>
       child: Stack(
         children: [
           Align(
-            alignment: Alignment.topCenter,
+            alignment: Alignment.center,
             child: CameraView(
               controller: _cameraViewController,
               cameras: widget.cameras,
