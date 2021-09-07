@@ -6,6 +6,8 @@ class UserConfigState extends Equatable {
   final String theme;
   final bool isFetching;
   final bool isFetchSuccess;
+  final bool isSaving;
+  final bool isSaveSuccessful;
 
   const UserConfigState({
     required this.fontStyle,
@@ -13,6 +15,8 @@ class UserConfigState extends Equatable {
     required this.theme,
     this.isFetching = false,
     this.isFetchSuccess = false,
+    this.isSaving = false,
+    this.isSaveSuccessful = false,
   });
 
   factory UserConfigState.initial() {
@@ -29,6 +33,8 @@ class UserConfigState extends Equatable {
     String? theme,
     bool? isFetching,
     bool? isFetchSuccess,
+    bool? isSaving,
+    bool? isSaveSuccessful,
   }) {
     return UserConfigState(
       fontStyle: fontStyle ?? this.fontStyle,
@@ -36,6 +42,8 @@ class UserConfigState extends Equatable {
       theme: theme ?? this.theme,
       isFetching: isFetching ?? this.isFetching,
       isFetchSuccess: isFetchSuccess ?? this.isFetchSuccess,
+      isSaving: isSaving ?? this.isSaveSuccessful,
+      isSaveSuccessful: isSaveSuccessful ?? this.isSaveSuccessful,
     );
   }
 
@@ -46,5 +54,7 @@ class UserConfigState extends Equatable {
         theme,
         isFetching,
         isFetchSuccess,
+        isSaving,
+        isSaveSuccessful,
       ];
 }

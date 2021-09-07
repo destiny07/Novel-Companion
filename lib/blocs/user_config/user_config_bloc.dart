@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project_lyca/models/models.dart';
 import 'package:project_lyca/repositories/contracts/contracts.dart';
 import 'package:project_lyca/constants.dart' as constants;
 
@@ -67,18 +68,50 @@ class UserConfigBloc extends Bloc<UserConfigEvent, UserConfigState> {
   Stream<UserConfigState> _mapUserConfigUpdateFontSizeToState(
     UserConfigUpdateFontSize event,
   ) async* {
-    yield state.copyWith(fontSize: event.fontSize);
+    yield state.copyWith(isSaving: true);
+
+    try {
+      final newConfig = UserConfig(
+        fontSize: event.fontSize,
+        fontStyle: state.fontStyle,
+        theme: state.theme,
+      );
+      await dataRepository.setUserConfig(authRepository.userId!, newConfig);
+      yield state.copyWith(
+        isSaving: false,
+        isSaveSuccessful: true,
+        fontSize: event.fontSize,
+      );
+    } catch (err) {
+      yield state.copyWith(
+        isSaving: false,
+        isSaveSuccessful: false,
+        fontSize: event.fontSize,
+      );
+    }
   }
 
   Stream<UserConfigState> _mapUserConfigUpdateFontStyleToState(
     UserConfigUpdateFontStyle event,
   ) async* {
+    final newConfig = UserConfig(
+      fontSize: state.fontSize,
+      fontStyle: event.fontStyle,
+      theme: state.theme,
+    );
+    await dataRepository.setUserConfig(authRepository.userId!, newConfig);
     yield state.copyWith(fontStyle: event.fontStyle);
   }
 
   Stream<UserConfigState> _mapUserConfigUpdateThemeToState(
     UserConfigUpdateTheme event,
   ) async* {
+    final newConfig = UserConfig(
+      fontSize: state.fontSize,
+      fontStyle: state.fontStyle,
+      theme: event.theme,
+    );
+    await dataRepository.setUserConfig(authRepository.userId!, newConfig);
     yield state.copyWith(theme: event.theme);
   }
 }

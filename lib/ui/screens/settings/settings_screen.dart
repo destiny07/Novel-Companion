@@ -88,7 +88,7 @@ class SettingsScreen extends StatelessWidget {
   Widget _fontSize() {
     return BlocBuilder<UserConfigBloc, UserConfigState>(
       buildWhen: (previous, current) => previous.fontSize != current.fontSize,
-      builder: (context, state) => Text(state.fontSize.toString()),
+      builder: (context, state) => Text(state.fontSize.toStringAsFixed(0)),
     );
   }
 

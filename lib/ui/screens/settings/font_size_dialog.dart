@@ -24,14 +24,21 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      content: Container(
-        height: 64.0,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Text('Font Size'),
-            _fontSizeDropdown(),
-          ],
+      content: BlocListener<UserConfigBloc, UserConfigState>(
+        listener: (listenerContext, state) {
+          if (!state.isSaving && state.isSaveSuccessful) {
+            Navigator.of(context).pop();
+          }
+        },
+        child: Container(
+          height: 64.0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text('Font Size'),
+              _fontSizeDropdown(),
+            ],
+          ),
         ),
       ),
       actions: [
@@ -41,15 +48,25 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
             Navigator.of(context).pop();
           },
         ),
-        TextButton(
-          child: Text('Save'),
-          onPressed: () {
-            BlocProvider.of<UserConfigBloc>(context)
-                .add(UserConfigUpdateFontSize(_currentFontSize));
-            Navigator.of(context).pop();
-          },
-        ),
+        _saveButton(),
       ],
+    );
+  }
+
+  Widget _saveButton() {
+    return BlocBuilder<UserConfigBloc, UserConfigState>(
+      buildWhen: (previous, current) => previous.isSaving != current.isSaving,
+      builder: (context, state) {
+        return TextButton(
+          child: state.isSaving ? Text('Saving...') : Text('Save'),
+          onPressed: state.isSaving
+              ? null
+              : () {
+                  BlocProvider.of<UserConfigBloc>(context)
+                      .add(UserConfigUpdateFontSize(_currentFontSize));
+                },
+        );
+      },
     );
   }
 
@@ -60,7 +77,7 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
           .map((fontSize) => DropdownMenuItem<double>(
                 value: fontSize,
                 child: Text(
-                  fontSize.toString(),
+                  fontSize.toStringAsFixed(0),
                 ),
               ))
           .toList(),
