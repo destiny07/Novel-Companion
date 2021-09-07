@@ -28,14 +28,21 @@ class _ThemeDialogState extends State<ThemeDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      content: Container(
-        height: 170.0,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            _preview(),
-            _themeDropdown(),
-          ],
+      content: BlocListener<UserConfigBloc, UserConfigState>(
+        listener: (listenerContext, state) {
+          if (!state.isSaving && state.isSaveSuccessful) {
+            Navigator.of(context).pop();
+          }
+        },
+        child: Container(
+          height: 170.0,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _preview(),
+              _themeDropdown(),
+            ],
+          ),
         ),
       ),
       actions: [
@@ -45,15 +52,25 @@ class _ThemeDialogState extends State<ThemeDialog> {
             Navigator.of(context).pop();
           },
         ),
-        TextButton(
-          child: Text('Save'),
-          onPressed: () {
-            BlocProvider.of<UserConfigBloc>(context)
-                .add(UserConfigUpdateTheme(_currentTheme));
-            Navigator.of(context).pop();
-          },
-        ),
+        _saveButton(),
       ],
+    );
+  }
+
+  Widget _saveButton() {
+    return BlocBuilder<UserConfigBloc, UserConfigState>(
+      buildWhen: (previous, current) => previous.isSaving != current.isSaving,
+      builder: (context, state) {
+        return TextButton(
+          child: state.isSaving ? Text('Saving...') : Text('Save'),
+          onPressed: state.isSaving
+              ? null
+              : () {
+                  BlocProvider.of<UserConfigBloc>(context)
+                      .add(UserConfigUpdateTheme(_currentTheme));
+                },
+        );
+      },
     );
   }
 
@@ -109,15 +126,18 @@ class _ThemeDialogState extends State<ThemeDialog> {
             children: [
               Icon(
                 Icons.flash_on,
-                color: CustomTheme.getThemeByName(_currentTheme).iconTheme.color,
+                color:
+                    CustomTheme.getThemeByName(_currentTheme).iconTheme.color,
               ),
               Icon(
                 Icons.search,
-                color: CustomTheme.getThemeByName(_currentTheme).iconTheme.color,
+                color:
+                    CustomTheme.getThemeByName(_currentTheme).iconTheme.color,
               ),
               Icon(
                 Icons.settings,
-                color: CustomTheme.getThemeByName(_currentTheme).iconTheme.color,
+                color:
+                    CustomTheme.getThemeByName(_currentTheme).iconTheme.color,
               ),
             ],
           )
