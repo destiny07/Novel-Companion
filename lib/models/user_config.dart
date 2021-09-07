@@ -1,45 +1,44 @@
 import 'package:equatable/equatable.dart';
 
 class UserConfig extends Equatable {
-  final List<String> history;
-  final int fontSize;
+  final double fontSize;
   final String fontStyle;
+  final String theme;
 
   const UserConfig({
-    required this.history,
     required this.fontSize,
     required this.fontStyle,
+    required this.theme
   });
 
   factory UserConfig.fromJson(Map<String, dynamic> data) {
     return UserConfig(
-      history:
-          data['history'] != null ? List<String>.from(data['history']) : [],
-      fontSize: data['fontSize'] != null ? data['fontSize'] : null,
+      fontSize: data['fontSize'] != null ? data['fontSize'].toDouble() : null,
       fontStyle: data['fontStyle'] != null ? data['fontStyle'] : null,
+      theme: data['theme'] != null ? data['theme'] : null
     );
   }
 
   UserConfig copyWith({
-    List<String>? history,
-    int? fontSize,
+    double? fontSize,
     String? fontStyle,
+    String? theme,
   }) {
     return UserConfig(
-      history: history ?? this.history,
       fontSize: fontSize ?? this.fontSize,
       fontStyle: fontStyle ?? this.fontStyle,
+      theme: theme ?? this.theme,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'history': history,
       'fontSize': fontSize,
       'fontStyle': fontStyle,
+      'theme': theme,
     };
   }
 
   @override
-  List<Object?> get props => [history, fontSize, fontStyle];
+  List<Object?> get props => [fontSize, fontStyle, theme];
 }

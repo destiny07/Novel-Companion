@@ -7,6 +7,13 @@ abstract class UserConfigEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+class UserConfigFetchConfig extends UserConfigEvent {
+  const UserConfigFetchConfig();
+
+  @override
+  List<Object?> get props => [];
+}
+
 class UserConfigUpdateFontSize extends UserConfigEvent {
   final double fontSize;
 

@@ -64,7 +64,10 @@ class App extends StatelessWidget {
                 authenticationRepository: authenticationRepository),
           ),
           BlocProvider<UserConfigBloc>(
-            create: (_) => UserConfigBloc(dataRepository: dataRepository),
+            create: (_) => UserConfigBloc(
+              authRepository: authenticationRepository,
+              dataRepository: dataRepository,
+            ),
           )
         ],
         child: AppView(camera: camera),
@@ -97,7 +100,7 @@ class _AppViewState extends State<AppView> {
           listener: (context, state) {
             if (state.isAuthenticated) {
               _navigator.pushAndRemoveUntil<void>(
-                HomeScreen.route(widget.camera),
+                SplashScreen.route(widget.camera),
                 (route) => false,
               );
             } else {
@@ -110,7 +113,7 @@ class _AppViewState extends State<AppView> {
           child: child,
         );
       },
-      onGenerateRoute: (_) => SplashPage.route(),
+      onGenerateRoute: (_) => SplashScreen.route(widget.camera),
     );
   }
 }
