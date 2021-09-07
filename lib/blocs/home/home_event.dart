@@ -16,6 +16,15 @@ class HomeTapText extends HomeEvent {
   List<Object> get props => [word];
 }
 
+class HomeProcessing extends HomeEvent {
+  final bool isProcessing;
+  
+  const HomeProcessing(this.isProcessing);
+
+  @override
+  List<Object> get props => [isProcessing];
+}
+
 class HomeSearchWord extends HomeEvent {
   final String word;
 

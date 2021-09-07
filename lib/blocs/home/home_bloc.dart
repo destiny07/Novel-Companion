@@ -32,6 +32,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       yield* _mapHomePermissionsUpdated(event);
     } else if (event is HomeToggleTorch) {
       yield* _mapHomeToggleTorch(event);
+    } else if (event is HomeProcessing) {
+      yield* _mapHomeProcessing(event);
     }
   }
 
@@ -48,9 +50,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     );
   }
 
-  Stream<HomeState> _mapHomeSearchWord(HomeSearchWord event) async* {
-    yield state.copyWith(isSearchLoading: true, inputWord: event.word);
+  Stream<HomeState> _mapHomeProcessing(HomeProcessing event) async* {
+    yield state.copyWith(isSearchLoading: event.isProcessing);
+  }
 
+  Stream<HomeState> _mapHomeSearchWord(HomeSearchWord event) async* {
     var result = await dictionaryService.searchWord(event.word);
 
     yield state.copyWith(

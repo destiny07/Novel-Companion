@@ -159,9 +159,13 @@ class _HomeContentState extends State<_HomeContent>
             child: CameraView(
               controller: _cameraViewController,
               cameras: widget.cameras,
+              onProcessing: () {
+                BlocProvider.of<HomeBloc>(context).add(HomeProcessing(true));
+              },
               onTapWord: (word) async {
                 print('The tapped word is $word');
                 if (word.isEmpty) {
+                  BlocProvider.of<HomeBloc>(context).add(HomeProcessing(false));
                   await Fluttertoast.cancel();
                   await Fluttertoast.showToast(
                     msg: "Please tap again",
