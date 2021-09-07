@@ -15,6 +15,7 @@ class ActionBar extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         IconButton(
+          splashColor: Theme.of(context).backgroundColor,
           icon: Icon(Icons.flash_on),
           color: Colors.white,
           onPressed: enable
@@ -24,6 +25,7 @@ class ActionBar extends StatelessWidget {
               : null,
         ),
         IconButton(
+          splashColor: Theme.of(context).backgroundColor,
           icon: Icon(Icons.search_rounded),
           color: Colors.white,
           iconSize: 30.0,
@@ -34,6 +36,7 @@ class ActionBar extends StatelessWidget {
               : null,
         ),
         IconButton(
+          splashColor: Theme.of(context).backgroundColor,
           icon: Icon(Icons.settings),
           color: Colors.white,
           onPressed: enable
