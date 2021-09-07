@@ -94,7 +94,9 @@ class _SearchBar extends State<SearchBar> with SingleTickerProviderStateMixin {
         filled: true,
       ),
       onSubmitted: (value) {
-        BlocProvider.of<HomeBloc>(context).add(HomeSearchWord(value.trim()));
+        if (value.trim().isNotEmpty) {
+          BlocProvider.of<HomeBloc>(context).add(HomeSearchWord(value.trim()));
+        }
       },
     );
   }
