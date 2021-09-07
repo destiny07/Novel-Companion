@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:formz/formz.dart';
 import 'package:project_lyca/blocs/login/login_bloc.dart';
 import 'package:project_lyca/repositories/contracts/contracts.dart';
 
@@ -27,8 +26,7 @@ class LoginScreen extends StatelessWidget {
             },
             child: BlocListener<LoginBloc, LoginState>(
               listenWhen: (previousState, state) =>
-                  previousState.status != state.status &&
-                  state.status == FormzStatus.submissionFailure,
+                  previousState.statusMessage != state.statusMessage,
               listener: (context, state) {
                 Fluttertoast.showToast(
                   msg: state.statusMessage,
