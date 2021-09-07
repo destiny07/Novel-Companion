@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_flashlight/flutter_flashlight.dart';
 import 'package:project_lyca/blocs/blocs.dart';
 import 'package:project_lyca/ui/screens/settings/settings_screen.dart';
 
@@ -14,16 +15,7 @@ class ActionBar extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        IconButton(
-          splashColor: Theme.of(context).backgroundColor,
-          icon: Icon(Icons.flash_on),
-          color: Colors.white,
-          onPressed: enable
-              ? () {
-                  BlocProvider.of<HomeBloc>(context).add(HomeToggleTorch());
-                }
-              : null,
-        ),
+        _torchButton(),
         IconButton(
           splashColor: Theme.of(context).backgroundColor,
           icon: Icon(Icons.search_rounded),
@@ -46,6 +38,40 @@ class ActionBar extends StatelessWidget {
               : null,
         ),
       ],
+    );
+  }
+
+  Widget _torchButton() {
+    return FutureBuilder<bool?>(
+      future: Flashlight.hasFlashlight,
+      initialData: false,
+      builder: (context, snapshot) {
+        if (snapshot.hasData && snapshot.data!) {
+          return IconButton(
+            splashColor: Theme.of(context).backgroundColor,
+            icon: BlocBuilder<HomeBloc, HomeState>(
+              builder: (context, state) {
+                if (state.isTorchOn) {
+                  return Icon(Icons.flashlight_on_rounded);
+                }
+
+                return Icon(Icons.flashlight_off_rounded);
+              },
+            ),
+            color: Colors.white,
+            onPressed: enable
+                ? () {
+                    BlocProvider.of<HomeBloc>(context).add(HomeToggleTorch());
+                  }
+                : null,
+          );
+        }
+
+        return IconButton(
+          icon: Icon(Icons.flashlight_off_rounded),
+          onPressed: null,
+        );
+      },
     );
   }
 }

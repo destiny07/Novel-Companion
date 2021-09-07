@@ -30,6 +30,8 @@ dependencies:
   firebase_auth: ^1.1.2
   firebase_core: ^1.1.0
   flutter_bloc: ^7.0.0
+  flutter_flashlight:
+    path: ../flutter-flashlight
   flutter_signin_button: ^2.0.0
   fluttertoast: ^8.0.7
   google_fonts: ^2.1.0

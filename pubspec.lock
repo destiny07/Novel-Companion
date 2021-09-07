@@ -209,6 +209,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "7.0.0"
+  flutter_flashlight:
+    dependency: "direct main"
+    description:
+      path: "../flutter-flashlight"
+      relative: true
+    source: path
+    version: "1.0.0"
   flutter_signin_button:
     dependency: "direct main"
     description:
