@@ -94,13 +94,27 @@ class UserConfigBloc extends Bloc<UserConfigEvent, UserConfigState> {
   Stream<UserConfigState> _mapUserConfigUpdateFontStyleToState(
     UserConfigUpdateFontStyle event,
   ) async* {
-    final newConfig = UserConfig(
-      fontSize: state.fontSize,
-      fontStyle: event.fontStyle,
-      theme: state.theme,
-    );
-    await dataRepository.setUserConfig(authRepository.userId!, newConfig);
-    yield state.copyWith(fontStyle: event.fontStyle);
+    yield state.copyWith(isSaving: true);
+
+    try {
+      final newConfig = UserConfig(
+        fontSize: state.fontSize,
+        fontStyle: event.fontStyle,
+        theme: state.theme,
+      );
+      await dataRepository.setUserConfig(authRepository.userId!, newConfig);
+      yield state.copyWith(
+        isSaving: false,
+        isSaveSuccessful: true,
+        fontStyle: event.fontStyle,
+      );
+    } catch (err) {
+      yield state.copyWith(
+        isSaving: false,
+        isSaveSuccessful: false,
+        fontStyle: event.fontStyle,
+      );
+    }
   }
 
   Stream<UserConfigState> _mapUserConfigUpdateThemeToState(

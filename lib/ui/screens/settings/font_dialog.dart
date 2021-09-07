@@ -22,14 +22,21 @@ class _FontDialogState extends State<FontDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      content: Container(
-        height: 64.0,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Text('Font'),
-            _fontStyleDropdown(),
-          ],
+      content: BlocListener<UserConfigBloc, UserConfigState>(
+        listener: (listenerContext, state) {
+          if (!state.isSaving && state.isSaveSuccessful) {
+            Navigator.of(context).pop();
+          }
+        },
+        child: Container(
+          height: 64.0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text('Font'),
+              _fontStyleDropdown(),
+            ],
+          ),
         ),
       ),
       actions: [
@@ -39,15 +46,25 @@ class _FontDialogState extends State<FontDialog> {
             Navigator.of(context).pop();
           },
         ),
-        TextButton(
-          child: Text('Save'),
-          onPressed: () {
-            BlocProvider.of<UserConfigBloc>(context)
-                .add(UserConfigUpdateFontStyle(_currentFontStyle));
-            Navigator.of(context).pop();
-          },
-        ),
+        _saveButton(),
       ],
+    );
+  }
+
+  Widget _saveButton() {
+    return BlocBuilder<UserConfigBloc, UserConfigState>(
+      buildWhen: (previous, current) => previous.isSaving != current.isSaving,
+      builder: (context, state) {
+        return TextButton(
+          child: state.isSaving ? Text('Saving...') : Text('Save'),
+          onPressed: state.isSaving
+              ? null
+              : () {
+                  BlocProvider.of<UserConfigBloc>(context)
+                      .add(UserConfigUpdateFontStyle(_currentFontStyle));
+                },
+        );
+      },
     );
   }
 
