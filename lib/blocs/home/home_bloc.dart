@@ -1,6 +1,9 @@
+import 'dart:ui';
+
 import 'package:async/async.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:project_lyca/models/models.dart';
 import 'package:project_lyca/repositories/contracts/contracts.dart';
 import 'package:project_lyca/services/services.dart';
@@ -11,7 +14,8 @@ part 'home_state.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final DictionaryService dictionaryService;
   final DataRepository dataRepository;
-  late CancelableCompleter<Word> _searchCompleter;
+  final textDetector = GoogleMlKit.vision.textDetector();
+  late CancelableCompleter _searchCompleter;
 
   HomeBloc({
     required this.dictionaryService,
@@ -42,6 +46,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       yield* _mapHomeCancelSearchWord(event);
     } else if (event is HomeCancelCompleter) {
       yield* _mapHomeProcessing(HomeProcessing(false));
+    } else if (event is HomeShowTapAgain) {
+      yield* _mapHomeShowTapAgain(event);
     }
   }
 
@@ -51,17 +57,44 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         add(HomeCancelCompleter());
       },
     );
-    _searchCompleter.complete(dictionaryService.searchWord(event.word));
 
-    yield state.copyWith(isSearchLoading: true);
+    _searchCompleter.complete(_extractText(event.inputImage, event.offset));
+    yield state.copyWith(isSearchLoading: true, showTapAgain: false);
+  }
 
-    _searchCompleter.operation.value.then((result) {
+  Future _extractText(InputImage inputImage, Offset offset) async {
+    String word = '';
+    final RecognisedText recognisedText =
+        await textDetector.processImage(inputImage);
+
+    for (TextBlock block in recognisedText.blocks) {
+      for (TextLine line in block.lines) {
+        for (TextElement element in line.elements) {
+          final isOverlaps = element.rect.contains(offset);
+
+          if (isOverlaps) {
+            word = element.text;
+          }
+        }
+      }
+    }
+
+    if (word == '') {
+      add(HomeShowTapAgain());
+      return;
+    }
+
+    try {
+      final result = await dictionaryService.searchWord(word);
       add(HomeFetchWord(result));
-    });
+    } catch (err) {
+      add(HomeFetchWord(null));
+    }
   }
 
   Stream<HomeState> _mapHomeFetchWord(HomeFetchWord event) async* {
     yield state.copyWith(
+      showTapAgain: false,
       isSearchLoading: false,
       isShowSearchBar: false,
       isShowWordInfo: true,
@@ -76,7 +109,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   Stream<HomeState> _mapHomeProcessing(HomeProcessing event) async* {
-    yield state.copyWith(isSearchLoading: event.isProcessing);
+    yield state.copyWith(
+      showTapAgain: false,
+      isSearchLoading: event.isProcessing,
+    );
   }
 
   Stream<HomeState> _mapHomeSearchWord(HomeSearchWord event) async* {
@@ -123,5 +159,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Stream<HomeState> _mapHomeToggleTorch(HomeToggleTorch event) async* {
     final isTorchOn = state.isTorchOn;
     yield state.copyWith(isTorchOn: !isTorchOn);
+  }
+
+  Stream<HomeState> _mapHomeShowTapAgain(HomeShowTapAgain event) async* {
+    yield state.copyWith(isSearchLoading: false, showTapAgain: true);
   }
 }

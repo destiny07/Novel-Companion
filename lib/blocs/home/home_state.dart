@@ -10,6 +10,8 @@ class HomeState extends Equatable {
   final bool isPermanentlyDeniedPermissions;
   final String? inputWord;
   final Word? word;
+  final bool showTapAgain;
+  final bool isWordFound;
 
   const HomeState({
     this.isShowSearchBar = false,
@@ -21,6 +23,8 @@ class HomeState extends Equatable {
     this.isPermanentlyDeniedPermissions = false,
     this.inputWord,
     this.word,
+    this.showTapAgain = false,
+    this.isWordFound = false,
   });
 
   HomeState copyWith({
@@ -33,6 +37,8 @@ class HomeState extends Equatable {
     Word? word,
     bool? hasPermissions,
     bool? isPermanentlyDeniedPermissions,
+    bool? showTapAgain,
+    bool? isWordFound,
   }) {
     return HomeState(
       isShowSearchBar: isShowSearchBar ?? this.isShowSearchBar,
@@ -45,6 +51,8 @@ class HomeState extends Equatable {
       hasPermissions: hasPermissions ?? this.hasPermissions,
       isPermanentlyDeniedPermissions:
           isPermanentlyDeniedPermissions ?? this.isPermanentlyDeniedPermissions,
+      showTapAgain: showTapAgain ?? this.showTapAgain,
+      isWordFound: isWordFound ?? this.isWordFound,
     );
   }
 
@@ -59,5 +67,7 @@ class HomeState extends Equatable {
         word,
         hasPermissions,
         isPermanentlyDeniedPermissions,
+        showTapAgain,
+        isWordFound,
       ];
 }

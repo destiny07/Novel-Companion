@@ -4,25 +4,36 @@ abstract class HomeEvent extends Equatable {
   const HomeEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class HomeTapText extends HomeEvent {
-  final String word;
+  final InputImage inputImage;
+  final Offset offset;
 
-  const HomeTapText(this.word);
+  const HomeTapText({
+    required this.inputImage,
+    required this.offset,
+  });
 
   @override
-  List<Object> get props => [word];
+  List<Object> get props => [inputImage];
+}
+
+class HomeShowTapAgain extends HomeEvent {
+  const HomeShowTapAgain();
+
+  @override
+  List<Object> get props => [];
 }
 
 class HomeFetchWord extends HomeEvent {
-  final Word word;
+  final Word? word;
 
   const HomeFetchWord(this.word);
 
   @override
-  List<Object> get props => [word];
+  List<Object?> get props => [word];
 }
 
 class HomeProcessing extends HomeEvent {

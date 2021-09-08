@@ -157,13 +157,11 @@ class _HomeContentState extends State<_HomeContent>
         children: [
           Align(
             alignment: Alignment.center,
-            child: CameraView(
-              controller: _cameraViewController,
-              cameras: widget.cameras,
-              onTapWord: (word) async {
-                print('The tapped word is $word');
-                if (word.isEmpty) {
-                  BlocProvider.of<HomeBloc>(context).add(HomeProcessing(false));
+            child: BlocListener<HomeBloc, HomeState>(
+              listenWhen: (previous, current) =>
+                  previous.showTapAgain != current.showTapAgain,
+              listener: (context, state) async {
+                if (state.showTapAgain) {
                   await Fluttertoast.cancel();
                   await Fluttertoast.showToast(
                     msg: "Please tap again",
@@ -174,11 +172,17 @@ class _HomeContentState extends State<_HomeContent>
                     textColor: Theme.of(context).textTheme.bodyText1!.color,
                     fontSize: Theme.of(context).textTheme.bodyText1!.fontSize,
                   );
-                } else {
-                  _cameraViewController.setEnableTap!(false);
-                  BlocProvider.of<HomeBloc>(context).add(HomeTapText(word));
                 }
               },
+              child: CameraView(
+                controller: _cameraViewController,
+                cameras: widget.cameras,
+                onTapWord: (image, offset) async {
+                  BlocProvider.of<HomeBloc>(context).add(
+                    HomeTapText(inputImage: image, offset: offset),
+                  );
+                },
+              ),
             ),
           ),
           Align(

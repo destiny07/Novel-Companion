@@ -7,7 +7,7 @@ import 'package:project_lyca/blocs/blocs.dart';
 
 class CameraView extends StatefulWidget {
   final List<CameraDescription> cameras;
-  final Function(String) onTapWord;
+  final Function(InputImage, Offset) onTapWord;
   final bool enableTap;
   final CameraViewController? controller;
 
@@ -160,26 +160,30 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
   }
 
   void _onTap(TapDownDetails details) async {
-    final RecognisedText recognisedText =
-        await textDetector.processImage(_inputImage);
+    // final RecognisedText recognisedText =
+    //     await textDetector.processImage(_inputImage);
 
-    for (TextBlock block in recognisedText.blocks) {
-      for (TextLine line in block.lines) {
-        for (TextElement element in line.elements) {
-          final densityPixel = MediaQuery.of(context).devicePixelRatio;
-          final newOffset = Offset(details.localPosition.dx * densityPixel,
-              details.localPosition.dy * densityPixel);
-          final isOverlaps = element.rect.contains(newOffset);
+    // for (TextBlock block in recognisedText.blocks) {
+    //   for (TextLine line in block.lines) {
+    //     for (TextElement element in line.elements) {
+    //       final densityPixel = MediaQuery.of(context).devicePixelRatio;
+    //       final newOffset = Offset(details.localPosition.dx * densityPixel,
+    //           details.localPosition.dy * densityPixel);
+    //       final isOverlaps = element.rect.contains(newOffset);
 
-          if (isOverlaps) {
-            widget.onTapWord(element.text);
-            return;
-          }
-        }
-      }
-    }
+    //       if (isOverlaps) {
+    //         widget.onTapWord(element.text);
+    //         return;
+    //       }
+    //     }
+    //   }
+    // }
 
-    widget.onTapWord('');
+    // widget.onTapWord('');
+    final densityPixel = MediaQuery.of(context).devicePixelRatio;
+    final newOffset = Offset(details.localPosition.dx * densityPixel,
+        details.localPosition.dy * densityPixel);
+    widget.onTapWord(_inputImage, newOffset);
   }
 
   @override
