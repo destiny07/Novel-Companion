@@ -16,6 +16,7 @@ import 'package:project_lyca/ui/screens/home/action_bar.dart';
 import 'package:project_lyca/ui/screens/home/animated_word_info.dart';
 import 'package:project_lyca/ui/screens/home/camera_view.dart';
 import 'package:project_lyca/ui/screens/home/search_bar.dart';
+import 'package:project_lyca/ui/screens/home/search_progress.dart';
 
 class HomeScreen extends StatelessWidget {
   final List<CameraDescription> cameras;
@@ -160,7 +161,7 @@ class _HomeContentState extends State<_HomeContent>
               controller: _cameraViewController,
               cameras: widget.cameras,
               onProcessing: () {
-                BlocProvider.of<HomeBloc>(context).add(HomeProcessing(true));
+                // BlocProvider.of<HomeBloc>(context).add(HomeProcessing(true));
               },
               onTapWord: (word) async {
                 print('The tapped word is $word');
@@ -303,7 +304,14 @@ class _HomeContentState extends State<_HomeContent>
           previous.isSearchLoading != current.isSearchLoading,
       builder: (context, state) {
         if (state.isSearchLoading) {
-          return CircularProgressIndicator();
+        return Container(
+          margin: EdgeInsets.fromLTRB(8.0, 24, 8.0, 128.0),
+          child: SearchProgress(
+            onCancel: () {
+              BlocProvider.of<HomeBloc>(context).add(HomeCancelSearchWord());
+            },
+          ),
+        );
         }
         return Container();
       },

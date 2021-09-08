@@ -1,3 +1,4 @@
+import 'package:async/async.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_lyca/models/models.dart';
@@ -10,6 +11,7 @@ part 'home_state.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final DictionaryService dictionaryService;
   final DataRepository dataRepository;
+  late CancelableCompleter<Word> _searchCompleter;
 
   HomeBloc({
     required this.dictionaryService,
@@ -22,6 +24,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       yield* _mapHomeToggleSearchBarToState(event);
     } else if (event is HomeTapText) {
       yield* _mapHomeTapTextToState(event);
+    } else if (event is HomeFetchWord) {
+      yield* _mapHomeFetchWord(event);
     } else if (event is HomeSearchWord) {
       yield* _mapHomeSearchWord(event);
     } else if (event is HomeToggleWordInfo) {
@@ -34,20 +38,41 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       yield* _mapHomeToggleTorch(event);
     } else if (event is HomeProcessing) {
       yield* _mapHomeProcessing(event);
+    } else if (event is HomeCancelSearchWord) {
+      yield* _mapHomeCancelSearchWord(event);
+    } else if (event is HomeCancelCompleter) {
+      yield* _mapHomeProcessing(HomeProcessing(false));
     }
   }
 
   Stream<HomeState> _mapHomeTapTextToState(HomeTapText event) async* {
+    _searchCompleter = CancelableCompleter(
+      onCancel: () {
+        add(HomeCancelCompleter());
+      },
+    );
+    _searchCompleter.complete(dictionaryService.searchWord(event.word));
+
     yield state.copyWith(isSearchLoading: true);
 
-    var result = await dictionaryService.searchWord(event.word);
+    _searchCompleter.operation.value.then((result) {
+      add(HomeFetchWord(result));
+    });
+  }
 
+  Stream<HomeState> _mapHomeFetchWord(HomeFetchWord event) async* {
     yield state.copyWith(
       isSearchLoading: false,
       isShowSearchBar: false,
       isShowWordInfo: true,
-      word: result,
+      word: event.word,
     );
+  }
+
+  Stream<HomeState> _mapHomeCancelSearchWord(
+    HomeCancelSearchWord event,
+  ) async* {
+    await _searchCompleter.operation.cancel();
   }
 
   Stream<HomeState> _mapHomeProcessing(HomeProcessing event) async* {
@@ -55,14 +80,18 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   Stream<HomeState> _mapHomeSearchWord(HomeSearchWord event) async* {
-    var result = await dictionaryService.searchWord(event.word);
-
-    yield state.copyWith(
-      isSearchLoading: false,
-      isShowSearchBar: false,
-      isShowWordInfo: true,
-      word: result,
+    _searchCompleter = CancelableCompleter(
+      onCancel: () {
+        add(HomeCancelCompleter());
+      },
     );
+    _searchCompleter.complete(dictionaryService.searchWord(event.word));
+
+    yield state.copyWith(isShowSearchBar: false, isSearchLoading: true);
+
+    _searchCompleter.operation.value.then((result) {
+      add(HomeFetchWord(result));
+    });
   }
 
   Stream<HomeState> _mapToggleToggleWordInfo(HomeToggleWordInfo event) async* {

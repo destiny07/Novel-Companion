@@ -16,9 +16,18 @@ class HomeTapText extends HomeEvent {
   List<Object> get props => [word];
 }
 
+class HomeFetchWord extends HomeEvent {
+  final Word word;
+
+  const HomeFetchWord(this.word);
+
+  @override
+  List<Object> get props => [word];
+}
+
 class HomeProcessing extends HomeEvent {
   final bool isProcessing;
-  
+
   const HomeProcessing(this.isProcessing);
 
   @override
@@ -32,6 +41,20 @@ class HomeSearchWord extends HomeEvent {
 
   @override
   List<Object> get props => [word];
+}
+
+class HomeCancelSearchWord extends HomeEvent {
+  const HomeCancelSearchWord();
+
+  @override
+  List<Object> get props => [];
+}
+
+class HomeCancelCompleter extends HomeEvent {
+  const HomeCancelCompleter();
+
+  @override
+  List<Object> get props => [];
 }
 
 class HomeToggleWordInfo extends HomeEvent {
