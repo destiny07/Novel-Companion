@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:project_lyca/constants.dart' as constants;
 
 class CustomTheme {
-  static ThemeData getThemeByName(String themeName, {TextStyle? textStyle, double? fontSize}) {
+  static ThemeData getThemeByName(String themeName,
+      {TextStyle? textStyle, double? fontSize}) {
     switch (themeName) {
       case constants.blueThemeKey:
         return CustomTheme.blueTheme(textStyle, fontSize);
@@ -23,13 +24,13 @@ class CustomTheme {
     return ThemeData(
       textTheme: TextTheme(
         bodyText1: TextStyle(
-          color: Colors.white,
-          fontStyle: textStyle?.fontStyle,
-          fontFamily: textStyle?.fontFamily,
-          fontSize: fontSize
-        ),
+            color: Colors.white,
+            fontStyle: textStyle?.fontStyle,
+            fontFamily: textStyle?.fontFamily,
+            fontSize: fontSize),
       ),
       iconTheme: IconThemeData(color: Colors.white),
+      buttonColor: Colors.white30,
       backgroundColor: Colors.blue,
     );
   }
@@ -38,13 +39,13 @@ class CustomTheme {
     return ThemeData(
       textTheme: TextTheme(
         bodyText1: TextStyle(
-          color: Colors.white,
-          fontStyle: textStyle?.fontStyle,
-          fontFamily: textStyle?.fontFamily,
-          fontSize: fontSize
-        ),
+            color: Colors.white,
+            fontStyle: textStyle?.fontStyle,
+            fontFamily: textStyle?.fontFamily,
+            fontSize: fontSize),
       ),
       iconTheme: IconThemeData(color: Colors.white),
+      buttonColor: Colors.white30,
       backgroundColor: Colors.pink,
     );
   }
@@ -59,7 +60,8 @@ class CustomTheme {
           fontSize: fontSize,
         ),
       ),
-      iconTheme: IconThemeData(color: Colors.white),
+      iconTheme: IconThemeData(color: Colors.black),
+      buttonColor: Colors.black,
       backgroundColor: Colors.white,
     );
   }
@@ -75,6 +77,7 @@ class CustomTheme {
         ),
       ),
       iconTheme: IconThemeData(color: Colors.white),
+      buttonColor: Colors.white30,
       backgroundColor: Colors.black,
     );
   }
@@ -90,6 +93,7 @@ class CustomTheme {
         ),
       ),
       iconTheme: IconThemeData(color: Colors.white),
+      buttonColor: Colors.white30,
       backgroundColor: Colors.grey,
     );
   }
