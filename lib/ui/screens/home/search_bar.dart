@@ -24,6 +24,7 @@ class _SearchBar extends State<SearchBar> with SingleTickerProviderStateMixin {
     curve: Curves.elasticOut,
   ));
   late FocusNode _focusNode;
+  final _textController = TextEditingController();
 
   @override
   void initState() {
@@ -75,6 +76,7 @@ class _SearchBar extends State<SearchBar> with SingleTickerProviderStateMixin {
   Widget _textField() {
     return TextField(
       focusNode: _focusNode,
+      controller: _textController,
       cursorColor: Theme.of(context).textTheme.bodyText1!.color,
       style: TextStyle(
         fontSize: 25.0,
@@ -96,6 +98,7 @@ class _SearchBar extends State<SearchBar> with SingleTickerProviderStateMixin {
       onSubmitted: (value) {
         if (value.trim().isNotEmpty) {
           BlocProvider.of<HomeBloc>(context).add(HomeSearchWord(value.trim()));
+          _textController.clear();
         }
       },
     );
