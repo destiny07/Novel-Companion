@@ -41,7 +41,8 @@ class _WordInfoState extends State<WordInfo> {
       listenWhen: (previous, current) =>
           previous.isTtsReading != current.isTtsReading,
       child: BlocBuilder<HomeBloc, HomeState>(
-        buildWhen: (previous, current) => previous.word != current.word,
+        buildWhen: (previous, current) =>
+            previous.word != current.word,
         builder: (context, state) {
           if (state.word != null) {
             return _cardContainer(state.word!);
@@ -62,20 +63,37 @@ class _WordInfoState extends State<WordInfo> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              InkWell(
-                child: Row(
-                  children: [
-                    Text(
-                      word.name,
-                      style: Theme.of(context).textTheme.bodyText1,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  InkWell(
+                    child: Row(
+                      children: [
+                        Text(
+                          word.name,
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                        Icon(Icons.volume_up),
+                      ],
                     ),
-                    Icon(Icons.volume_up),
-                  ],
-                ),
-                onTap: () {
-                  flutterTts.stop();
-                  flutterTts.speak(word.name);
-                },
+                    onTap: () {
+                      flutterTts.stop();
+                      flutterTts.speak(word.name);
+                    },
+                  ),
+                  InkWell(
+                    child: Icon(
+                      Icons.close,
+                      color: Theme.of(context).buttonColor,
+                    ),
+                    onTap: () {
+                      BlocProvider.of<HomeBloc>(context).add(
+                        HomeToggleWordInfo(false),
+                      );
+                    },
+                  ),
+                ],
               ),
               Text(
                 word.pronunciation!.all,

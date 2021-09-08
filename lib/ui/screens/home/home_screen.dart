@@ -142,17 +142,17 @@ class _HomeContentState extends State<_HomeContent>
 
   Widget _content() {
     return GestureDetector(
-      onHorizontalDragEnd: (details) {
-        // Swipe Left
-        if (details.primaryVelocity! < 0) {
-          print('Swiped Left');
-          BlocProvider.of<HomeBloc>(context).add(HomeToggleWordInfo(false));
-          // Swipe Right
-        } else if (details.primaryVelocity! > 0) {
-          print('Swiped Right');
-          BlocProvider.of<HomeBloc>(context).add(HomeToggleWordInfo(true));
-        }
-      },
+      // onHorizontalDragEnd: (details) {
+      //   // Swipe Left
+      //   if (details.primaryVelocity! < 0) {
+      //     print('Swiped Left');
+      //     BlocProvider.of<HomeBloc>(context).add(HomeToggleWordInfo(false));
+      //     // Swipe Right
+      //   } else if (details.primaryVelocity! > 0) {
+      //     print('Swiped Right');
+      //     BlocProvider.of<HomeBloc>(context).add(HomeToggleWordInfo(true));
+      //   }
+      // },
       child: Stack(
         children: [
           Align(
@@ -286,14 +286,17 @@ class _HomeContentState extends State<_HomeContent>
   Widget _wordInfo(BuildContext context) {
     return Container(
       margin: EdgeInsets.fromLTRB(8.0, 24, 8.0, 128.0),
-      child: AnimatedWordInfo(
-        onVisibilityChanged: (isVisible) {
-          if (isVisible) {
+      child: BlocListener<HomeBloc, HomeState>(
+        listener: (previous, current) {
+          if (current.isShowWordInfo) {
             _cameraViewController.setEnableTap!(false);
           } else {
             _cameraViewController.setEnableTap!(true);
           }
         },
+        listenWhen: (previous, current) =>
+            previous.isShowWordInfo != current.isShowWordInfo,
+        child: AnimatedWordInfo(),
       ),
     );
   }
@@ -304,14 +307,14 @@ class _HomeContentState extends State<_HomeContent>
           previous.isSearchLoading != current.isSearchLoading,
       builder: (context, state) {
         if (state.isSearchLoading) {
-        return Container(
-          margin: EdgeInsets.fromLTRB(8.0, 24, 8.0, 128.0),
-          child: SearchProgress(
-            onCancel: () {
-              BlocProvider.of<HomeBloc>(context).add(HomeCancelSearchWord());
-            },
-          ),
-        );
+          return Container(
+            margin: EdgeInsets.fromLTRB(8.0, 24, 8.0, 128.0),
+            child: SearchProgress(
+              onCancel: () {
+                BlocProvider.of<HomeBloc>(context).add(HomeCancelSearchWord());
+              },
+            ),
+          );
         }
         return Container();
       },

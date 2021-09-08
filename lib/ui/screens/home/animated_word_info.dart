@@ -4,9 +4,7 @@ import 'package:project_lyca/blocs/blocs.dart';
 import 'package:project_lyca/ui/screens/home/word_info.dart';
 
 class AnimatedWordInfo extends StatefulWidget {
-  final Function(bool) onVisibilityChanged;
-
-  AnimatedWordInfo({required this.onVisibilityChanged});
+  AnimatedWordInfo();
 
   @override
   State<StatefulWidget> createState() => _AnimatedWordInfo();
@@ -44,23 +42,29 @@ class _AnimatedWordInfo extends State<AnimatedWordInfo>
   }
 
   Widget _wordInfo() {
-    return BlocListener<HomeBloc, HomeState>(
-      listener: (previous, current) {
-        if (current.isShowWordInfo) {
-          _controller.reverse();
-          widget.onVisibilityChanged(true);
-        } else {
-          _controller.forward();
-          widget.onVisibilityChanged(false);
-        }
-      },
-      listenWhen: (previous, current) =>
-          previous.isShowWordInfo !=
-          current.isShowWordInfo,
-      child: SlideTransition(
-        position: _offsetAnimation,
-        child: WordInfo(),
-      ),
+    // return BlocListener<HomeBloc, HomeState>(
+    //   listener: (previous, current) {
+    //     if (current.isShowWordInfo) {
+    //       _controller.reverse();
+    //       widget.onVisibilityChanged(true);
+    //     } else {
+    //       _controller.forward();
+    //       widget.onVisibilityChanged(false);
+    //     }
+    //   },
+    //   listenWhen: (previous, current) =>
+    //       previous.isShowWordInfo !=
+    //       current.isShowWordInfo,
+    //   child: SlideTransition(
+    //     position: _offsetAnimation,
+    //     child: WordInfo(),
+    //   ),
+    // );
+    return BlocBuilder<HomeBloc, HomeState>(
+      buildWhen: (previous, current) =>
+          previous.isShowWordInfo != current.isShowWordInfo,
+      builder: (context, state) =>
+          state.isShowWordInfo ? WordInfo() : Container(),
     );
   }
 }
