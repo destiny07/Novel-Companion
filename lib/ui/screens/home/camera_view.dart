@@ -8,14 +8,12 @@ import 'package:project_lyca/blocs/blocs.dart';
 class CameraView extends StatefulWidget {
   final List<CameraDescription> cameras;
   final Function(String) onTapWord;
-  final Function onProcessing;
   final bool enableTap;
   final CameraViewController? controller;
 
   const CameraView({
     required this.cameras,
     required this.onTapWord,
-    required this.onProcessing,
     this.enableTap = true,
     this.controller,
   });
@@ -162,8 +160,6 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
   }
 
   void _onTap(TapDownDetails details) async {
-    widget.onProcessing();
-    
     final RecognisedText recognisedText =
         await textDetector.processImage(_inputImage);
 
