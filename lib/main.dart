@@ -11,6 +11,7 @@ import 'package:project_lyca/repositories/contracts/contracts.dart';
 import 'package:project_lyca/repositories/repositories.dart';
 import 'package:project_lyca/ui/screens/screens.dart';
 import 'package:project_lyca/constants.dart' as constants;
+import 'package:project_lyca/ui/screens/unknown_screen.dart';
 
 void main() async {
   Bloc.observer = AppObserver();
@@ -113,7 +114,7 @@ class _AppViewState extends State<AppView> {
           child: child,
         );
       },
-      onGenerateRoute: (_) => SplashScreen.route(widget.camera),
+      onGenerateRoute: (_) => UnknownScreen.route(),
     );
   }
 }
