@@ -6,22 +6,29 @@ import 'package:project_lyca/services/messages/response_message.dart';
 class FunctionsDictionaryService implements DictionaryService {
   @override
   Future<ResponseMessage<Word>> searchWord(String word) async {
-    HttpsCallable callable =
-        FirebaseFunctions.instance.httpsCallable('getWord');
-    final response = await callable.call(<String, dynamic>{'word': word});
-    final responseData = response.data;
+    try {
+      HttpsCallable callable =
+          FirebaseFunctions.instance.httpsCallable('getWord');
+      final response = await callable.call(<String, dynamic>{'word': word});
+      final responseData = response.data;
 
-    if (responseData['isSuccess'] == true) {
+      if (responseData['isSuccess'] == true) {
+        return ResponseMessage(
+          data: Word.fromJson(
+            Map<String, dynamic>.from(responseData['data']),
+          ),
+        );
+      }
+
       return ResponseMessage(
-        data: Word.fromJson(
-          Map<String, dynamic>.from(responseData['data']),
-        ),
+        isSuccess: false,
+        description: responseData['description'],
+      );
+    } catch (err) {
+      return ResponseMessage(
+        isSuccess: false,
+        description: 'Problem occurred searching $word',
       );
     }
-    
-    return ResponseMessage(
-      isSuccess: false,
-      description: responseData['description'],
-    );
   }
 }
