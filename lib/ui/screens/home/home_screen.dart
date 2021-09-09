@@ -157,23 +157,48 @@ class _HomeContentState extends State<_HomeContent>
         children: [
           Align(
             alignment: Alignment.center,
-            child: BlocListener<HomeBloc, HomeState>(
-              listenWhen: (previous, current) =>
-                  previous.showTapAgain != current.showTapAgain,
-              listener: (context, state) async {
-                if (state.showTapAgain) {
-                  await Fluttertoast.cancel();
-                  await Fluttertoast.showToast(
-                    msg: "Please tap again",
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.CENTER,
-                    timeInSecForIosWeb: 1,
-                    backgroundColor: Theme.of(context).backgroundColor,
-                    textColor: Theme.of(context).textTheme.bodyText1!.color,
-                    fontSize: Theme.of(context).textTheme.bodyText1!.fontSize,
-                  );
-                }
-              },
+            child: MultiBlocListener(
+              listeners: [
+                BlocListener<HomeBloc, HomeState>(
+                  listenWhen: (previous, current) =>
+                      previous.showTapAgain != current.showTapAgain,
+                  listener: (context, state) async {
+                    if (state.showTapAgain) {
+                      await Fluttertoast.cancel();
+                      await Fluttertoast.showToast(
+                        msg: "Please tap again",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.CENTER,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Theme.of(context).backgroundColor,
+                        textColor: Theme.of(context).textTheme.bodyText1!.color,
+                        fontSize:
+                            Theme.of(context).textTheme.bodyText1!.fontSize,
+                      );
+                    }
+                  },
+                ),
+                BlocListener<HomeBloc, HomeState>(
+                  listenWhen: (previous, current) =>
+                      !current.isWordFound &&
+                      previous.inputWord != current.inputWord,
+                  listener: (context, state) async {
+                    if (!state.isWordFound) {
+                      await Fluttertoast.cancel();
+                      await Fluttertoast.showToast(
+                        msg: state.description!,
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.CENTER,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Theme.of(context).backgroundColor,
+                        textColor: Theme.of(context).textTheme.bodyText1!.color,
+                        fontSize:
+                            Theme.of(context).textTheme.bodyText1!.fontSize,
+                      );
+                    }
+                  },
+                )
+              ],
               child: CameraView(
                 controller: _cameraViewController,
                 cameras: widget.cameras,

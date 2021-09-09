@@ -1,5 +1,6 @@
 import 'package:project_lyca/models/models.dart';
+import 'package:project_lyca/services/messages/response_message.dart';
 
 abstract class DictionaryService {
-  Future<Word> searchWord(String word);
+  Future<ResponseMessage<Word>> searchWord(String word);
 }

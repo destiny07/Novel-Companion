@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:project_lyca/models/models.dart';
 import 'package:project_lyca/repositories/contracts/contracts.dart';
+import 'package:project_lyca/services/messages/response_message.dart';
 import 'package:project_lyca/services/services.dart';
 
 part 'home_event.dart';
@@ -84,22 +85,37 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       return;
     }
 
-    try {
-      final result = await dictionaryService.searchWord(word);
-      add(HomeFetchWord(result));
-    } catch (err) {
-      add(HomeFetchWord(null));
+    final result = await dictionaryService.searchWord(word);
+    if (result.isSuccess) {
+      add(HomeFetchWord(inputWord: word, word: result.data));
+    } else {
+      add(HomeFetchWord(
+          inputWord: word, description: result.description, isSuccess: false));
     }
   }
 
   Stream<HomeState> _mapHomeFetchWord(HomeFetchWord event) async* {
-    yield state.copyWith(
-      showTapAgain: false,
-      isSearchLoading: false,
-      isShowSearchBar: false,
-      isShowWordInfo: true,
-      word: event.word,
-    );
+    if (event.isSuccess) {
+      yield state.copyWith(
+        showTapAgain: false,
+        isSearchLoading: false,
+        isShowSearchBar: false,
+        isShowWordInfo: true,
+        word: event.word,
+        isWordFound: true,
+        inputWord: event.inputWord,
+      );
+    } else {
+      yield state.copyWith(
+        showTapAgain: false,
+        isSearchLoading: false,
+        isShowSearchBar: false,
+        isShowWordInfo: false,
+        isWordFound: false,
+        description: event.description,
+        inputWord: event.inputWord,
+      );
+    }
   }
 
   Stream<HomeState> _mapHomeCancelSearchWord(
@@ -116,7 +132,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   Stream<HomeState> _mapHomeSearchWord(HomeSearchWord event) async* {
-    _searchCompleter = CancelableCompleter(
+    _searchCompleter = CancelableCompleter<ResponseMessage<Word>>(
       onCancel: () {
         add(HomeCancelCompleter());
       },
@@ -126,7 +142,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     yield state.copyWith(isShowSearchBar: false, isSearchLoading: true);
 
     _searchCompleter.operation.value.then((result) {
-      add(HomeFetchWord(result));
+      add(HomeFetchWord(
+        inputWord: event.word,
+        isSuccess: result.isSuccess,
+        description: result.description,
+        word: result.data,
+      ));
     });
   }
 

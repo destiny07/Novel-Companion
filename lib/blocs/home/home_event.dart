@@ -28,12 +28,20 @@ class HomeShowTapAgain extends HomeEvent {
 }
 
 class HomeFetchWord extends HomeEvent {
+  final bool isSuccess;
+  final String? description;
   final Word? word;
+  final String inputWord;
 
-  const HomeFetchWord(this.word);
+  const HomeFetchWord({
+    required this.inputWord,
+    this.isSuccess = true,
+    this.description,
+    this.word,
+  });
 
   @override
-  List<Object?> get props => [word];
+  List<Object?> get props => [isSuccess, description, word];
 }
 
 class HomeProcessing extends HomeEvent {
