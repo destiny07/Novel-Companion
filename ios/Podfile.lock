@@ -281,6 +281,10 @@ PODS:
     - FirebaseCore (~> 7.0)
     - GTMSessionFetcher/Core (~> 1.4)
   - Flutter (1.0.0)
+  - flutter_flashlight (1.0.0):
+    - Flutter
+  - flutter_tts (0.0.1):
+    - Flutter
   - fluttertoast (0.0.2):
     - Flutter
     - Toast
@@ -461,6 +465,10 @@ PODS:
     - nanopb/encode (= 2.30908.0)
   - nanopb/decode (2.30908.0)
   - nanopb/encode (2.30908.0)
+  - path_provider (0.0.1):
+    - Flutter
+  - "permission_handler (5.1.0+2)":
+    - Flutter
   - PromisesObjC (1.2.12)
   - Protobuf (3.17.0)
   - SSZipArchive (2.4.2)
@@ -473,9 +481,13 @@ DEPENDENCIES:
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - Flutter (from `Flutter`)
+  - flutter_flashlight (from `.symlinks/plugins/flutter_flashlight/ios`)
+  - flutter_tts (from `.symlinks/plugins/flutter_tts/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - google_ml_kit (from `.symlinks/plugins/google_ml_kit/ios`)
   - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
+  - path_provider (from `.symlinks/plugins/path_provider/ios`)
+  - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
 
 SPEC REPOS:
   trunk:
@@ -534,12 +546,20 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_core/ios"
   Flutter:
     :path: Flutter
+  flutter_flashlight:
+    :path: ".symlinks/plugins/flutter_flashlight/ios"
+  flutter_tts:
+    :path: ".symlinks/plugins/flutter_tts/ios"
   fluttertoast:
     :path: ".symlinks/plugins/fluttertoast/ios"
   google_ml_kit:
     :path: ".symlinks/plugins/google_ml_kit/ios"
   google_sign_in:
     :path: ".symlinks/plugins/google_sign_in/ios"
+  path_provider:
+    :path: ".symlinks/plugins/path_provider/ios"
+  permission_handler:
+    :path: ".symlinks/plugins/permission_handler/ios"
 
 SPEC CHECKSUMS:
   abseil: 6c8eb7892aefa08d929b39f9bb108e5367e3228f
@@ -557,6 +577,8 @@ SPEC CHECKSUMS:
   FirebaseFirestore: f495bb336b23eca23ea5d3605dce2a4cc214fde9
   FirebaseFunctions: cf3d041e5292b1c4bda868d542071a0f8291a4d4
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
+  flutter_flashlight: 17afef1f04adeaba9166a35b21619f3fb0c56cd8
+  flutter_tts: 0f492aab6accf87059b72354fcb4ba934304771d
   fluttertoast: 6122fa75143e992b1d3470f61000f591a798cc58
   google_ml_kit: 3e25499de151048da453504d2b676cfd1c6c6bd0
   google_sign_in: 6bd214b9c154f881422f5fe27b66aaa7bbd580cc
@@ -588,11 +610,13 @@ SPEC CHECKSUMS:
   MLKitVisionKit: 92bddf95a91152419cdf3cbf2c2aed43cdf97cc2
   MLKitXenoCommon: 7c59efa2b957f40acd06c9d6fc28763de1627c9b
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
+  path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
+  permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   Protobuf: 7327d4444215b5f18e560a97f879ff5503c4581c
   SSZipArchive: e7b4f3d9e780c2acc1764cd88fbf2de28f26e5b2
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
 
-PODFILE CHECKSUM: a2c7dcc5c013ddbaf2069ad0dbcc0eaa7be5e02e
+PODFILE CHECKSUM: dddcf51022a5c1ead83ccc3cea06affe9fbd31af
 
 COCOAPODS: 1.10.2
