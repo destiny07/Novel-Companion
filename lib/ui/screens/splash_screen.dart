@@ -31,6 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromRGBO(254, 240, 219, 1),
       body: BlocListener<UserConfigBloc, UserConfigState>(
         listener: (context, state) {
           Navigator.of(context).pushAndRemoveUntil(
@@ -39,7 +40,31 @@ class _SplashScreenState extends State<SplashScreen> {
         listenWhen: (previous, current) =>
             previous.isFetching != current.isFetching && !current.isFetching,
         child: Center(
-          child: Text('Splashhhhhh'),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image(
+                image: AssetImage('assets/icon/logo.png'),
+                height: 200,
+                width: 200,
+              ),
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: LinearProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation(
+                    Theme.of(context).textTheme.bodyText1!.color,
+                  ),
+                ),
+              ),
+              Text(
+                'Setting up...',
+                style: TextStyle(
+                  fontFamily: 'Allison',
+                  fontSize: 30,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
