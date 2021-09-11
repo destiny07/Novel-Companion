@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'package:project_lyca/blocs/blocs.dart';
@@ -235,17 +236,33 @@ class _HomeContentState extends State<_HomeContent>
 
   Widget _noPermissionsContent() {
     return Container(
+      color: Color.fromRGBO(254, 240, 219, 1),
       child: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Text(
-              'Camera permissions required.',
-              style: TextStyle(color: Colors.blue),
+              'Permissions Required',
+              style: GoogleFonts.workSans(
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
+                color: Color.fromRGBO(1, 0, 31, 1),
+              ),
             ),
-            TextButton(
+            Text(
+              'Novel Companion requires camera and internet permissions to work properly.',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.workSans(
+                color: Color.fromRGBO(1, 0, 31, 1),
+              ),
+            ),
+            ElevatedButton(
               child: Text('Give permission'),
+              style: ElevatedButton.styleFrom(
+                primary: Color.fromRGBO(186, 226, 221, 1),
+                onPrimary: Color.fromRGBO(1, 0, 31, 1),
+              ),
               onPressed: () async {
                 final camStatus = await Permission.camera.status;
                 final micStatus = await Permission.microphone.status;
