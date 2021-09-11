@@ -36,8 +36,7 @@ const Map<String, String> themeNameMap = {
   pinkThemeKey: 'Pink',
 };
 
-
 // Default Config
 const double defaultFontSize = 11;
 const String defaultFontStyle = notoSansKey;
-const String defaultTheme = blueThemeKey;
+const String defaultTheme = whiteThemeKey;
