@@ -200,6 +200,8 @@ class _HomeContentState extends State<_HomeContent>
                 )
               ],
               child: CameraView(
+                width: MediaQuery.of(context).size.width *
+                    MediaQuery.of(context).devicePixelRatio,
                 controller: _cameraViewController,
                 cameras: widget.cameras,
                 onTapWord: (image, offset) async {

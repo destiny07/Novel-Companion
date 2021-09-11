@@ -10,10 +10,12 @@ class CameraView extends StatefulWidget {
   final Function(InputImage, Offset) onTapWord;
   final bool enableTap;
   final CameraViewController? controller;
+  final double width;
 
   const CameraView({
     required this.cameras,
     required this.onTapWord,
+    required this.width,
     this.enableTap = true,
     this.controller,
   });
@@ -32,9 +34,12 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
   void initState() {
     super.initState();
 
+    var resolutionPreset =
+        widget.width < 1080 ? ResolutionPreset.high : ResolutionPreset.veryHigh;
+
     // Camera Setup
     _cameraController =
-        CameraController(widget.cameras.first, ResolutionPreset.high);
+        CameraController(widget.cameras.first, resolutionPreset);
     _cameraController?.initialize().then((_) async {
       if (!mounted) {
         return;
@@ -142,6 +147,9 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
     //     ),
     //   ),
     // );
+    final pixelRatio = MediaQuery.of(context).devicePixelRatio;
+    final width = widget.width < 1080 ? 720 / pixelRatio : 1080 / pixelRatio;
+    final height = widget.width < 1080 ? 1280 /pixelRatio : 1920 / pixelRatio;
     return BlocListener<HomeBloc, HomeState>(
       listenWhen: (previous, current) =>
           previous.isTorchOn != current.isTorchOn,
@@ -152,9 +160,13 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
           await _cameraController?.setFlashMode(FlashMode.off);
         }
       },
-      child: GestureDetector(
-        child: CameraPreview(_cameraController!),
-        onTapDown: _enableTap ? _onTap : null,
+      child: SizedBox(
+        width: width,
+        height: height,
+        child: GestureDetector(
+          child: CameraPreview(_cameraController!),
+          onTapDown: _enableTap ? _onTap : null,
+        ),
       ),
     );
   }
