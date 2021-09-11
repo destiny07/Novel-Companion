@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:project_lyca/blocs/blocs.dart';
 
 class FontSizeDialog extends StatefulWidget {
@@ -35,18 +36,30 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Text('Font Size'),
+              Text(
+                'Font Size',
+                style: GoogleFonts.workSans(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               _fontSizeDropdown(),
             ],
           ),
         ),
       ),
+      actionsPadding: EdgeInsets.symmetric(horizontal: 8.0),
       actions: [
         TextButton(
           child: Text('Cancel'),
           onPressed: () {
             Navigator.of(context).pop();
           },
+          style: TextButton.styleFrom(
+            primary: Color.fromRGBO(1, 0, 31, 1),
+            textStyle: GoogleFonts.workSans(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
         _saveButton(),
       ],
@@ -65,6 +78,13 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
                   BlocProvider.of<UserConfigBloc>(context)
                       .add(UserConfigUpdateFontSize(_currentFontSize));
                 },
+          style: ElevatedButton.styleFrom(
+            primary: Color.fromRGBO(186, 226, 221, 1),
+            onPrimary: Colors.white,
+            textStyle: GoogleFonts.workSans(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         );
       },
     );
@@ -72,12 +92,14 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
 
   Widget _fontSizeDropdown() {
     return DropdownButton<double>(
+      underline: Container(),
       value: _currentFontSize,
       items: fontSizes
           .map((fontSize) => DropdownMenuItem<double>(
                 value: fontSize,
                 child: Text(
                   fontSize.toStringAsFixed(0),
+                  style: GoogleFonts.workSans(),
                 ),
               ))
           .toList(),
