@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:project_lyca/blocs/blocs.dart';
 import 'package:project_lyca/constants.dart' as constants;
 import 'package:project_lyca/ui/custom_font.dart';
@@ -45,12 +46,19 @@ class _ThemeDialogState extends State<ThemeDialog> {
           ),
         ),
       ),
+      actionsPadding: EdgeInsets.symmetric(horizontal: 8.0),
       actions: [
         TextButton(
           child: Text('Cancel'),
           onPressed: () {
             Navigator.of(context).pop();
           },
+          style: TextButton.styleFrom(
+            primary: Color.fromRGBO(1, 0, 31, 1),
+            textStyle: GoogleFonts.workSans(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
         _saveButton(),
       ],
@@ -61,7 +69,7 @@ class _ThemeDialogState extends State<ThemeDialog> {
     return BlocBuilder<UserConfigBloc, UserConfigState>(
       buildWhen: (previous, current) => previous.isSaving != current.isSaving,
       builder: (context, state) {
-        return TextButton(
+        return ElevatedButton(
           child: state.isSaving ? Text('Saving...') : Text('Save'),
           onPressed: state.isSaving
               ? null
@@ -69,6 +77,13 @@ class _ThemeDialogState extends State<ThemeDialog> {
                   BlocProvider.of<UserConfigBloc>(context)
                       .add(UserConfigUpdateTheme(_currentTheme));
                 },
+          style: ElevatedButton.styleFrom(
+            primary: Color.fromRGBO(186, 226, 221, 1),
+            onPrimary: Colors.white,
+            textStyle: GoogleFonts.workSans(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         );
       },
     );
@@ -147,19 +162,37 @@ class _ThemeDialogState extends State<ThemeDialog> {
   }
 
   Widget _themeDropdown() {
-    return DropdownButton<String>(
-      value: _currentTheme,
-      items: constants.themeNameMap.keys
-          .map((themeKey) => DropdownMenuItem<String>(
+    return Container(
+      padding: EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5.0),
+        border: Border.all(
+          color: Color.fromRGBO(1, 0, 31, 1),
+          width: 0.5,
+        ),
+      ),
+      child: DropdownButton<String>(
+        isDense: true,
+        isExpanded: true,
+        underline: Container(),
+        value: _currentTheme,
+        items: constants.themeNameMap.keys
+            .map(
+              (themeKey) => DropdownMenuItem<String>(
                 value: themeKey,
-                child: Text(constants.themeNameMap[themeKey]!),
-              ))
-          .toList(),
-      onChanged: (value) {
-        setState(() {
-          _currentTheme = value!;
-        });
-      },
+                child: Text(
+                  constants.themeNameMap[themeKey]!,
+                  style: GoogleFonts.workSans(),
+                ),
+              ),
+            )
+            .toList(),
+        onChanged: (value) {
+          setState(() {
+            _currentTheme = value!;
+          });
+        },
+      ),
     );
   }
 }
