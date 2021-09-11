@@ -225,7 +225,7 @@ PODS:
   - BoringSSL-GRPC/Interface (0.0.7)
   - camera (0.0.1):
     - Flutter
-  - cloud_firestore (1.0.7):
+  - cloud_firestore (2.1.0):
     - Firebase/Firestore (= 7.11.0)
     - firebase_core
     - Flutter
@@ -244,7 +244,7 @@ PODS:
   - Firebase/Functions (7.11.0):
     - Firebase/CoreOnly
     - FirebaseFunctions (~> 7.11.0)
-  - firebase_auth (1.1.2):
+  - firebase_auth (1.1.4):
     - Firebase/Auth (= 7.11.0)
     - firebase_core
     - Flutter
@@ -566,10 +566,10 @@ SPEC CHECKSUMS:
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   BoringSSL-GRPC: 8edf627ee524575e2f8d19d56f068b448eea3879
   camera: 3164201dc344383e62282964016528c4f5a9ad50
-  cloud_firestore: 5dbb01f115c77f4380e2248852518f52830d631f
+  cloud_firestore: d40d713b447c39e4e5c1478cee269b2f2dc9cb99
   cloud_functions: 07d290cd6e5bee0985f916da54884d140ddd8738
   Firebase: c121feb35e4126c0b355e3313fa9b487d47319fd
-  firebase_auth: e7065954aa2a7c8ef1a8502fba3009bcdd8fc91a
+  firebase_auth: a2bcd374be68ccee6284c3d00286846466b5a28b
   firebase_core: 54856a8a39b8f3e35f34fdd3373f3b92a1daa68b
   FirebaseAuth: 5fe4585c2ed847319f0ea68bd1d82c77e49ff9a0
   FirebaseCore: 907447d8917a4d3eb0cce2829c5a0ad21d90b432
@@ -581,7 +581,7 @@ SPEC CHECKSUMS:
   flutter_tts: 0f492aab6accf87059b72354fcb4ba934304771d
   fluttertoast: 6122fa75143e992b1d3470f61000f591a798cc58
   google_ml_kit: 3e25499de151048da453504d2b676cfd1c6c6bd0
-  google_sign_in: 6bd214b9c154f881422f5fe27b66aaa7bbd580cc
+  google_sign_in: de494e5e993986afae63e22a32441e30c35c9823
   GoogleDataTransport: cd9db2180fcecd8da1b561aea31e3e56cf834aa7
   GoogleMLKit: 6ca2a10de262ee1017b52ac045e8967884ace992
   GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213

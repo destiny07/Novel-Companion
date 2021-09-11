@@ -25,10 +25,10 @@ dependencies:
     sdk: flutter
   async: ^2.6.1
   camera: ^0.8.1+3
-  cloud_firestore: ^1.0.7
+  cloud_firestore: ^2.1.0
   cloud_functions: ^1.0.7
   equatable: ^2.0.0
-  firebase_auth: ^1.1.2
+  firebase_auth: ^1.1.4
   firebase_core: ^1.1.0
   flutter_bloc: ^7.0.0
   flutter_flashlight:
@@ -37,7 +37,7 @@ dependencies:
   fluttertoast: ^8.0.7
   google_fonts: ^2.1.0
   google_ml_kit: ^0.6.0
-  google_sign_in: ^5.0.0
+  google_sign_in: ^5.0.2
   http: ^0.13.3
   meta: ^1.3.0
   flutter_tts: ^3.2.2
