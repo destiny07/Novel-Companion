@@ -16,7 +16,12 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Settings'),
+        title: Text(
+          'Settings',
+          style: TextStyle(color: Color.fromRGBO(1, 0, 31, 1)),
+        ),
+        iconTheme: IconThemeData(color: Color.fromRGBO(1, 0, 31, 1)),
+        backgroundColor: Color.fromRGBO(254, 240, 219, 1),
       ),
       body: SafeArea(
         child: ListView(
@@ -31,17 +36,17 @@ class SettingsScreen extends StatelessWidget {
                 );
               },
             ),
-            Divider(),
-            ListTile(
-              title: Text('Font'),
-              subtitle: _fontStyle(),
-              onTap: () async {
-                await showDialog(
-                  context: context,
-                  builder: (context) => FontDialog(),
-                );
-              },
-            ),
+            // Divider(),
+            // ListTile(
+            //   title: Text('Font'),
+            //   subtitle: _fontStyle(),
+            //   onTap: () async {
+            //     await showDialog(
+            //       context: context,
+            //       builder: (context) => FontDialog(),
+            //     );
+            //   },
+            // ),
             Divider(),
             ListTile(
               title: Text('FontSize'),
