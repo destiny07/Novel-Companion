@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:project_lyca/blocs/login/login_bloc.dart';
 import 'package:project_lyca/repositories/contracts/contracts.dart';
 
@@ -14,6 +15,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromRGBO(254, 240, 219, 1),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.all(5.0),
@@ -38,11 +40,49 @@ class LoginScreen extends StatelessWidget {
                   fontSize: 16.0,
                 );
               },
-              child: LoginForm(),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Novel Companion',
+                      style: GoogleFonts.workSans(
+                        fontSize: 35,
+                        fontWeight: FontWeight.w500,
+                        color: Color.fromRGBO(131, 104, 83, 1),
+                      ),
+                    ),
+                    _branding(),
+                    LoginForm(),
+                  ],
+                ),
+              ),
             ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget _branding() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Image(
+          image: AssetImage('assets/icon/logo.png'),
+          height: 200,
+          width: 200,
+        ),
+        Text(
+          'Keep on reading!',
+          style: TextStyle(
+            fontFamily: 'Allison',
+            fontSize: 40,
+          ),
+        ),
+      ],
     );
   }
 }

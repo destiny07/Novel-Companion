@@ -53,5 +53,10 @@ dev_dependencies:
     sdk: flutter
 
 flutter:
-
+  assets:
+    - assets/icon/logo.png
+  fonts:
+    - family: Allison
+      fonts:
+        - asset: assets/fonts/google_fonts/allison/Allison-Regular.ttf
   uses-material-design: true
