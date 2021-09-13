@@ -48,8 +48,8 @@ class UserConfigBloc extends Bloc<UserConfigEvent, UserConfigState> {
       } else {
         yield state.copyWith(
           fontSize: config.fontSize,
-          fontStyle: constants.defaultFontStyle,
-          theme: constants.defaultTheme,
+          fontStyle: config.fontStyle,
+          theme: config.theme,
           isFetching: false,
           isFetchSuccess: true,
         );
