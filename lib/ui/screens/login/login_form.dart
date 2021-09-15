@@ -36,7 +36,7 @@ Widget _appleLoginButton(BuildContext context) {
     Buttons.Apple,
     onPressed: () {
       var authBloc = BlocProvider.of<LoginBloc>(context, listen: false);
-      authBloc.add(LoginWithGoogle());
+      authBloc.add(LoginWithApple());
     },
   );
 }
