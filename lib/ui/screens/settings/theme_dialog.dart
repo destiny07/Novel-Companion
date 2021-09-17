@@ -90,7 +90,7 @@ class _ThemeDialogState extends State<ThemeDialog> {
                       .add(UserConfigUpdateTheme(_currentTheme));
                 },
           style: ElevatedButton.styleFrom(
-            primary: Color.fromRGBO(186, 226, 221, 1),
+            primary: Color.fromRGBO(103, 181, 191, 1),
             onPrimary: Colors.white,
             textStyle: GoogleFonts.workSans(
               fontWeight: FontWeight.bold,

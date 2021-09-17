@@ -91,7 +91,8 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
                       .add(UserConfigUpdateFontSize(_currentFontSize));
                 },
           style: ElevatedButton.styleFrom(
-            primary: Color.fromRGBO(186, 226, 221, 1),
+            primary: Color.fromRGBO(103, 181, 191, 1),
+            elevation: 1.0,
             onPrimary: Colors.white,
             textStyle: GoogleFonts.workSans(
               fontWeight: FontWeight.bold,
