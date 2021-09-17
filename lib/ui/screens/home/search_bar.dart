@@ -17,7 +17,7 @@ class _SearchBar extends State<SearchBar> with SingleTickerProviderStateMixin {
     vsync: this,
   );
   late final Animation<Offset> _offsetAnimation = Tween<Offset>(
-    begin: Offset(0.0, -2.0),
+    begin: Offset(0.0, -3.0),
     end: Offset.zero,
   ).animate(CurvedAnimation(
     parent: _controller,
