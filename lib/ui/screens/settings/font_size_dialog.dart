@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project_lyca/blocs/blocs.dart';
 
@@ -26,9 +27,20 @@ class _FontSizeDialogState extends State<FontSizeDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       content: BlocListener<UserConfigBloc, UserConfigState>(
-        listener: (listenerContext, state) {
+        listener: (listenerContext, state) async {
           if (!state.isSaving && state.isSaveSuccessful) {
             Navigator.of(context).pop();
+          } else if (!state.isSaving && !state.isSaveSuccessful) {
+            await Fluttertoast.cancel();
+            await Fluttertoast.showToast(
+              msg: "Error saving font size.",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16.0,
+            );
           }
         },
         child: Container(
