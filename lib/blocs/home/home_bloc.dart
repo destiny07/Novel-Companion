@@ -85,7 +85,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       return;
     }
 
-    final result = await dictionaryService.searchWord(word);
+    final cleanedWord = word.replaceAll(new RegExp(r'[^\w\s\-]+'), '');
+    final result = await dictionaryService.searchWord(cleanedWord);
     if (result.isSuccess) {
       add(HomeFetchWord(inputWord: word, word: result.data));
     } else {
