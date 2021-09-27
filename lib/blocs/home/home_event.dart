@@ -8,16 +8,18 @@ abstract class HomeEvent extends Equatable {
 }
 
 class HomeTapText extends HomeEvent {
+  // final Size screenResolution;
   final InputImage inputImage;
   final Offset offset;
 
   const HomeTapText({
+    // required this.screenResolution,
     required this.inputImage,
     required this.offset,
   });
 
   @override
-  List<Object> get props => [inputImage];
+  List<Object> get props => [inputImage, offset];
 }
 
 class HomeShowTapAgain extends HomeEvent {

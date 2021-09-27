@@ -203,11 +203,23 @@ class _HomeContentState extends State<_HomeContent>
               child: CameraView(
                 width: MediaQuery.of(context).size.width *
                     MediaQuery.of(context).devicePixelRatio,
+                // densityPixel: MediaQuery.of(context).devicePixelRatio,
                 controller: _cameraViewController,
                 cameras: widget.cameras,
                 onTapWord: (image, offset) async {
+                  final pixelRatio = MediaQuery.of(context).devicePixelRatio;
+                  final screenWidth =
+                      MediaQuery.of(context).size.width * pixelRatio;
+                  final screenToCameraRatio =
+                      screenWidth / image.inputImageData!.size.shortestSide;
+                  final adjustedWidth =
+                      (offset.dx * pixelRatio) / screenToCameraRatio;
+                  final adjustedHeight =
+                      (offset.dy * pixelRatio) / screenToCameraRatio;
                   BlocProvider.of<HomeBloc>(context).add(
-                    HomeTapText(inputImage: image, offset: offset),
+                    HomeTapText(
+                        inputImage: image,
+                        offset: Offset(adjustedWidth, adjustedHeight)),
                   );
                 },
               ),
