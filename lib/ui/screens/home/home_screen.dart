@@ -181,8 +181,7 @@ class _HomeContentState extends State<_HomeContent>
                 ),
                 BlocListener<HomeBloc, HomeState>(
                   listenWhen: (previous, current) =>
-                      !current.isWordFound &&
-                      previous.inputWord != current.inputWord,
+                      !current.isWordFound && !current.isSearchLoading,
                   listener: (context, state) async {
                     if (!state.isWordFound) {
                       await Fluttertoast.cancel();
