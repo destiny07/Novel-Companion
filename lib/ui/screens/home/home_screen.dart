@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 
 import 'package:camera/camera.dart';
@@ -184,9 +185,17 @@ class _HomeContentState extends State<_HomeContent>
                       !current.isWordFound && !current.isSearchLoading,
                   listener: (context, state) async {
                     if (!state.isWordFound) {
+                      final connectivity =
+                          await Connectivity().checkConnectivity();
+
                       await Fluttertoast.cancel();
+
+                      final errorMessage =
+                          connectivity == ConnectivityResult.none
+                              ? 'Please check internet connection'
+                              : state.description!;
                       await Fluttertoast.showToast(
-                        msg: state.description!,
+                        msg: errorMessage,
                         toastLength: Toast.LENGTH_SHORT,
                         gravity: ToastGravity.CENTER,
                         timeInSecForIosWeb: 1,
