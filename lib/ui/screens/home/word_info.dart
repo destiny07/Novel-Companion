@@ -41,8 +41,7 @@ class _WordInfoState extends State<WordInfo> {
       listenWhen: (previous, current) =>
           previous.isTtsReading != current.isTtsReading,
       child: BlocBuilder<HomeBloc, HomeState>(
-        buildWhen: (previous, current) =>
-            previous.word != current.word,
+        buildWhen: (previous, current) => previous.word != current.word,
         builder: (context, state) {
           if (state.word != null) {
             return _cardContainer(state.word!);
@@ -95,10 +94,7 @@ class _WordInfoState extends State<WordInfo> {
                   ),
                 ],
               ),
-              Text(
-                word.pronunciation!.all,
-                style: Theme.of(context).textTheme.bodyText1,
-              ),
+              _pronunciation(word.pronunciation),
               ListView.separated(
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
@@ -115,6 +111,15 @@ class _WordInfoState extends State<WordInfo> {
         ),
       ),
     );
+  }
+
+  Widget _pronunciation(Pronunciation? pronunciation) {
+    return pronunciation != null
+        ? Text(
+            pronunciation.all,
+            style: Theme.of(context).textTheme.bodyText1,
+          )
+        : Container();
   }
 
   Widget _getSingleResult(Result result) {
