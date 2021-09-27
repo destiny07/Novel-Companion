@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:project_lyca/blocs/blocs.dart';
@@ -16,6 +17,7 @@ import 'package:project_lyca/ui/screens/unknown_screen.dart';
 void main() async {
   Bloc.observer = AppObserver();
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   await Firebase.initializeApp();
 
