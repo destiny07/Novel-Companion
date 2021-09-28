@@ -11,11 +11,13 @@ class CameraView extends StatefulWidget {
   final bool enableTap;
   final CameraViewController? controller;
   final double width;
+  // final double densityPixel;
 
   const CameraView({
     required this.cameras,
     required this.onTapWord,
     required this.width,
+    // required this.densityPixel,
     this.enableTap = true,
     this.controller,
   });
@@ -147,9 +149,6 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
     //     ),
     //   ),
     // );
-    final pixelRatio = MediaQuery.of(context).devicePixelRatio;
-    final width = widget.width < 1080 ? 720 / pixelRatio : 1080 / pixelRatio;
-    final height = widget.width < 1080 ? 1280 /pixelRatio : 1920 / pixelRatio;
     return BlocListener<HomeBloc, HomeState>(
       listenWhen: (previous, current) =>
           previous.isTorchOn != current.isTorchOn,
@@ -160,13 +159,17 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
           await _cameraController?.setFlashMode(FlashMode.off);
         }
       },
-      child: SizedBox(
-        width: width,
-        height: height,
-        child: GestureDetector(
-          child: CameraPreview(_cameraController!),
-          onTapDown: _enableTap ? _onTap : null,
-        ),
+      // child: SizedBox(
+      //   width: width,
+      //   height: height,
+      //   child: GestureDetector(
+      //     child: CameraPreview(_cameraController!),
+      //     onTapDown: _enableTap ? _onTap : null,
+      //   ),
+      // ),
+      child: GestureDetector(
+        child: CameraPreview(_cameraController!),
+        onTapDown: _enableTap ? _onTap : null,
       ),
     );
   }
@@ -192,10 +195,9 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
     // }
 
     // widget.onTapWord('');
-    final densityPixel = MediaQuery.of(context).devicePixelRatio;
-    final newOffset = Offset(details.localPosition.dx * densityPixel,
-        details.localPosition.dy * densityPixel);
-    widget.onTapWord(_inputImage, newOffset);
+    // final newOffset = Offset(details.localPosition.dx * densityPixel,
+    //     details.localPosition.dy * densityPixel);
+    widget.onTapWord(_inputImage, details.localPosition);
   }
 
   @override
