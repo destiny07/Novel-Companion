@@ -8,8 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:project_lyca/blocs/blocs.dart';
-import 'package:project_lyca/repositories/contracts/contracts.dart';
-import 'package:project_lyca/repositories/repositories.dart';
+import 'package:project_lyca/services/services.dart';
 import 'package:project_lyca/ui/screens/screens.dart';
 import 'package:project_lyca/constants.dart' as constants;
 import 'package:project_lyca/ui/screens/unknown_screen.dart';
@@ -30,16 +29,16 @@ void main() async {
   final cameras = await availableCameras();
   runApp(
     App(
-      authenticationRepository: FirebaseAuthRepository(),
-      dataRepository: FirestoreRepository(),
+      authenticationRepository: FirebaseAuthService(),
+      dataRepository: FirebaseUserConfigService(),
       camera: cameras,
     ),
   );
 }
 
 class App extends StatelessWidget {
-  final AuthRepository authenticationRepository;
-  final DataRepository dataRepository;
+  final AuthService authenticationRepository;
+  final UserConfigService dataRepository;
   final List<CameraDescription> camera;
 
   const App({
@@ -53,10 +52,10 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider<AuthRepository>(
+        RepositoryProvider<AuthService>(
           create: (context) => authenticationRepository,
         ),
-        RepositoryProvider<DataRepository>(
+        RepositoryProvider<UserConfigService>(
           create: (context) => dataRepository,
         ),
       ],
@@ -64,12 +63,12 @@ class App extends StatelessWidget {
         providers: [
           BlocProvider<AuthenticationBloc>(
             create: (_) => AuthenticationBloc(
-                authenticationRepository: authenticationRepository),
+                authenticationService: authenticationRepository),
           ),
           BlocProvider<UserConfigBloc>(
             create: (_) => UserConfigBloc(
-              authRepository: authenticationRepository,
-              dataRepository: dataRepository,
+              authService: authenticationRepository,
+              userConfigService: dataRepository,
             ),
           )
         ],

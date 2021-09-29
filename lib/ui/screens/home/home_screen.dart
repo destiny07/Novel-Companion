@@ -10,7 +10,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'package:project_lyca/blocs/blocs.dart';
-import 'package:project_lyca/repositories/contracts/contracts.dart';
 import 'package:project_lyca/services/services.dart';
 import 'package:project_lyca/ui/custom_font.dart';
 import 'package:project_lyca/ui/custom_theme.dart';
@@ -40,8 +39,9 @@ class HomeScreen extends StatelessWidget {
         child: BlocProvider(
           create: (context) {
             return HomeBloc(
-                dictionaryService: FunctionsDictionaryService(),
-                dataRepository: RepositoryProvider.of<DataRepository>(context));
+                dictionaryService: FirebaseDictionaryService(),
+                dataRepository:
+                    RepositoryProvider.of<UserConfigService>(context));
           },
           child: BlocBuilder<UserConfigBloc, UserConfigState>(
             builder: (context, state) => Theme(

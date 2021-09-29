@@ -1,17 +1,17 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_lyca/models/models.dart';
-import 'package:project_lyca/repositories/contracts/contracts.dart';
 import 'package:project_lyca/constants.dart' as constants;
+import 'package:project_lyca/services/services.dart';
 
 part 'user_config_event.dart';
 part 'user_config_state.dart';
 
 class UserConfigBloc extends Bloc<UserConfigEvent, UserConfigState> {
-  final AuthRepository authRepository;
-  final DataRepository dataRepository;
+  final AuthService authService;
+  final UserConfigService userConfigService;
 
-  UserConfigBloc({required this.authRepository, required this.dataRepository})
+  UserConfigBloc({required this.authService, required this.userConfigService})
       : super(UserConfigState.initial());
 
   @override
@@ -34,8 +34,8 @@ class UserConfigBloc extends Bloc<UserConfigEvent, UserConfigState> {
 
     try {
       // fetching here
-      final userId = authRepository.userId!;
-      final config = await dataRepository.getUserConfig(userId);
+      final userId = authService.userId!;
+      final config = await userConfigService.getUserConfig(userId);
 
       if (config == null) {
         yield state.copyWith(
@@ -76,7 +76,7 @@ class UserConfigBloc extends Bloc<UserConfigEvent, UserConfigState> {
         fontStyle: state.fontStyle,
         theme: state.theme,
       );
-      await dataRepository.setUserConfig(authRepository.userId!, newConfig);
+      await userConfigService.setUserConfig(authService.userId!, newConfig);
       yield state.copyWith(
         isSaving: false,
         isSaveSuccessful: true,
@@ -102,7 +102,7 @@ class UserConfigBloc extends Bloc<UserConfigEvent, UserConfigState> {
         fontStyle: event.fontStyle,
         theme: state.theme,
       );
-      await dataRepository.setUserConfig(authRepository.userId!, newConfig);
+      await userConfigService.setUserConfig(authService.userId!, newConfig);
       yield state.copyWith(
         isSaving: false,
         isSaveSuccessful: true,
@@ -128,7 +128,7 @@ class UserConfigBloc extends Bloc<UserConfigEvent, UserConfigState> {
         fontStyle: state.fontStyle,
         theme: event.theme,
       );
-      await dataRepository.setUserConfig(authRepository.userId!, newConfig);
+      await userConfigService.setUserConfig(authService.userId!, newConfig);
       yield state.copyWith(
         isSaving: false,
         isSaveSuccessful: true,

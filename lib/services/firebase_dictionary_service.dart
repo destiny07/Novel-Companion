@@ -3,7 +3,7 @@ import 'package:project_lyca/models/word.dart';
 import 'package:project_lyca/services/contracts/dictionary_service.dart';
 import 'package:project_lyca/services/messages/response_message.dart';
 
-class FunctionsDictionaryService implements DictionaryService {
+class FirebaseDictionaryService implements DictionaryService {
   @override
   Future<ResponseMessage<Word>> searchWord(String word) async {
     try {

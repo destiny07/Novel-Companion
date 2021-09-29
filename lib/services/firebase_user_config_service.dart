@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:project_lyca/models/user_config.dart';
-import 'package:project_lyca/repositories/contracts/contracts.dart';
+import 'package:project_lyca/services/contracts/user_config_service.dart';
 
-class FirestoreRepository implements DataRepository {
+class FirebaseUserConfigService implements UserConfigService {
   final FirebaseFirestore _firestore;
 
-  FirestoreRepository() : _firestore = FirebaseFirestore.instance;
+  FirebaseUserConfigService() : _firestore = FirebaseFirestore.instance;
 
   @override
   Future<UserConfig?> getUserConfig(String uuid) async {

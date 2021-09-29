@@ -4,16 +4,16 @@ import 'dart:math';
 import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:project_lyca/repositories/contracts/auth_repository.dart';
-import 'package:project_lyca/repositories/exceptions/exceptions.dart';
 import 'package:project_lyca/models/models.dart' as models;
+import 'package:project_lyca/services/contracts/auth_service.dart';
+import 'package:project_lyca/services/exceptions/auth_exceptions.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
-class FirebaseAuthRepository implements AuthRepository {
+class FirebaseAuthService implements AuthService {
   final FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
 
-  FirebaseAuthRepository()
+  FirebaseAuthService()
       : _firebaseAuth = FirebaseAuth.instance,
         _googleSignIn = GoogleSignIn();
 

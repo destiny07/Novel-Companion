@@ -5,7 +5,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:project_lyca/models/models.dart';
-import 'package:project_lyca/repositories/contracts/contracts.dart';
 import 'package:project_lyca/services/messages/response_message.dart';
 import 'package:project_lyca/services/services.dart';
 
@@ -14,7 +13,7 @@ part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final DictionaryService dictionaryService;
-  final DataRepository dataRepository;
+  final UserConfigService dataRepository;
   final textDetector = GoogleMlKit.vision.textDetector();
   late CancelableCompleter _searchCompleter;
 

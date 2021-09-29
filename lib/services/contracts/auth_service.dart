@@ -1,6 +1,6 @@
 import 'package:project_lyca/models/models.dart' as models;
 
-abstract class AuthRepository {
+abstract class AuthService {
   bool get isAuthenticated;
   String? get userId;
   Stream<bool> get status;

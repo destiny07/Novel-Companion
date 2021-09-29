@@ -1,17 +1,16 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:project_lyca/repositories/contracts/contracts.dart';
+import 'package:project_lyca/services/services.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc({
-    required AuthRepository authenticationRepository,
-  })  : _authenticationRepository = authenticationRepository,
-        super(const LoginState());
+    required this.authenticationService,
+  })  : super(const LoginState());
 
-  final AuthRepository _authenticationRepository;
+  final AuthService authenticationService;
 
   @override
   Stream<LoginState> mapEventToState(
@@ -28,12 +27,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     LoginWithGoogle event,
     LoginState state,
   ) async* {
-    await _authenticationRepository.signInWithGoogle();
+    await authenticationService.signInWithGoogle();
   }
 
   Stream<LoginState> _mapLoginWithAppleToState(
     LoginWithApple event,
   ) async* {
-    await _authenticationRepository.signInWithApple();
+    await authenticationService.signInWithApple();
   }
 }
