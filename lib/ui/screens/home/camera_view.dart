@@ -11,13 +11,11 @@ class CameraView extends StatefulWidget {
   final bool enableTap;
   final CameraViewController? controller;
   final double width;
-  // final double densityPixel;
 
   const CameraView({
     required this.cameras,
     required this.onTapWord,
     required this.width,
-    // required this.densityPixel,
     this.enableTap = true,
     this.controller,
   });
@@ -134,21 +132,6 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
     if (!_cameraController!.value.isInitialized) {
       return Container();
     }
-    // final mediaSize = MediaQuery.of(context).size;
-    // final scale =
-    //     1 / (_cameraController!.value.aspectRatio * mediaSize.aspectRatio);
-    // print('Preview Size: ${_cameraController!.value.previewSize}');
-    // return ClipRect(
-    //   clipper: MediaSizeClipper(mediaSize),
-    //   child: Transform.scale(
-    //     scale: scale,
-    //     alignment: Alignment.topCenter,
-    //     child: GestureDetector(
-    //       child: CameraPreview(_cameraController!),
-    //       onTapDown: _enableTap ? _onTap : null,
-    //     ),
-    //   ),
-    // );
     return BlocListener<HomeBloc, HomeState>(
       listenWhen: (previous, current) =>
           previous.isTorchOn != current.isTorchOn,
@@ -159,14 +142,6 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
           await _cameraController?.setFlashMode(FlashMode.off);
         }
       },
-      // child: SizedBox(
-      //   width: width,
-      //   height: height,
-      //   child: GestureDetector(
-      //     child: CameraPreview(_cameraController!),
-      //     onTapDown: _enableTap ? _onTap : null,
-      //   ),
-      // ),
       child: GestureDetector(
         child: CameraPreview(_cameraController!),
         onTapDown: _enableTap ? _onTap : null,
@@ -175,28 +150,6 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
   }
 
   void _onTap(TapDownDetails details) async {
-    // final RecognisedText recognisedText =
-    //     await textDetector.processImage(_inputImage);
-
-    // for (TextBlock block in recognisedText.blocks) {
-    //   for (TextLine line in block.lines) {
-    //     for (TextElement element in line.elements) {
-    //       final densityPixel = MediaQuery.of(context).devicePixelRatio;
-    //       final newOffset = Offset(details.localPosition.dx * densityPixel,
-    //           details.localPosition.dy * densityPixel);
-    //       final isOverlaps = element.rect.contains(newOffset);
-
-    //       if (isOverlaps) {
-    //         widget.onTapWord(element.text);
-    //         return;
-    //       }
-    //     }
-    //   }
-    // }
-
-    // widget.onTapWord('');
-    // final newOffset = Offset(details.localPosition.dx * densityPixel,
-    //     details.localPosition.dy * densityPixel);
     widget.onTapWord(_inputImage, details.localPosition);
   }
 

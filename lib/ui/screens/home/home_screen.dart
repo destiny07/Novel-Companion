@@ -128,7 +128,6 @@ class _HomeContentState extends State<_HomeContent>
     WidgetsBinding.instance!.addObserver(this);
 
     _requestPermission();
-    // _reloadPermissions();
   }
 
   @override
@@ -144,17 +143,6 @@ class _HomeContentState extends State<_HomeContent>
 
   Widget _content() {
     return GestureDetector(
-      // onHorizontalDragEnd: (details) {
-      //   // Swipe Left
-      //   if (details.primaryVelocity! < 0) {
-      //     print('Swiped Left');
-      //     BlocProvider.of<HomeBloc>(context).add(HomeToggleWordInfo(false));
-      //     // Swipe Right
-      //   } else if (details.primaryVelocity! > 0) {
-      //     print('Swiped Right');
-      //     BlocProvider.of<HomeBloc>(context).add(HomeToggleWordInfo(true));
-      //   }
-      // },
       child: Stack(
         children: [
           Align(
@@ -211,7 +199,6 @@ class _HomeContentState extends State<_HomeContent>
               child: CameraView(
                 width: MediaQuery.of(context).size.width *
                     MediaQuery.of(context).devicePixelRatio,
-                // densityPixel: MediaQuery.of(context).devicePixelRatio,
                 controller: _cameraViewController,
                 cameras: widget.cameras,
                 onTapWord: (image, offset) async {

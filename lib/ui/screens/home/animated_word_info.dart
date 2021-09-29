@@ -42,24 +42,6 @@ class _AnimatedWordInfo extends State<AnimatedWordInfo>
   }
 
   Widget _wordInfo() {
-    // return BlocListener<HomeBloc, HomeState>(
-    //   listener: (previous, current) {
-    //     if (current.isShowWordInfo) {
-    //       _controller.reverse();
-    //       widget.onVisibilityChanged(true);
-    //     } else {
-    //       _controller.forward();
-    //       widget.onVisibilityChanged(false);
-    //     }
-    //   },
-    //   listenWhen: (previous, current) =>
-    //       previous.isShowWordInfo !=
-    //       current.isShowWordInfo,
-    //   child: SlideTransition(
-    //     position: _offsetAnimation,
-    //     child: WordInfo(),
-    //   ),
-    // );
     return BlocBuilder<HomeBloc, HomeState>(
       buildWhen: (previous, current) =>
           previous.isShowWordInfo != current.isShowWordInfo,
