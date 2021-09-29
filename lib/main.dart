@@ -37,85 +37,83 @@ void main() async {
 }
 
 class App extends StatelessWidget {
-  final AuthService authenticationService;
-  final UserConfigService dataRepository;
-  final List<CameraDescription> camera;
-
-  const App({
+  App({
     Key? key,
     required this.authenticationService,
     required this.dataRepository,
     required this.camera,
   }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return MultiRepositoryProvider(
-      providers: [
-        RepositoryProvider<AuthService>(
-          create: (context) => authenticationService,
-        ),
-        RepositoryProvider<UserConfigService>(
-          create: (context) => dataRepository,
-        ),
-      ],
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider<AuthenticationCubit>(
-            create: (_) => AuthenticationCubit(
-                authenticationService: authenticationService),
-          ),
-          BlocProvider<UserConfigBloc>(
-            create: (_) => UserConfigBloc(
-              authService: authenticationService,
-              userConfigService: dataRepository,
-            ),
-          )
-        ],
-        child: AppView(camera: camera),
-      ),
-    );
-  }
-}
-
-class AppView extends StatefulWidget {
+  final AuthService authenticationService;
+  final UserConfigService dataRepository;
   final List<CameraDescription> camera;
-
-  const AppView({required this.camera});
-
-  @override
-  _AppViewState createState() => _AppViewState();
-}
-
-class _AppViewState extends State<AppView> {
   final _navigatorKey = GlobalKey<NavigatorState>();
-
-  NavigatorState get _navigator => _navigatorKey.currentState!;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       navigatorKey: _navigatorKey,
-      builder: (context, child) {
-        return BlocListener<AuthenticationCubit, AuthenticationState>(
-          listener: (context, state) {
-            if (state.isAuthenticated) {
-              _navigator.pushAndRemoveUntil<void>(
-                SplashScreen.route(widget.camera),
-                (route) => false,
-              );
-            } else {
-              _navigator.pushAndRemoveUntil<void>(
-                LoginScreen.route(),
-                (route) => false,
-              );
-            }
-          },
-          child: child,
-        );
-      },
+      builder: (context, child) => MultiRepositoryProvider(
+        providers: [
+          RepositoryProvider<AuthService>(
+            create: (context) => authenticationService,
+          ),
+          RepositoryProvider<UserConfigService>(
+            create: (context) => dataRepository,
+          ),
+        ],
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider<AuthenticationCubit>(
+              create: (_) => AuthenticationCubit(
+                  authenticationService: authenticationService),
+            ),
+            BlocProvider<UserConfigBloc>(
+              create: (_) => UserConfigBloc(
+                authService: authenticationService,
+                userConfigService: dataRepository,
+              ),
+            )
+          ],
+          child: AppView(
+            navigatorKey: _navigatorKey,
+            child: child,
+            camera: camera,
+          ),
+        ),
+      ),
       onGenerateRoute: (_) => UnknownScreen.route(),
     );
   }
+}
+
+class AppView extends StatelessWidget {
+  AppView({required this.navigatorKey, required this.camera, this.child});
+
+  final GlobalKey<NavigatorState> navigatorKey;
+  final List<CameraDescription> camera;
+  final Widget? child;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<AuthenticationCubit, AuthenticationState>(
+      listener: (context, state) {
+        if (state.isAuthenticated) {
+          _navigator.pushAndRemoveUntil<void>(
+            SplashScreen.route(camera),
+            (route) => false,
+          );
+        } else {
+          _navigator.pushAndRemoveUntil<void>(
+            LoginScreen.route(),
+            (route) => false,
+          );
+        }
+      },
+      child: child,
+    );
+  }
+
+  NavigatorState get _navigator => navigatorKey.currentState!;
 }
