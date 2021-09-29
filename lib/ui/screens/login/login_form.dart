@@ -24,19 +24,13 @@ class LoginForm extends StatelessWidget {
 Widget _googleLoginButton(BuildContext context) {
   return SignInButton(
     Buttons.Google,
-    onPressed: () {
-      var authBloc = BlocProvider.of<LoginBloc>(context, listen: false);
-      authBloc.add(LoginWithGoogle());
-    },
+    onPressed: () => context.read<LoginCubit>().loginWithGoogle(),
   );
 }
 
 Widget _appleLoginButton(BuildContext context) {
   return SignInButton(
     Buttons.Apple,
-    onPressed: () {
-      var authBloc = BlocProvider.of<LoginBloc>(context, listen: false);
-      authBloc.add(LoginWithApple());
-    },
+    onPressed: () => context.read<LoginCubit>().mapLoginWithApple(),
   );
 }

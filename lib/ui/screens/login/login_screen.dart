@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:project_lyca/blocs/login/login_bloc.dart';
+import 'package:project_lyca/blocs/login/login_cubit.dart';
 import 'package:project_lyca/services/services.dart';
 
 import 'login_form.dart';
@@ -21,12 +21,12 @@ class LoginScreen extends StatelessWidget {
           padding: EdgeInsets.all(5.0),
           child: BlocProvider(
             create: (context) {
-              return LoginBloc(
+              return LoginCubit(
                 authenticationService:
                     RepositoryProvider.of<AuthService>(context),
               );
             },
-            child: BlocListener<LoginBloc, LoginState>(
+            child: BlocListener<LoginCubit, LoginState>(
               listenWhen: (previousState, state) =>
                   previousState.statusMessage != state.statusMessage,
               listener: (context, state) {
