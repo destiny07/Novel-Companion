@@ -29,7 +29,7 @@ void main() async {
   final cameras = await availableCameras();
   runApp(
     App(
-      authenticationRepository: FirebaseAuthService(),
+      authenticationService: FirebaseAuthService(),
       dataRepository: FirebaseUserConfigService(),
       camera: cameras,
     ),
@@ -37,13 +37,13 @@ void main() async {
 }
 
 class App extends StatelessWidget {
-  final AuthService authenticationRepository;
+  final AuthService authenticationService;
   final UserConfigService dataRepository;
   final List<CameraDescription> camera;
 
   const App({
     Key? key,
-    required this.authenticationRepository,
+    required this.authenticationService,
     required this.dataRepository,
     required this.camera,
   }) : super(key: key);
@@ -53,7 +53,7 @@ class App extends StatelessWidget {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider<AuthService>(
-          create: (context) => authenticationRepository,
+          create: (context) => authenticationService,
         ),
         RepositoryProvider<UserConfigService>(
           create: (context) => dataRepository,
@@ -61,13 +61,13 @@ class App extends StatelessWidget {
       ],
       child: MultiBlocProvider(
         providers: [
-          BlocProvider<AuthenticationBloc>(
-            create: (_) => AuthenticationBloc(
-                authenticationService: authenticationRepository),
+          BlocProvider<AuthenticationCubit>(
+            create: (_) => AuthenticationCubit(
+                authenticationService: authenticationService),
           ),
           BlocProvider<UserConfigBloc>(
             create: (_) => UserConfigBloc(
-              authService: authenticationRepository,
+              authService: authenticationService,
               userConfigService: dataRepository,
             ),
           )
@@ -98,7 +98,7 @@ class _AppViewState extends State<AppView> {
       debugShowCheckedModeBanner: false,
       navigatorKey: _navigatorKey,
       builder: (context, child) {
-        return BlocListener<AuthenticationBloc, AuthenticationState>(
+        return BlocListener<AuthenticationCubit, AuthenticationState>(
           listener: (context, state) {
             if (state.isAuthenticated) {
               _navigator.pushAndRemoveUntil<void>(

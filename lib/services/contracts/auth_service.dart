@@ -1,9 +1,10 @@
 import 'package:project_lyca/models/models.dart' as models;
+import 'package:project_lyca/models/models.dart';
 
 abstract class AuthService {
   bool get isAuthenticated;
   String? get userId;
-  Stream<bool> get status;
+  Stream<User?> get status;
   models.User? get user;
 
   Future<void> signInWithGoogle();

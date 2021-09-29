@@ -27,9 +27,13 @@ class FirebaseAuthService implements AuthService {
   }
 
   @override
-  Stream<bool> get status {
+  Stream<models.User?> get status {
     return _firebaseAuth.authStateChanges().map((firebaseUser) {
-      return firebaseUser != null;
+      return firebaseUser != null ? models.User(id: firebaseUser.uid,
+        isEmailVerified: firebaseUser.emailVerified,
+        email: firebaseUser.email,
+        name: firebaseUser.displayName,
+        photo: firebaseUser.photoURL,) : null;
     });
   }
 

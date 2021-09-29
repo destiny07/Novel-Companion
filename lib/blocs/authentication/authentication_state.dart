@@ -1,4 +1,4 @@
-part of 'authentication_bloc.dart';
+part of 'authentication_cubit.dart';
 
 class AuthenticationState extends Equatable {
   const AuthenticationState._({this.isAuthenticated = false, this.user});
@@ -10,6 +10,16 @@ class AuthenticationState extends Equatable {
 
   final bool isAuthenticated;
   final User? user;
+
+  AuthenticationState copyWith({
+    bool? isAuthenticated,
+    User? user,
+  }) {
+    return AuthenticationState._(
+      isAuthenticated: isAuthenticated ?? this.isAuthenticated,
+      user: user ?? this.user,
+    );
+  }
 
   @override
   List<Object?> get props => [isAuthenticated, user];

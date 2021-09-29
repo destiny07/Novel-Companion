@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:project_lyca/blocs/authentication/authentication_bloc.dart';
+import 'package:project_lyca/blocs/authentication/authentication_cubit.dart';
 import 'package:project_lyca/blocs/blocs.dart';
 import 'package:project_lyca/ui/screens/settings/font_dialog.dart';
 import 'package:project_lyca/ui/screens/settings/font_size_dialog.dart';
@@ -64,9 +64,7 @@ class SettingsScreen extends StatelessWidget {
             ListTile(
               title: Text('Logout'),
               onTap: () {
-                context
-                    .read<AuthenticationBloc>()
-                    .add(AuthenticationLogoutRequested());
+                context.read<AuthenticationCubit>().logout();
 
                 // Required so that login screen will be displayed
                 // Not included when popping other routes?
