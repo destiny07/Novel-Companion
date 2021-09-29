@@ -4,8 +4,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:project_lyca/blocs/login/login_cubit.dart';
 import 'package:project_lyca/services/services.dart';
-
-import 'login_form.dart';
+import 'package:project_lyca/ui/screens/login/apple_signin_button.dart';
+import 'package:project_lyca/ui/screens/login/google_signin_button.dart';
 
 class LoginScreen extends StatelessWidget {
   static Route route() {
@@ -45,22 +45,26 @@ class LoginScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      'Novel Companion',
-                      style: GoogleFonts.workSans(
-                        fontSize: 35,
-                        fontWeight: FontWeight.w500,
-                        color: Color.fromRGBO(131, 104, 83, 1),
-                      ),
-                    ),
+                    _title(),
                     _branding(),
-                    LoginForm(),
+                    _signInButtons(),
                   ],
                 ),
               ),
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _title() {
+    return Text(
+      'Novel Companion',
+      style: GoogleFonts.workSans(
+        fontSize: 35,
+        fontWeight: FontWeight.w500,
+        color: Color.fromRGBO(131, 104, 83, 1),
       ),
     );
   }
@@ -83,6 +87,20 @@ class LoginScreen extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _signInButtons() {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 50.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          GoogleSignInButton(),
+          AppleSignInButton(),
+        ],
+      ),
     );
   }
 }
